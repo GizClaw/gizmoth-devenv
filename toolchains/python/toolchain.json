@@ -1,0 +1,24 @@
+{
+  "$schema": "../../schemas/devenv.schema.json",
+  "apiVersion": "devenv.gizmoth.dev/v1alpha1",
+  "kind": "Toolchain",
+  "id": "python",
+  "name": "Python",
+  "description": "Managed CPython runtime from Astral's python-build-standalone distributions.",
+  "category": "runtime",
+  "homepage": "https://www.python.org",
+  "license": "Python Software Foundation License Version 2 and bundled third-party licenses",
+  "status": "published",
+  "notes": "Upstream binaries are built by astral-sh/python-build-standalone. Retain the licenses shipped in each distribution; the registry's MIT license does not relicense CPython or its bundled libraries. Native installation has not been qualified in GizMoth.",
+  "releases": [
+    {
+      "version": "3.12.16",
+      "manifest": "versions/3.12.16.json"
+    },
+    {
+      "version": "3.11.18",
+      "manifest": "versions/3.11.18.json"
+    }
+  ],
+  "defaultVersion": "3.12.16"
+}

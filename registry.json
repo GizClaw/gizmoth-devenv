@@ -3,9 +3,10 @@
   "apiVersion": "devenv.gizmoth.dev/v1alpha1",
   "kind": "Registry",
   "name": "GizMoth Development Environments",
-  "description": "Chips, SDKs and toolchains for GizMoth.",
+  "description": "Chips, environments, SDKs and toolchains for GizMoth.",
   "repository": "https://github.com/GizClaw/gizmoth-devenv",
   "chips": ["esp32s3", "bk7258", "ac707n"],
   "sdks": ["esp-idf", "beken-bk7258", "jieli-ac707n"],
-  "toolchains": ["bazelisk", "arm-gnu", "xtensa-esp-elf", "jieli"]
+  "toolchains": ["bazelisk", "python", "arm-gnu", "xtensa-esp-elf", "jieli"],
+  "environments": ["gizos"]
 }

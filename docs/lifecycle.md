@@ -14,6 +14,7 @@ The data root is a user-level directory separate from application resources, sou
     toolchains/<id>/<version>/<platform>/<installation-id>/
   records/<installation-id>.json                       # Installation: one managed or local SDK/toolchain
   chips/<chip-id>.json                                 # InstalledChip: the SDK and toolchains a chip uses
+  environments/<environment-id>.json                   # InstalledEnvironment: exact toolchain installation UUIDs
   jobs/<job-id>/
     journal.json                                       # Recoverable transaction state
     events.ndjson                                      # Ordered progress, log and result events
@@ -34,7 +35,7 @@ There are two kinds of `Installation`:
 - **Managed**: GizMoth installed it from a registry release into `installs/<type>s/<id>/<version>/<platform>/<installation-id>`. The path is derived from the record's identity and GizMoth owns the directory.
 - **Local**: a toolchain the user downloaded and registered by absolute path. GizMoth checks it and adds it to the environment but never writes to it or deletes it. Local SDKs are not supported.
 
-`requestedByUser` marks a toolchain the user installed or registered directly, rather than one installed for a chip.
+`requestedByUser` marks a toolchain the user installed or registered directly, rather than one installed for a chip or generic environment. Several versions of the same tool can coexist; references always point to specific installation UUIDs, and reuse requires matching both ID and version.
 
 ## Install a chip
 
@@ -47,21 +48,28 @@ There are two kinds of `Installation`:
 
 Jobs continue when the user leaves the page. Each job has an ID, ordered events and a current phase: resolving, downloading, unpacking, running, checking, committing or cleaning. Show byte progress where available rather than inventing a percentage for vendor scripts. Before quitting or updating GizMoth, wait for jobs or cancel them and wait for their processes to exit. At the next launch, recover abandoned jobs under an exclusive lock; a partially installed directory is never marked ready.
 
+## Install a generic environment
+
+Resolve the `Environment` document's exact toolchain dependencies from one snapshot for this host, including transitive dependencies. Reuse and install tools through the same checked, journaled flow as a chip, with no SDK step. Write `InstalledEnvironment` last, recording the environment ID, its resolved toolchain installation UUIDs and `installedAt`; optionally snapshot `metadata: {name, description, homepage, notes?}` for offline display. `notes` may also be null. There is no environment profile version or release layer. A planned environment cannot be installed.
+
+The installed record is a retention root even after its catalog entry is removed. Switching an environment's dependencies is an explicit update that installs and checks any missing tools before replacing the local record. Registry refreshes do not change it.
+
 ## Toolchains table
 
-The table lists every toolchain `Installation`, whether installed for a chip, by the user or from a local path, and shows which chips use it.
+The table lists every toolchain `Installation`, whether installed for a chip, a generic environment, by the user or from a local path, and shows which chips and environments use it.
 
-- **Install a toolchain**: install a release directly with `requestedByUser: true`. It stays when chips are removed.
+- **Install a toolchain**: install a release directly with `requestedByUser: true`. It stays when chips or generic environments are removed.
 - **Add a local toolchain**: the user selects an existing directory. GizMoth runs the matching release's checks against it, or checks the selected executable, and records the version the user confirms. A chip uses it only when its toolchain ID and version match the required dependency exactly.
 
 ## Removal
 
 Removal uses only local records. It never downloads metadata or runs remote code, so it works offline and after the registry changes.
 
-Installed chips and `requestedByUser` installations are the roots. Every installation they reach, through a chip's SDK and toolchains or an installation's dependencies, is kept.
+Installed chips, installed generic environments and `requestedByUser` installations are the roots. Every installation they reach, through a chip's SDK and toolchains, an environment's toolchains or an installation's transitive dependencies, is kept. The reference planner accepts older state objects that omit `environments`, treating them as an empty list. Invalid references, duplicate roots and installation dependency cycles are rejected before planning.
 
-- **Remove a chip**: delete its `InstalledChip` record, then delete the managed installations it reached that nothing else reaches. Toolchains shared with another chip, toolchains the user installed and local toolchains stay.
-- **Remove a toolchain from the table**: if a chip uses it or another installation depends on it, refuse and show which. Otherwise delete it, along with dependencies that nothing else needs. A local toolchain is only unregistered: its files stay where the user put them.
+- **Remove a chip**: delete its `InstalledChip` record, then delete the managed installations it reached that nothing else reaches. Tools shared with another chip or environment, tools the user installed and local toolchains stay.
+- **Remove a generic environment**: delete its `InstalledEnvironment` record, then delete only its unshared managed toolchains and dependencies. Other installed versions and every remaining retention root stay intact. `planEnvironmentRemoval` produces the exact delete/keep sets.
+- **Remove a toolchain from the table**: if a chip or generic environment uses it, including transitively, or another installation depends on it, refuse and show which. The reference blocked result lists `chips`, `environments` and `dependants`. Otherwise delete it, along with dependencies that nothing else needs. A local toolchain is only unregistered: its files stay where the user put them.
 
 Every removal shows a preview first: the exact installations and directories to delete or keep and why. On confirmation, GizMoth:
 
@@ -78,4 +86,8 @@ Cache cleanup is a separate preview and action. It keeps downloads referenced by
 
 A registry refresh only updates metadata. When a newer SDK version supports an installed chip, its card shows that an update is available. Updating installs the new SDK and its toolchains alongside the current ones, checks them, and switches the `InstalledChip` record. Old installations are then removed by the chip-removal rules once no build is using them.
 
+A generic environment update similarly resolves the environment's current exact dependencies, installs missing versions alongside existing ones and switches its local `InstalledEnvironment` record after checks pass. Unused installations become eligible for the same retention rules; an update must not mutate existing versioned directories.
+
 Changing the registry URL or deleting a snapshot never removes installations. Records keep enough metadata to use, inspect and remove them offline.
+
+Process activation explicitly selects installed tool versions for a build or command, including which Python and Bazelisk version to prepend. Merely installing multiple versions does not activate all of them or alter the user's global `PATH`.

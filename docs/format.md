@@ -12,11 +12,23 @@ A refresh changes metadata only: it never runs recipe commands or upgrades insta
 
 | File | Appears in GizMoth | Purpose |
 | --- | --- | --- |
-| `chips/<id>/chip.json` | Chips page card | What the user installs: one chip, its SDK and target, and build tools |
+| `chips/<id>/chip.json` | Chip card | One chip, its SDK and target, and build tools |
+| `environments/<id>/environment.json` | Generic environment card | Named collection of exact toolchain versions, without a chip or SDK |
 | `sdks/<id>/sdk.json` | Chip details only | A vendor SDK and its versions, shared by every chip that names it |
 | `toolchains/<id>/toolchain.json` | Toolchains table | Compilers, build tools, post-build and debug tools, with their versions |
 
-`registry.json` lists every chip, SDK and toolchain ID. Unindexed directories and release files are invalid. IDs are lowercase words separated by hyphens.
+`registry.json` lists every chip, SDK and toolchain ID. Its optional `environments` array indexes generic environments; older indexes without this field remain valid under the same API version. Unindexed directories and release files are invalid, including environment directories. IDs are lowercase words separated by hyphens.
+
+### Generic environments
+
+An `Environment` document contains `apiVersion`, `kind: "Environment"`, `id`, `name`, `description`, `homepage`, `status`, optional `notes` and `dependencies: [{toolchain, version}]`. There is no profile version, default version, release index or installation recipe at this level. Every dependency names an indexed, published toolchain release at an exact version.
+
+- `planned`: may have an empty dependency list and has no install action. Any listed dependencies must still resolve exactly.
+- `published`: has at least one dependency and at least one host supported by every dependency. Its supported hosts are the intersection of the exact releases' hosts, including their transitive dependencies.
+
+GizOS is a published generic environment with `bazelisk` 1.30.0 and `python` 3.12.16. These are base host tools; a project still needs its vendor SDK, target compiler and any other prerequisites for firmware builds. Installing this environment does not run a GizOS CLI.
+
+Changing an environment's dependency list affects future installation plans only. Existing installations retain the exact installation UUIDs in their local `InstalledEnvironment` record until an explicit install or update switches that record.
 
 ### Chips
 
@@ -29,7 +41,7 @@ Installing a chip uses the SDK's default version unless the user selects another
 
 ### SDKs and toolchains
 
-Both have a name, description, homepage, upstream license, status and an index of releases. Toolchains also have a category: `compiler`, `build-tool`, `post-build`, `debugger` or `utility`.
+Both have a name, description, homepage, upstream license, status and an index of releases. Toolchains also have a category: `compiler`, `build-tool`, `post-build`, `debugger`, `utility` or `runtime` (such as Python).
 
 - `planned`: no releases and no default version.
 - `published`: at least one release and a `defaultVersion` that is one of them.
@@ -58,11 +70,15 @@ An SDK installation is shared by all its chips. Its install steps and checks can
 
 ### Dependencies
 
-Only toolchains are dependencies, and every dependency names an exact version. Within one chip environment, consisting of the SDK's common dependencies, its target dependencies and the chip's tools, there can be only one version of each toolchain and no cycles. Different chips can use different versions side by side.
+Only toolchains are dependencies, and every dependency names an exact version. Graph identity is the pair `toolchain ID + version`. Multiple versions of one toolchain may coexist within a chip, generic environment or toolchain graph. Reject dependency cycles and duplicate exact pairs within a declared dependency list or the combined SDK common/target list. Reaching the same pair through separate graph edges is valid and reuses one resolved node.
+
+Resolution and installation do not activate all installed versions at once. A process explicitly selects the installed tool versions it uses; installing a second Python or Bazelisk version never replaces global `PATH`.
 
 ### Sources
 
 File sources use HTTPS, an exact SHA-256 digest and the expected byte size. Git sources use HTTPS, a full commit ID and an explicit submodule setting. URLs cannot contain credentials or fragments. At runtime, GizMoth verifies the checkout and submodule commits; submodules must also use HTTPS with fixed commits. Sources that need Git LFS or authentication need an explicit, verified implementation before a recipe can use them.
+
+Python 3.11.18 and 3.12.16 use the `astral-sh/python-build-standalone` release `20261110` and six exact `cpython-<version>+20261110-<triple>-install_only_stripped.tar.gz` assets. `scripts/update-python.mjs <exact-version> <exact-release>` verifies GitHub release identity and each exact asset's download URL, SHA-256 digest and size. Published manifests contain these fixed values and never resolve a moving release. Each recipe extracts to `python` with `stripComponents: 1`, prepends `python/bin` on Unix or `python` on Windows, and performs a file check for `python/bin/python3` or `python/python.exe`. Unix checks require the executable bit. There are no `run` steps. Distribution licenses and third-party notices remain part of the unpacked software.
 
 ### Installation operations
 
@@ -83,10 +99,14 @@ Installer commands are trusted code that runs with the user's permissions. Keepi
 
 Substitutions are `${prefix}` (the final installation directory), `${cache}` (this toolchain's or SDK's cache directory), `${work}` (temporary job space) and `${toolchain:<id>}` (a declared dependency's installation directory). They are string substitutions, not shell expressions.
 
-`prependPath` entries are relative to the installation. `variables` are process-local strings and cannot set `PATH`; GizMoth builds `PATH` from the chip's whole environment. Exported values and checks cannot use `${work}`. Install steps run in the final installation directory, so tools that embed absolute paths stay valid.
+The legacy `${toolchain:<id>}` syntax does not select a version when several are installed. This format change adds no execution support for that syntax. Clients must reject unsupported or ambiguous substitutions before installation and explicitly choose the installations used for process activation.
+
+`prependPath` entries are relative to the installation. `variables` are process-local strings and cannot set `PATH`; GizMoth builds a process's `PATH` from its explicitly selected installations. Exported values and checks cannot use `${work}`. Install steps run in the final installation directory, so tools that embed absolute paths stay valid.
 
 File checks require a regular file inside the installation and, on Unix, its executable bit when requested. Command checks have a short timeout and cannot prove hardware compatibility. Bazelisk uses file checks because running it can download Bazel.
 
 ## Local records
 
-`Installation` and `InstalledChip` documents describe GizMoth's local state. They are defined in the same schema so the format and removal rules can be tested together, but they never come from the registry. See [lifecycle.md](lifecycle.md).
+`Installation`, `InstalledChip` and `InstalledEnvironment` documents describe GizMoth's local state. They are defined in the same schema so the format and removal rules can be tested together, but they never come from the registry.
+
+An `InstalledEnvironment` has `apiVersion`, `kind: "InstalledEnvironment"`, `environment` (the environment ID), `toolchains` (unique installation UUIDs) and `installedAt`. Its optional `metadata` object stores `name`, `description`, `homepage` and optional `notes` (string or null), preserving display information offline even if the registry entry disappears. It has no environment version or release digest: the referenced installation records pin each actual tool version. It is a retention root alongside installed chips and user-requested tools. See [lifecycle.md](lifecycle.md).

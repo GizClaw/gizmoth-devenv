@@ -1,0 +1,15 @@
+{
+  "$schema": "../../schemas/devenv.schema.json",
+  "apiVersion": "devenv.gizmoth.dev/v1alpha1",
+  "kind": "Environment",
+  "id": "gizos",
+  "name": "GizOS",
+  "description": "Base host tools for GizOS development: Bazel through Bazelisk and a managed Python runtime.",
+  "homepage": "https://github.com/GizClaw/GizOS",
+  "status": "published",
+  "notes": "Installs base host tools only. A complete firmware build also needs the project's vendor SDK, target compiler and other declared prerequisites. Bazelisk downloads the Bazel version selected by the project's .bazelversion on first use. This environment does not invoke the GizOS CLI.",
+  "dependencies": [
+    { "toolchain": "bazelisk", "version": "1.30.0" },
+    { "toolchain": "python", "version": "3.12.16" }
+  ]
+}

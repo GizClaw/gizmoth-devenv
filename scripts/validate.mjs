@@ -1,5 +1,5 @@
 import Ajv2020 from "ajv/dist/2020.js";
-import { lstatSync, readFileSync, readdirSync, realpathSync } from "node:fs";
+import { existsSync, lstatSync, readFileSync, readdirSync, realpathSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
@@ -7,7 +7,7 @@ const projectRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const schema = JSON.parse(readFileSync(join(projectRoot, "schemas/devenv.schema.json"), "utf8"));
 const ajv = new Ajv2020({ allErrors: true, strict: true });
 ajv.addSchema(schema);
-const KINDS = ["Registry", "Chip", "Sdk", "Toolchain", "SdkRelease", "ToolchainRelease", "Installation", "InstalledChip"];
+const KINDS = ["Registry", "Chip", "Environment", "Sdk", "Toolchain", "SdkRelease", "ToolchainRelease", "Installation", "InstalledChip", "InstalledEnvironment"];
 const validators = Object.fromEntries(KINDS.map((kind) => [kind, ajv.getSchema(`${schema.$id}#/$defs/${kind}`)]));
 const EXACT_VERSION = new RegExp(schema.$defs.version.pattern);
 const ITEM_TYPES = [
@@ -82,13 +82,14 @@ function validateProgram(program, recipe, toolchains, allowWork) {
   else requireThat(!program.includes("${") && recipe.requires.includes(program), `Host program must be declared in requires: ${program}`);
 }
 
-function dependencyNames(dependencies, location, inherited = new Set()) {
-  const names = new Set(inherited);
-  for (const dependency of dependencies) {
-    requireThat(!names.has(dependency.toolchain), `${location}: duplicate dependency ${dependency.toolchain}`);
-    names.add(dependency.toolchain);
+function dependencyNames(dependencies, location) {
+  const identities = new Set();
+  for (const { toolchain, version } of dependencies) {
+    const key = `${toolchain}@${version}`;
+    requireThat(!identities.has(key), `${location}: duplicate dependency ${key}`);
+    identities.add(key);
   }
-  return names;
+  return new Set(dependencies.map(({ toolchain }) => toolchain));
 }
 
 function validateRecipe(recipe, location) {
@@ -102,7 +103,9 @@ function validateRecipe(recipe, location) {
   }
   // Install steps and checks see only the common dependencies: one SDK installation serves all its targets.
   const toolchains = dependencyNames(recipe.dependencies, location);
-  for (const [target, extra] of Object.entries(recipe.targets ?? {})) dependencyNames(extra.dependencies, `${location}/${target}`, toolchains);
+  for (const [target, extra] of Object.entries(recipe.targets ?? {})) {
+    dependencyNames([...recipe.dependencies, ...extra.dependencies], `${location}/${target}`);
+  }
   const destinations = new Set();
   for (const step of recipe.install) {
     if (step.type === "run") {
@@ -131,20 +134,17 @@ function validateRecipe(recipe, location) {
   }
 }
 
-/** Resolve exact toolchain dependencies on one host: one version per toolchain, no cycles. */
+/** Resolve exact identities on one host. Different versions coexist; cycles cannot. */
 function resolveToolchains(releases, roots, host, label) {
-  const versions = new Map();
   const visiting = [];
   const visited = new Set();
   function visit({ toolchain, version }) {
     const key = `${toolchain}@${version}`;
     requireThat(!visiting.includes(key), `${label}: dependency cycle ${[...visiting, key].join(" -> ")}`);
-    requireThat(!versions.has(toolchain) || versions.get(toolchain) === version, `${label}: toolchain version conflict for ${toolchain}`);
     if (visited.has(key)) return;
     const manifest = releases.get(key);
     requireThat(manifest, `${label}: unresolved toolchain ${key}`);
     requireThat(manifest.platforms[host], `${label}: ${key} does not support ${host}`);
-    versions.set(toolchain, version);
     visiting.push(key);
     manifest.platforms[host].dependencies.forEach(visit);
     visiting.pop();
@@ -235,8 +235,35 @@ export function validateRegistry(input = projectRoot) {
     requireThat(hosts > 0, `chip ${id}: ${chip.sdk}@${sdk.defaultVersion} does not support target ${chip.target} on any host with its tools`);
   }
 
+  const environments = registry.environments ?? [];
+  // Older indexes may omit this directory, but present entries must always be indexed.
+  if (environments.length || existsSync(join(root, "environments"))) {
+    requireIndexed(root, "environments", new Set(environments));
+  }
+  for (const id of environments) {
+    const base = `environments/${id}`;
+    const environment = validateDocument(load(root, `${base}/environment.json`), "Environment");
+    requireThat(environment.id === id, `${base}: id mismatch`);
+    requireIndexed(root, base, new Set(["environment.json"]));
+    validateUrl(environment.homepage);
+    dependencyNames(environment.dependencies, `environment ${id}`);
+    const dependencies = environment.dependencies.map(({ toolchain, version }) => {
+      const manifest = releases.toolchain.get(`${toolchain}@${version}`);
+      requireThat(manifest, `environment ${id}: unresolved toolchain ${toolchain}@${version}`);
+      return manifest;
+    });
+    if (environment.status === "planned") {
+      planned += 1;
+      continue;
+    }
+    const hosts = Object.keys(dependencies[0].platforms).filter((host) => dependencies.every((manifest) => manifest.platforms[host]));
+    requireThat(hosts.length > 0, `environment ${id}: dependencies have no common supported host`);
+    for (const host of hosts) resolveToolchains(releases.toolchain, environment.dependencies, host, `environment ${id}:${host}`);
+  }
+
   return {
     chips: registry.chips.length,
+    environments: environments.length,
     sdks: items.sdk.size,
     toolchains: items.toolchain.size,
     planned,
@@ -269,10 +296,16 @@ export function validateInstalledChip(record) {
   return record;
 }
 
+export function validateInstalledEnvironment(record) {
+  validateDocument(record, "InstalledEnvironment");
+  if (record.metadata) validateUrl(record.metadata.homepage);
+  return record;
+}
+
 if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1])).href) {
   try {
     const result = validateRegistry(process.argv[2] ?? projectRoot);
-    console.log(`Validated ${result.chips} chips, ${result.sdks} SDKs, ${result.toolchains} toolchains; ${result.releases} release(s), ${result.platforms} platform recipes, ${result.planned} planned. No installers executed.`);
+    console.log(`Validated ${result.chips} chips, ${result.environments} environments, ${result.sdks} SDKs, ${result.toolchains} toolchains; ${result.releases} release(s), ${result.platforms} platform recipes, ${result.planned} planned. No installers executed.`);
   } catch (error) {
     console.error(error.message);
     process.exitCode = 1;

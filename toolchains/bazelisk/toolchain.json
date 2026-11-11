@@ -14,6 +14,10 @@
     {
       "version": "1.30.0",
       "manifest": "versions/1.30.0.json"
+    },
+    {
+      "version": "1.29.0",
+      "manifest": "versions/1.29.0.json"
     }
   ],
   "defaultVersion": "1.30.0"

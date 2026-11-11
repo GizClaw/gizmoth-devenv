@@ -10,7 +10,9 @@
     { "$ref": "#/$defs/SdkRelease" },
     { "$ref": "#/$defs/ToolchainRelease" },
     { "$ref": "#/$defs/Installation" },
-    { "$ref": "#/$defs/InstalledChip" }
+    { "$ref": "#/$defs/InstalledChip" },
+    { "$ref": "#/$defs/Environment" },
+    { "$ref": "#/$defs/InstalledEnvironment" }
   ],
   "$defs": {
     "apiVersion": { "const": "devenv.gizmoth.dev/v1alpha1" },
@@ -43,7 +45,8 @@
         "repository": { "$ref": "#/$defs/repository" },
         "chips": { "$ref": "#/$defs/ids" },
         "sdks": { "$ref": "#/$defs/ids" },
-        "toolchains": { "$ref": "#/$defs/ids" }
+        "toolchains": { "$ref": "#/$defs/ids" },
+        "environments": { "$ref": "#/$defs/ids" }
       }
     },
 
@@ -66,6 +69,26 @@
         "target": { "$ref": "#/$defs/id" },
         "tools": { "$ref": "#/$defs/ids" }
       }
+    },
+
+    "Environment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["apiVersion", "kind", "id", "name", "description", "homepage", "status", "dependencies"],
+      "properties": {
+        "$schema": { "type": "string" },
+        "apiVersion": { "$ref": "#/$defs/apiVersion" },
+        "kind": { "const": "Environment" },
+        "id": { "$ref": "#/$defs/id" },
+        "name": { "$ref": "#/$defs/text" },
+        "description": { "$ref": "#/$defs/text" },
+        "homepage": { "$ref": "#/$defs/httpsUrl" },
+        "status": { "$ref": "#/$defs/status" },
+        "notes": { "$ref": "#/$defs/text" },
+        "dependencies": { "$ref": "#/$defs/dependencies" }
+      },
+      "if": { "properties": { "status": { "const": "published" } } },
+      "then": { "properties": { "dependencies": { "type": "array", "minItems": 1 } } }
     },
 
     "releases": {
@@ -117,7 +140,7 @@
         "id": { "$ref": "#/$defs/id" },
         "name": { "$ref": "#/$defs/text" },
         "description": { "$ref": "#/$defs/text" },
-        "category": { "enum": ["compiler", "build-tool", "post-build", "debugger", "utility"] },
+        "category": { "enum": ["compiler", "build-tool", "post-build", "debugger", "utility", "runtime"] },
         "homepage": { "$ref": "#/$defs/httpsUrl" },
         "license": { "$ref": "#/$defs/text" },
         "status": { "$ref": "#/$defs/status" },
@@ -366,6 +389,30 @@
         "origin": { "oneOf": [{ "$ref": "#/$defs/managedOrigin" }, { "$ref": "#/$defs/localOrigin" }] },
         "requestedByUser": { "type": "boolean" },
         "dependencies": { "type": "array", "uniqueItems": true, "items": { "$ref": "#/$defs/uuid" } },
+        "installedAt": { "$ref": "#/$defs/timestamp" }
+      }
+    },
+    "InstalledEnvironment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["apiVersion", "kind", "environment", "toolchains", "installedAt"],
+      "properties": {
+        "$schema": { "type": "string" },
+        "apiVersion": { "$ref": "#/$defs/apiVersion" },
+        "kind": { "const": "InstalledEnvironment" },
+        "metadata": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["name", "description", "homepage"],
+          "properties": {
+            "name": { "$ref": "#/$defs/text" },
+            "description": { "$ref": "#/$defs/text" },
+            "homepage": { "$ref": "#/$defs/httpsUrl" },
+            "notes": { "anyOf": [{ "$ref": "#/$defs/text" }, { "type": "null" }] }
+          }
+        },
+        "environment": { "$ref": "#/$defs/id" },
+        "toolchains": { "type": "array", "uniqueItems": true, "items": { "$ref": "#/$defs/uuid" } },
         "installedAt": { "$ref": "#/$defs/timestamp" }
       }
     },
