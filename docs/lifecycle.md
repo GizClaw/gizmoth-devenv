@@ -1,70 +1,81 @@
-# Local storage and package lifecycle
+# Local storage and lifecycle
 
-This specifies the intended native GizMoth engine. No installer or removal engine is implemented in this repository.
+This specifies GizMoth's native engine. [lifecycle.mjs](../scripts/lifecycle.mjs) is the reference for the removal rules and is covered by tests; installation itself is not implemented here.
 
 ## Local layout
 
-Choose a user-level data root independently from application resources, source checkouts and worktrees. The UI may let the user change it after verifying ownership and ensuring no jobs or leases are active. Defaults should use normal OS data/cache locations; do not hardcode a maintainer's Workspace path.
+The data root is a user-level directory separate from application resources, source checkouts and worktrees. Use the operating system's normal data and cache locations by default. Changing the root requires that no job or build is using it.
 
 ```text
 <devenv-data>/
-  config.json                                   # Tap alias/origin bindings and root settings
-  taps/<alias>/snapshots/<full-commit>/           # Immutable, validated catalog snapshots
-  packages/<alias>/<id>/<version>/<platform>/
-    <installation-id>/                          # One owned payload with a stable absolute path
-  receipts/<installation-id>.json                # Ready package identity and dependency records
-  profiles/<profile-id>.json                     # Exact installation IDs selected for a project/session
+  registry/<commit>/                                   # Validated registry snapshots
+  installs/
+    sdks/<id>/<version>/<platform>/<installation-id>/
+    toolchains/<id>/<version>/<platform>/<installation-id>/
+  records/<installation-id>.json                       # Installation: one managed or local SDK/toolchain
+  chips/<chip-id>.json                                 # InstalledChip: the SDK and toolchains a chip uses
   jobs/<job-id>/
-    journal.json                                # Recoverable transaction and reserved prefix
-    events.ndjson                               # Sequenced log/progress and terminal events
-    work/                                       # Private temporary install files
-  locks/                                        # Cross-process mutation and usage locks
-  trash/<job-id>/                               # Detached payload pending deletion/retry
+    journal.json                                       # Recoverable transaction state
+    events.ndjson                                      # Ordered progress, log and result events
+    work/                                              # Temporary job files
+  locks/                                               # Cross-process change and usage locks
+  trash/<job-id>/                                      # Detached installations awaiting deletion
 
 <devenv-cache>/
-  downloads/sha256/<digest>                      # Content-addressed, verified source archives/files
-  packages/<alias>/<id>/                         # Vendor cache; e.g. Bazelisk's Bazel downloads
+  downloads/sha256/<digest>                            # Verified downloads, addressed by content
+  sdks/<id>/                                           # SDK caches
+  toolchains/<id>/                                     # Toolchain caches, such as Bazel downloads
 ```
 
-All identities are generated or validated by the native engine. Tap JSON cannot choose the data root, receipts, profile paths, work directory or removal target. Installation IDs distinguish reinstalls and recipe revisions while preserving stable prefix paths. A user project never belongs inside a disposable managed prefix.
+GizMoth generates every local path. Registry files cannot choose the data root, record paths, job directories or deletion targets.
 
-## Install
+There are two kinds of `Installation`:
 
-1. Select a formula, exact version and compatible host from one validated tap snapshot. Resolve prerequisites and exact dependency versions; validate the whole graph before changing files.
-2. Acquire cross-process mutation locks and reuse only healthy, matching existing dependency installations. Reserve an operation UUID and journal, with an owned final prefix per new installation. Do not overwrite an existing prefix or receipt.
-3. Download to private temporary files. Check expected size and SHA-256 before atomically publishing file sources to the shared download cache. Recheck cached entries before use; materialize Git sources at the pinned commits.
-4. Run operations with each candidate's final prefix, dependency prefixes, private work directory and package cache. A candidate is not exposed to normal profiles or commands while installation is in progress. Do not rename a prefix after a hook has embedded its absolute path.
-5. Run all checks. Persist manifest provenance and dependency receipts. Journal the publication, publish ready receipts atomically and update the requested profile only after all packages are ready. Recover interrupted multi-file commits through the journal; there is no assumption that renaming multiple files is one atomic operation.
-6. Report a terminal result. On failure or cancellation, stop and reap the process group and its children before releasing locks or cleaning owned candidates. Preserve completed dependencies and usable existing installations. Never delete a candidate while a child could still be writing to it.
+- **Managed**: GizMoth installed it from a registry release into `installs/<type>s/<id>/<version>/<platform>/<installation-id>`. The path is derived from the record's identity and GizMoth owns the directory.
+- **Local**: a toolchain the user downloaded and registered by absolute path. GizMoth checks it and adds it to the environment but never writes to it or deletes it. Local SDKs are not supported.
 
-Jobs continue when the user navigates to another page. Each has an ID, ordered events, a queryable current state and exactly one terminal outcome: `succeeded`, `failed` or `cancelled`. Activity phases include resolving, downloading, materializing, running, checking, committing and cleaning. Report byte progress where available; do not invent a percentage for opaque vendor scripts.
+`requestedByUser` marks a toolchain the user installed or registered directly, rather than one installed for a chip.
 
-Before shutdown/update, either wait for active jobs or cancel them and await child termination. Recover abandoned reservations under an exclusive ownership lock at next launch; a PID alone is not proof that the old job is dead. A recovery attempt never marks a partially installed prefix ready.
+## Install a chip
 
-## Update and version selection
+1. From one registry snapshot, resolve the chip's SDK version, the SDK's common and target dependencies and the chip's tools to exact versions for this host. Check host prerequisites and validate the whole set before changing anything.
+2. Reuse healthy installations with the same ID and version, including local toolchains. Install what is missing, toolchains before the SDK. Each new installation gets a new ID and its final directory; existing directories and records are never overwritten.
+3. Download to temporary files and verify size and SHA-256 before adding them to the download cache. Recheck cached files before use. Check out Git sources at their pinned commits.
+4. Run install steps in the final directory with its dependencies, cache and temporary job space. A directory is not used for builds until its checks pass and its record is written. It is never renamed after a step has run.
+5. Write each new `Installation` record after its checks pass, then write the `InstalledChip` record last. The journal recovers an interrupted commit.
+6. End with exactly one result: `succeeded`, `failed` or `cancelled`. On failure or cancellation, stop the process group and its children before removing unfinished directories. Keep installations that completed.
 
-Refreshing a tap only refreshes metadata. It never upgrades installed SDKs. Updating installs the selected new version alongside the old one, checks it and then explicitly switches a chosen profile. Projects retain their exact selections until changed by the user.
+Jobs continue when the user leaves the page. Each job has an ID, ordered events and a current phase: resolving, downloading, unpacking, running, checking, committing or cleaning. Show byte progress where available rather than inventing a percentage for vendor scripts. Before quitting or updating GizMoth, wait for jobs or cancel them and wait for their processes to exit. At the next launch, recover abandoned jobs under an exclusive lock; a partially installed directory is never marked ready.
 
-A reinstall gets a new installation ID and final prefix. Existing applications and leases can continue using the old installation; remove it only after it is unused. If a previously observed version's manifest changes, reject the mutation and require a new package version.
+## Toolchains table
 
-The installed view reads receipts and current health, not the remote catalog's latest version. Source refresh failures cannot make an installed environment disappear.
+The table lists every toolchain `Installation`, whether installed for a chip, by the user or from a local path, and shows which chips use it.
 
-## Remove
+- **Install a toolchain**: install a release directly with `requestedByUser: true`. It stays when chips are removed.
+- **Add a local toolchain**: the user selects an existing directory. GizMoth runs the matching release's checks against it, or checks the selected executable, and records the version the user confirms. A chip uses it only when its toolchain ID and version match the required dependency exactly.
 
-Removal is based entirely on the local receipt and dependency graph; it does not fetch or execute remote uninstall code.
+## Removal
 
-1. Validate the receipt, its identity-derived prefix, data-root containment, real filesystem paths and ownership. Unknown paths and external SDKs cannot be recursively deleted. Stop on inconsistent or corrupted state.
-2. Build a removal preview showing the exact package/version, profiles selecting it and installed dependants. Refuse removal while a live lease or job uses it. Refuse a dependency that other installed packages still need; dependent removal must be a separately explicit set.
-3. Require explicit deselection or reassignment of profiles before removing their selected installation. Keep these changes in the transaction journal so a failure does not silently switch environments.
-4. Under the mutation lock, recheck leases, references and the target identity. Journal detachment, move only the owned installation directory into `trash/<job-id>`, and retire the receipt. Use a recoverable transaction so a crash does not leave a live receipt claiming a missing payload.
-5. Clean the detached directory after all handles/children are released. If deletion fails, retain the journal and trash path for retry; report the state truthfully. Do not restore it as a healthy installation automatically.
+Removal uses only local records. It never downloads metadata or runs remote code, so it works offline and after the registry changes.
 
-Removing an SDK does not recursively remove shared toolchains, other versions, source projects or caches. Manual changes inside an owned prefix may be lost on explicit removal; the UI must make the exact owned path visible. External resources are never converted into owned payloads merely because detection found them.
+Installed chips and `requestedByUser` installations are the roots. Every installation they reach, through a chip's SDK and toolchains or an installation's dependencies, is kept.
 
-## Prune and source removal
+- **Remove a chip**: delete its `InstalledChip` record, then delete the managed installations it reached that nothing else reaches. Toolchains shared with another chip, toolchains the user installed and local toolchains stay.
+- **Remove a toolchain from the table**: if a chip uses it or another installation depends on it, refuse and show which. Otherwise delete it, along with dependencies that nothing else needs. A local toolchain is only unregistered: its files stay where the user put them.
 
-`prune` first previews unreferenced, automatically installed dependencies (`requested: false`). Keep anything explicitly installed, selected by a profile, depended on by another receipt, in use or whose ownership is uncertain. The user confirms the preview before deletion; recompute it under the mutation lock.
+Every removal shows a preview first: the exact installations and directories to delete or keep and why. On confirmation, GizMoth:
 
-Cache cleanup is a separate preview/action, never a side effect of ordinary removal. Keep downloads referenced by installed receipts or active jobs. Vendor caches can be cleared only while no leased command uses them. Unknown cache content is retained unless explicitly recognized and selected.
+1. Recomputes the plan under the change lock and refuses if a job or build is using any target.
+2. Checks each target's record, its identity-derived path, its real path inside the data root and its ownership. It stops if the state is inconsistent.
+3. Journals the removal, moves each managed directory to `trash/<job-id>`, then removes the records. A crash cannot leave a record for a missing directory.
+4. Deletes the trash after processes and file handles are released. If deletion fails, it keeps the journal and trash for a retry and reports the actual state.
 
-Removing a tap stops future discovery/updates from that source. Keep installed packages, receipts and the pinned metadata needed to explain them. They can still be inspected, used and removed offline. Removing the app or updating it must not implicitly delete this independent environment store.
+Never deleted: local toolchain paths, user projects, other installed versions, caches (cleared separately), and anything whose ownership is uncertain. Changes the user made inside a managed directory are lost when it is removed, so the preview shows the full path.
+
+Cache cleanup is a separate preview and action. It keeps downloads referenced by installed records or active jobs, and clears tool caches only when no build is using them.
+
+## Updates
+
+A registry refresh only updates metadata. When a newer SDK version supports an installed chip, its card shows that an update is available. Updating installs the new SDK and its toolchains alongside the current ones, checks them, and switches the `InstalledChip` record. Old installations are then removed by the chip-removal rules once no build is using them.
+
+Changing the registry URL or deleting a snapshot never removes installations. Records keep enough metadata to use, inspect and remove them offline.

@@ -1,38 +1,37 @@
 # GizMoth Development Environments
 
-The official GitHub tap for GizMoth's development-environment packages: SDKs, toolchains and build tools. Each formula describes a package; immutable release manifests describe its exact inputs, host support, dependencies, installation steps and exported environment.
+The registry behind GizMoth's **Development Environments** page. Users install a **chip**; GizMoth resolves and maintains the SDK and toolchains behind it. Toolchains can also be installed directly or registered from a local path.
 
-GizMoth will read this catalog and execute recipes through its native backend. This protocol has no dependency on the GizOS `gizos` CLI, Bun, or a globally installed package manager. Node.js is used only for maintaining and validating this repository.
+Distribution borrows Homebrew's model: package metadata lives in this Git repository, GizMoth fetches a pinned commit from GitHub, and vendor files are downloaded from upstream and verified against pinned digests. The format, directory layout and lifecycle are GizMoth's own; this is not a Homebrew tap and does not use Homebrew, the GizOS `gizos` CLI or Bun.
 
-**Status: protocol and catalog bootstrap, `gizmoth.dev/v1alpha1`. GizMoth does not yet implement this package protocol or the Development Environments page.** A `recipe` entry has concrete, validated metadata; it does not claim that a native installation has passed. `planned` entries have no install action.
+**Status: draft format `devenv.gizmoth.dev/v1alpha1`. GizMoth does not implement this registry or its page yet.** Only Bazelisk has a concrete release; every chip, SDK and other toolchain is `planned` and cannot be installed.
 
 ## Repository layout
 
 ```text
-tap.json                          # Tap identity and formula index
-schemas/devenv.schema.json         # Tap, Formula, Release and Receipt schemas
-formulae/
-  bazelisk/
-    formula.json                  # Display metadata, default and version index
-    versions/1.30.0.json           # Immutable, platform-specific recipe
-  esp-idf/formula.json             # Planned SDK
-  beken-bk7258/formula.json         # Planned SDK
-  jieli-ac707n/formula.json         # Planned SDK
-  arm-gnu/formula.json             # Planned shared compiler
-  jieli-toolchain/formula.json     # Planned shared compiler/post-build tools
-docs/
-  format.md                       # Package identity and recipe semantics
-  lifecycle.md                    # Local layout, install, update, remove and prune
-  gizmoth-integration.md           # Intended UI and native integration boundary
-scripts/
-  validate.mjs                    # Offline schema, reference and dependency checks
-  update-bazelisk.mjs              # Pin a published upstream Bazelisk release
-test/catalog.test.mjs              # Invalid catalog and deletion-boundary tests
+registry.json                                # Registry identity and the index of every entry
+chips/<chip>/chip.json                       # Chips page card: vendor, SDK, target and build tools
+sdks/<sdk>/sdk.json                          # SDK metadata and version index (not shown on its own)
+sdks/<sdk>/versions/<version>.json           # Immutable per-host recipe with per-chip targets
+toolchains/<toolchain>/toolchain.json        # Toolchains table entry and version index
+toolchains/<toolchain>/versions/<version>.json
+schemas/devenv.schema.json                   # Registry documents and GizMoth's local records
+docs/format.md                               # Entry and recipe format
+docs/lifecycle.md                            # Local storage, install, update and removal rules
+docs/gizmoth-integration.md                  # Page structure and native integration boundary
+scripts/validate.mjs                         # Offline registry and local-record checks
+scripts/lifecycle.mjs                        # Reference removal planning
+scripts/update-bazelisk.mjs                  # Pin a published upstream Bazelisk release
+test/                                        # Registry and removal-rule tests
 ```
 
-The first concrete recipe is **Bazelisk 1.30.0**, for macOS, Linux and Windows on x86_64/arm64. The release uses exact upstream asset URLs, sizes and SHA-256 digests, cross-checked against upstream checksum files. It installs the launcher as both `bazelisk` and `bazel`. Bazel itself is selected by the consuming project's `.bazelversion` and downloaded by Bazelisk on first use. This is not a preinstalled or prequalified Bazel SDK.
+Current entries:
 
-ESP-IDF, Beken, JieLi and compiler entries remain planned until their pinned inputs, host restrictions, prerequisites and native checks are implemented and qualified. Do not treat the catalog as evidence of host or board support.
+| Chips | SDKs | Toolchains |
+| --- | --- | --- |
+| `esp32s3`, `bk7258`, `ac707n` (planned) | `esp-idf`, `beken-bk7258`, `jieli-ac707n` (planned) | `bazelisk` 1.30.0 (published); `arm-gnu`, `xtensa-esp-elf`, `jieli` (planned) |
+
+The Bazelisk release covers macOS, Linux and Windows on x86_64/arm64 with exact upstream URLs, sizes and SHA-256 digests cross-checked against upstream checksum files. It installs the launcher as both `bazelisk` and `bazel`; each project's `.bazelversion` selects Bazel, which Bazelisk downloads on first use. A published entry is validated metadata, not proof that a native installation has passed.
 
 ## Validate
 
@@ -50,28 +49,22 @@ npm run validate
 npm test
 ```
 
-Validation is offline and does not run vendor installers or downloaded binaries. It checks schemas, catalog coverage, normalized paths, source identities, exact dependencies, host compatibility, cycles, version conflicts and receipt ownership boundaries. Native installation, cancellation and deletion need integration tests in GizMoth once its engine exists.
+Validation is offline and never runs vendor installers or downloaded binaries. It checks schemas, index coverage, paths, source pins, chip/SDK/toolchain references, host support, dependency cycles and version conflicts. Tests also cover local-record identity and the removal rules in [lifecycle.md](docs/lifecycle.md). Native installation, cancellation and deletion need integration tests in GizMoth once its engine exists.
 
-To validate multiple taps and their cross-tap dependencies together:
+## Maintain entries
 
-```bash
-node scripts/validate.mjs /path/to/official-tap /path/to/another-tap
-```
+Add a directory, index it in `registry.json`, and keep it `planned` until its first complete release exists. A release contains exact versions, immutable source pins and explicit platform recipes. Published releases are immutable: add a new version for any change, including a checksum or installation step. Publish a chip only after its SDK release supports its target with all required toolchains.
 
-## Maintain packages
-
-Add a formula directory and index it in `tap.json`. Keep it `planned` until its first complete release is ready. A release must contain exact versions, immutable source pins and explicit platform recipes. Add a new version for any published recipe change; do not rewrite a published version, including a checksum or installation step.
-
-The Bazelisk updater requires the GitHub CLI. Supply an explicit stable upstream version:
+The Bazelisk updater requires the GitHub CLI and an explicit stable upstream version:
 
 ```bash
 node scripts/update-bazelisk.mjs 1.30.0
 ```
 
-It verifies GitHub asset digests against the upstream `.sha256` files, refuses to overwrite a different existing manifest, and updates the formula index. It does not execute the assets or qualify the recipe. Run validation and tests before publishing.
+It verifies GitHub asset digests against the upstream `.sha256` files, refuses to change an existing release, and updates `toolchains/bazelisk/toolchain.json`. It does not execute the assets.
 
 See [the format](docs/format.md), [the lifecycle](docs/lifecycle.md) and [the integration contract](docs/gizmoth-integration.md).
 
 ## License
 
-This repository's original code and documentation use the [MIT license](LICENSE). Package metadata names upstream licenses. Downloaded software retains its own license and distribution terms; this repository does not relicense it.
+This repository's original code and documentation use the [MIT license](LICENSE). Entries name upstream licenses. Downloaded software keeps its own license and distribution terms.

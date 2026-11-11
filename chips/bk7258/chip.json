@@ -1,0 +1,15 @@
+{
+  "$schema": "../../schemas/devenv.schema.json",
+  "apiVersion": "devenv.gizmoth.dev/v1alpha1",
+  "kind": "Chip",
+  "id": "bk7258",
+  "name": "BK7258",
+  "vendor": "Beken",
+  "description": "Beken wireless SoC supported by GizOS.",
+  "homepage": "https://www.bekencorp.com/",
+  "status": "planned",
+  "notes": "Publish after the BK7258 SDK and its Arm GNU toolchain have releases. Apple Silicon hosts need a Rosetta check.",
+  "sdk": "beken-bk7258",
+  "target": "bk7258",
+  "tools": ["bazelisk"]
+}

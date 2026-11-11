@@ -1,7 +1,7 @@
 {
   "$schema": "../../../schemas/devenv.schema.json",
-  "apiVersion": "gizmoth.dev/v1alpha1",
-  "kind": "Release",
+  "apiVersion": "devenv.gizmoth.dev/v1alpha1",
+  "kind": "ToolchainRelease",
   "id": "bazelisk",
   "version": "1.30.0",
   "platforms": {

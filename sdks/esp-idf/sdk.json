@@ -1,0 +1,13 @@
+{
+  "$schema": "../../schemas/devenv.schema.json",
+  "apiVersion": "devenv.gizmoth.dev/v1alpha1",
+  "kind": "Sdk",
+  "id": "esp-idf",
+  "name": "ESP-IDF",
+  "description": "Espressif's SDK for ESP32-series chips.",
+  "homepage": "https://github.com/espressif/esp-idf",
+  "license": "Apache-2.0",
+  "status": "planned",
+  "notes": "One SDK installation serves every ESP32 chip. Each release declares per-chip targets; compilers come from tools.json as separate toolchains, and the Python environment stays inside the SDK installation.",
+  "releases": []
+}

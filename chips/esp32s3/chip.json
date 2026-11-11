@@ -1,0 +1,15 @@
+{
+  "$schema": "../../schemas/devenv.schema.json",
+  "apiVersion": "devenv.gizmoth.dev/v1alpha1",
+  "kind": "Chip",
+  "id": "esp32s3",
+  "name": "ESP32-S3",
+  "vendor": "Espressif",
+  "description": "Espressif Wi-Fi and Bluetooth LE MCU supported by GizOS.",
+  "homepage": "https://www.espressif.com/en/products/socs/esp32-s3",
+  "status": "planned",
+  "notes": "Publish after ESP-IDF releases declare the esp32s3 target and its xtensa-esp-elf toolchain.",
+  "sdk": "esp-idf",
+  "target": "esp32s3",
+  "tools": ["bazelisk"]
+}

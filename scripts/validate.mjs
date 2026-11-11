@@ -7,11 +7,15 @@ const projectRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const schema = JSON.parse(readFileSync(join(projectRoot, "schemas/devenv.schema.json"), "utf8"));
 const ajv = new Ajv2020({ allErrors: true, strict: true });
 ajv.addSchema(schema);
-const validators = Object.fromEntries(["Tap", "Formula", "Release", "Receipt"].map((kind) => [
-  kind, ajv.getSchema(`${schema.$id}#/$defs/${kind}`),
-]));
+const KINDS = ["Registry", "Chip", "Sdk", "Toolchain", "SdkRelease", "ToolchainRelease", "Installation", "InstalledChip"];
+const validators = Object.fromEntries(KINDS.map((kind) => [kind, ajv.getSchema(`${schema.$id}#/$defs/${kind}`)]));
+const EXACT_VERSION = new RegExp(schema.$defs.version.pattern);
+const ITEM_TYPES = [
+  { type: "toolchain", directory: "toolchains", kind: "Toolchain", release: "ToolchainRelease" },
+  { type: "sdk", directory: "sdks", kind: "Sdk", release: "SdkRelease" },
+];
 
-function requireThat(condition, message) {
+export function requireThat(condition, message) {
   if (!condition) throw new Error(message);
 }
 
@@ -29,11 +33,20 @@ function load(root, relative) {
   let current = root;
   for (const part of relative.split("/")) {
     current = join(current, part);
-    requireThat(!lstatSync(current).isSymbolicLink(), `Symlink is not a catalog file: ${relative}`);
+    requireThat(!lstatSync(current).isSymbolicLink(), `Symlink is not a registry file: ${relative}`);
   }
   const stat = lstatSync(current);
-  requireThat(stat.isFile() && stat.size <= 2 * 1024 * 1024, `Invalid catalog file: ${relative}`);
+  requireThat(stat.isFile() && stat.size <= 2 * 1024 * 1024, `Invalid registry file: ${relative}`);
   return JSON.parse(readFileSync(current, "utf8"));
+}
+
+/** Every visible entry in a registry directory must be indexed; clients read indexed paths only. */
+function requireIndexed(root, relative, indexed) {
+  const path = join(root, relative);
+  requireThat(!lstatSync(path).isSymbolicLink(), `Symlinked directory: ${relative}`);
+  for (const entry of readdirSync(path)) {
+    if (!entry.startsWith(".")) requireThat(indexed.has(entry), `Unindexed entry: ${relative}/${entry}`);
+  }
 }
 
 export function validateDocument(document, expectedKind = document.kind) {
@@ -48,25 +61,34 @@ function validateUrl(value) {
   requireThat(url.protocol === "https:" && !url.username && !url.password && !url.hash, `Invalid HTTPS source: ${value}`);
 }
 
-function validateTemplates(value, dependencies, allowWork = true) {
+function validateTemplates(value, toolchains, allowWork = true) {
   for (const match of value.matchAll(/\$\{([^}]*)\}/g)) {
     const name = match[1];
     if (name === "prefix" || name === "cache" || (allowWork && name === "work")) continue;
-    requireThat(name.startsWith("dependency:") && dependencies.has(name.slice("dependency:".length)), `Unknown or undeclared template: ${match[0]}`);
+    requireThat(name.startsWith("toolchain:") && toolchains.has(name.slice("toolchain:".length)), `Unknown or undeclared template: ${match[0]}`);
   }
   requireThat(!value.replace(/\$\{[^}]*\}/g, "").includes("${"), `Unclosed template: ${value}`);
 }
 
-function validateVariables(variables, dependencies, allowWork = true) {
+function validateVariables(variables, toolchains, allowWork = true) {
   requireThat(!Object.keys(variables).some((name) => name.toLowerCase() === "path"), "Use prependPath instead of setting PATH");
-  for (const value of Object.values(variables)) validateTemplates(value, dependencies, allowWork);
+  for (const value of Object.values(variables)) validateTemplates(value, toolchains, allowWork);
 }
 
-function validateProgram(program, recipe, dependencies) {
-  validateTemplates(program, dependencies);
-  const owned = program.match(/^\$\{(?:prefix|dependency:[^}]+)\}\/(.+)$/);
+function validateProgram(program, recipe, toolchains, allowWork) {
+  validateTemplates(program, toolchains, allowWork);
+  const owned = program.match(/^\$\{(?:prefix|work|toolchain:[^}]+)\}\/(.+)$/);
   if (owned) safeRelative(owned[1]);
-  else requireThat(recipe.requires.includes(program), `Host program must be declared in requires: ${program}`);
+  else requireThat(!program.includes("${") && recipe.requires.includes(program), `Host program must be declared in requires: ${program}`);
+}
+
+function dependencyNames(dependencies, location, inherited = new Set()) {
+  const names = new Set(inherited);
+  for (const dependency of dependencies) {
+    requireThat(!names.has(dependency.toolchain), `${location}: duplicate dependency ${dependency.toolchain}`);
+    names.add(dependency.toolchain);
+  }
+  return names;
 }
 
 function validateRecipe(recipe, location) {
@@ -78,18 +100,16 @@ function validateRecipe(recipe, location) {
     const digest = source.type === "file" ? source.sha256 : source.commit;
     requireThat(!/^0+$/.test(digest), `${location}: placeholder source digest`);
   }
-  const dependencies = new Set();
-  for (const dependency of recipe.dependencies) {
-    requireThat(!dependencies.has(dependency.package), `${location}: duplicate dependency ${dependency.package}`);
-    dependencies.add(dependency.package);
-  }
+  // Install steps and checks see only the common dependencies: one SDK installation serves all its targets.
+  const toolchains = dependencyNames(recipe.dependencies, location);
+  for (const [target, extra] of Object.entries(recipe.targets ?? {})) dependencyNames(extra.dependencies, `${location}/${target}`, toolchains);
   const destinations = new Set();
   for (const step of recipe.install) {
     if (step.type === "run") {
-      validateProgram(step.program, recipe, dependencies);
+      validateProgram(step.program, recipe, toolchains, true);
       safeRelative(step.cwd);
-      step.args.forEach((arg) => validateTemplates(arg, dependencies));
-      validateVariables(step.environment, dependencies);
+      step.args.forEach((arg) => validateTemplates(arg, toolchains));
+      validateVariables(step.environment, toolchains);
       continue;
     }
     safeRelative(step.to);
@@ -101,112 +121,158 @@ function validateRecipe(recipe, location) {
     requireThat(source.type === (step.type === "checkout" ? "git" : "file"), `${location}: incompatible source for ${step.type}`);
   }
   recipe.environment.prependPath.forEach(safeRelative);
-  validateVariables(recipe.environment.variables, dependencies, false);
+  validateVariables(recipe.environment.variables, toolchains, false);
   for (const check of recipe.checks) {
     if (check.type === "file") safeRelative(check.path);
     else {
-      validateProgram(check.program, recipe, dependencies);
-      check.args.forEach((arg) => validateTemplates(arg, dependencies, false));
-      requireThat(!check.program.includes("${work}"), `${location}: temporary work path in health check`);
+      validateProgram(check.program, recipe, toolchains, false);
+      check.args.forEach((arg) => validateTemplates(arg, toolchains, false));
     }
   }
 }
 
-export function validateReceipt(receipt) {
-  validateDocument(receipt, "Receipt");
-  safeRelative(receipt.manifest.path);
-  safeRelative(receipt.prefix);
-  const expectedPrefix = `packages/${receipt.tap.id}/${receipt.id}/${receipt.version}/${receipt.platform}/${receipt.installationId}`;
-  requireThat(receipt.prefix === expectedPrefix, "Receipt prefix does not match its installation identity");
-  requireThat(receipt.manifest.path === `formulae/${receipt.id}/versions/${receipt.version}.json`, "Receipt manifest path does not match its package version");
-  requireThat(!receipt.dependencies.includes(receipt.installationId), "Receipt cannot depend on itself");
-  requireThat(Number.isFinite(Date.parse(receipt.installedAt)) && new Date(receipt.installedAt).toISOString().slice(0, 10) === receipt.installedAt.slice(0, 10), "Invalid installation date");
-  validateUrl(receipt.tap.repository);
-  return receipt;
+/** Resolve exact toolchain dependencies on one host: one version per toolchain, no cycles. */
+function resolveToolchains(releases, roots, host, label) {
+  const versions = new Map();
+  const visiting = [];
+  const visited = new Set();
+  function visit({ toolchain, version }) {
+    const key = `${toolchain}@${version}`;
+    requireThat(!visiting.includes(key), `${label}: dependency cycle ${[...visiting, key].join(" -> ")}`);
+    requireThat(!versions.has(toolchain) || versions.get(toolchain) === version, `${label}: toolchain version conflict for ${toolchain}`);
+    if (visited.has(key)) return;
+    const manifest = releases.get(key);
+    requireThat(manifest, `${label}: unresolved toolchain ${key}`);
+    requireThat(manifest.platforms[host], `${label}: ${key} does not support ${host}`);
+    versions.set(toolchain, version);
+    visiting.push(key);
+    manifest.platforms[host].dependencies.forEach(visit);
+    visiting.pop();
+    visited.add(key);
+  }
+  roots.forEach(visit);
 }
 
-/** Validate one or more configured taps together, including exact cross-tap dependencies. */
-export function validateCatalog(roots = [projectRoot]) {
-  const taps = new Map();
-  const releases = new Map();
-  const formulae = [];
-  for (const input of roots) {
-    const root = realpathSync(input);
-    const tap = validateDocument(load(root, "tap.json"), "Tap");
-    requireThat(!taps.has(tap.id), `Duplicate tap alias: ${tap.id}`);
-    validateUrl(tap.repository);
-    taps.set(tap.id, tap);
-    const indexedFormulae = new Set();
-    for (const path of tap.formulae) {
-      const formula = validateDocument(load(root, path), "Formula");
-      requireThat(path === `formulae/${formula.id}/formula.json`, `Formula path/id mismatch: ${path}`);
-      requireThat(!indexedFormulae.has(formula.id), `Duplicate formula: ${formula.id}`);
-      indexedFormulae.add(formula.id);
-      validateUrl(formula.homepage);
-      const base = dirname(path);
+/** Validate a registry checkout offline. Nothing is downloaded or executed. */
+export function validateRegistry(input = projectRoot) {
+  const root = realpathSync(input);
+  const registry = validateDocument(load(root, "registry.json"), "Registry");
+  validateUrl(registry.repository);
+  const items = { toolchain: new Map(), sdk: new Map() };
+  const releases = { toolchain: new Map(), sdk: new Map() };
+  let planned = 0;
+  let platforms = 0;
+
+  for (const { type, directory, kind, release } of ITEM_TYPES) {
+    requireIndexed(root, directory, new Set(registry[directory]));
+    for (const id of registry[directory]) {
+      const base = `${directory}/${id}`;
+      const item = validateDocument(load(root, `${base}/${type}.json`), kind);
+      requireThat(item.id === id, `${base}: id mismatch`);
+      validateUrl(item.homepage);
+      if (item.status === "planned") planned += 1;
       const versions = new Set();
-      for (const reference of formula.releases) {
-        requireThat(!versions.has(reference.version), `${formula.id}: duplicate version ${reference.version}`);
+      for (const reference of item.releases) {
+        requireThat(!versions.has(reference.version), `${type} ${id}: duplicate version ${reference.version}`);
         versions.add(reference.version);
-        requireThat(reference.manifest === `versions/${reference.version}.json`, `${formula.id}: version path mismatch`);
-        const manifest = validateDocument(load(root, `${base}/${reference.manifest}`), "Release");
-        requireThat(manifest.id === formula.id && manifest.version === reference.version, `${formula.id}: release identity mismatch`);
-        for (const [host, recipe] of Object.entries(manifest.platforms)) validateRecipe(recipe, `${tap.id}/${formula.id}@${manifest.version}:${host}`);
-        releases.set(`${tap.id}/${formula.id}@${manifest.version}`, manifest);
+        requireThat(reference.manifest === `versions/${reference.version}.json`, `${type} ${id}: version path mismatch`);
+        const manifest = validateDocument(load(root, `${base}/${reference.manifest}`), release);
+        requireThat(manifest.id === id && manifest.version === reference.version, `${type} ${id}: release identity mismatch`);
+        for (const [host, recipe] of Object.entries(manifest.platforms)) validateRecipe(recipe, `${type} ${id}@${manifest.version}:${host}`);
+        platforms += Object.keys(manifest.platforms).length;
+        releases[type].set(`${id}@${manifest.version}`, manifest);
       }
-      if (formula.status === "recipe") requireThat(versions.has(formula.defaultVersion), `${formula.id}: defaultVersion is not published`);
-      const entries = readdirSync(join(root, base));
-      if (entries.includes("versions")) {
-        const versionsPath = join(root, base, "versions");
-        requireThat(!lstatSync(versionsPath).isSymbolicLink(), `${formula.id}: symlinked versions directory`);
-        for (const entry of readdirSync(versionsPath)) {
-          requireThat(entry.endsWith(".json") && versions.has(entry.slice(0, -5)), `${formula.id}: unindexed release ${entry}`);
-        }
-      }
-      formulae.push({ tap: tap.id, ...formula });
+      if (item.status === "published") requireThat(versions.has(item.defaultVersion), `${type} ${id}: defaultVersion is not published`);
+      requireIndexed(root, base, new Set([`${type}.json`, ...(versions.size ? ["versions"] : [])]));
+      if (versions.size) requireIndexed(root, `${base}/versions`, new Set([...versions].map((version) => `${version}.json`)));
+      items[type].set(id, item);
     }
-    const formulaRoot = join(root, "formulae");
-    requireThat(!lstatSync(formulaRoot).isSymbolicLink(), "Symlinked formulae directory");
-    for (const entry of readdirSync(formulaRoot)) requireThat(indexedFormulae.has(entry), `Unindexed formula: ${entry}`);
   }
 
-  // Each root environment must resolve to one version of every dependency on its host.
-  // Different root environments can still install different versions side by side.
-  for (const [rootKey, rootRelease] of releases) {
-    for (const host of Object.keys(rootRelease.platforms)) {
-      const visiting = new Set();
-      const visited = new Set();
-      const versions = new Map();
-      function visit(key) {
-        requireThat(!visiting.has(key), `Dependency cycle: ${[...visiting, key].join(" -> ")}`);
-        if (visited.has(key)) return;
-        const manifest = releases.get(key);
-        requireThat(manifest, `Unresolved dependency: ${key}`);
-        requireThat(manifest.platforms[host], `Dependency ${key} does not support ${host}`);
-        const packageKey = key.slice(0, key.lastIndexOf("@"));
-        requireThat(!versions.has(packageKey) || versions.get(packageKey) === manifest.version, `Dependency version conflict: ${packageKey}`);
-        versions.set(packageKey, manifest.version);
-        visiting.add(key);
-        for (const dependency of manifest.platforms[host].dependencies) visit(`${dependency.package}@${dependency.version}`);
-        visiting.delete(key);
-        visited.add(key);
-      }
-      visit(rootKey);
+  for (const [key, manifest] of releases.toolchain) {
+    for (const host of Object.keys(manifest.platforms)) {
+      resolveToolchains(releases.toolchain, [{ toolchain: manifest.id, version: manifest.version }], host, `toolchain ${key}:${host}`);
     }
   }
+  for (const [key, manifest] of releases.sdk) {
+    for (const [host, recipe] of Object.entries(manifest.platforms)) {
+      for (const [target, extra] of Object.entries(recipe.targets)) {
+        resolveToolchains(releases.toolchain, [...recipe.dependencies, ...extra.dependencies], host, `sdk ${key}:${host}/${target}`);
+      }
+    }
+  }
+
+  requireIndexed(root, "chips", new Set(registry.chips));
+  const targets = new Set();
+  for (const id of registry.chips) {
+    const chip = validateDocument(load(root, `chips/${id}/chip.json`), "Chip");
+    requireThat(chip.id === id, `chips/${id}: id mismatch`);
+    requireIndexed(root, `chips/${id}`, new Set(["chip.json"]));
+    validateUrl(chip.homepage);
+    const sdk = items.sdk.get(chip.sdk);
+    requireThat(sdk, `chip ${id}: unknown SDK ${chip.sdk}`);
+    requireThat(!targets.has(`${chip.sdk}/${chip.target}`), `chip ${id}: duplicate SDK target ${chip.sdk}/${chip.target}`);
+    targets.add(`${chip.sdk}/${chip.target}`);
+    for (const tool of chip.tools) requireThat(items.toolchain.has(tool), `chip ${id}: unknown toolchain ${tool}`);
+    if (chip.status === "planned") {
+      planned += 1;
+      continue;
+    }
+    requireThat(sdk.status === "published", `chip ${id}: SDK ${chip.sdk} is not published`);
+    const tools = chip.tools.map((tool) => {
+      const toolchain = items.toolchain.get(tool);
+      requireThat(toolchain.status === "published", `chip ${id}: toolchain ${tool} is not published`);
+      return { toolchain: tool, version: toolchain.defaultVersion };
+    });
+    // A card is installable on hosts where the default SDK supports its target and every tool is available.
+    let hosts = 0;
+    for (const [host, recipe] of Object.entries(releases.sdk.get(`${chip.sdk}@${sdk.defaultVersion}`).platforms)) {
+      const target = recipe.targets[chip.target];
+      if (!target || tools.some(({ toolchain, version }) => !releases.toolchain.get(`${toolchain}@${version}`).platforms[host])) continue;
+      resolveToolchains(releases.toolchain, [...recipe.dependencies, ...target.dependencies, ...tools], host, `chip ${id}:${host}`);
+      hosts += 1;
+    }
+    requireThat(hosts > 0, `chip ${id}: ${chip.sdk}@${sdk.defaultVersion} does not support target ${chip.target} on any host with its tools`);
+  }
+
   return {
-    taps: taps.size,
-    formulae: formulae.length,
-    planned: formulae.filter((formula) => formula.status === "planned").length,
-    releases: releases.size,
-    platforms: [...releases.values()].reduce((count, release) => count + Object.keys(release.platforms).length, 0),
+    chips: registry.chips.length,
+    sdks: items.sdk.size,
+    toolchains: items.toolchain.size,
+    planned,
+    releases: releases.sdk.size + releases.toolchain.size,
+    platforms,
   };
+}
+
+/** Shape and identity checks for GizMoth's local installation records. */
+export function validateInstallation(record) {
+  validateDocument(record, "Installation");
+  requireThat(!record.dependencies.includes(record.installationId), "An installation cannot depend on itself");
+  if (record.origin.type === "managed") {
+    requireThat(EXACT_VERSION.test(record.version), "A managed installation needs an exact registry version");
+    const directory = `${record.type}s/${record.id}`;
+    safeRelative(record.origin.prefix);
+    requireThat(record.origin.prefix === `installs/${directory}/${record.version}/${record.platform}/${record.installationId}`, "Installation prefix does not match its identity");
+    requireThat(record.origin.manifest.path === `${directory}/versions/${record.version}.json`, "Installation manifest does not match its version");
+    validateUrl(record.origin.registry.repository);
+  } else {
+    requireThat(record.type === "toolchain", "Only toolchains can be added from a local path");
+    requireThat(record.requestedByUser && record.dependencies.length === 0, "A local toolchain is user-added and has no managed dependencies");
+  }
+  return record;
+}
+
+export function validateInstalledChip(record) {
+  validateDocument(record, "InstalledChip");
+  requireThat(!record.toolchains.includes(record.sdk), "A chip SDK cannot also be listed as a toolchain");
+  return record;
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1])).href) {
   try {
-    const result = validateCatalog(process.argv.length > 2 ? process.argv.slice(2) : [projectRoot]);
-    console.log(`Validated ${result.taps} tap(s), ${result.formulae} formulae, ${result.releases} release(s), ${result.platforms} platform recipes; ${result.planned} planned. No installers executed.`);
+    const result = validateRegistry(process.argv[2] ?? projectRoot);
+    console.log(`Validated ${result.chips} chips, ${result.sdks} SDKs, ${result.toolchains} toolchains; ${result.releases} release(s), ${result.platforms} platform recipes, ${result.planned} planned. No installers executed.`);
   } catch (error) {
     console.error(error.message);
     process.exitCode = 1;

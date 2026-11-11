@@ -1,14 +1,13 @@
 {
   "$schema": "../../schemas/devenv.schema.json",
-  "apiVersion": "gizmoth.dev/v1alpha1",
-  "kind": "Formula",
+  "apiVersion": "devenv.gizmoth.dev/v1alpha1",
+  "kind": "Sdk",
   "id": "beken-bk7258",
   "name": "Beken BK7258 SDK",
   "description": "The vendor SDK for BK7258 firmware development.",
-  "category": "sdk",
   "homepage": "https://github.com/bekencorp/bk_avdk",
   "license": "LicenseRef-Vendor",
   "status": "planned",
-  "notes": "Confirm the vendor source, redistribution conditions and host support; add exact compiler dependencies and Apple Silicon compatibility checks where required.",
+  "notes": "Confirm the vendor source and redistribution terms, then depend on the exact Arm GNU 10.3 toolchain release.",
   "releases": []
 }

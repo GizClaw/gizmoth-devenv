@@ -1,0 +1,20 @@
+{
+  "$schema": "../../schemas/devenv.schema.json",
+  "apiVersion": "devenv.gizmoth.dev/v1alpha1",
+  "kind": "Toolchain",
+  "id": "bazelisk",
+  "name": "Bazel (Bazelisk)",
+  "description": "Runs the Bazel version selected by each project's .bazelversion file.",
+  "category": "build-tool",
+  "homepage": "https://github.com/bazelbuild/bazelisk",
+  "license": "Apache-2.0",
+  "status": "published",
+  "notes": "Installed as both bazelisk and bazel. Bazel itself is downloaded into the toolchain cache on first use; native installation has not been qualified in GizMoth.",
+  "releases": [
+    {
+      "version": "1.30.0",
+      "manifest": "versions/1.30.0.json"
+    }
+  ],
+  "defaultVersion": "1.30.0"
+}

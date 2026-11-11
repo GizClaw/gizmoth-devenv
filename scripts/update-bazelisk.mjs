@@ -47,26 +47,26 @@ const platforms = Object.fromEntries(await Promise.all(Object.entries(hosts).map
 })));
 const manifest = {
   $schema: "../../../schemas/devenv.schema.json",
-  apiVersion: "gizmoth.dev/v1alpha1",
-  kind: "Release",
+  apiVersion: "devenv.gizmoth.dev/v1alpha1",
+  kind: "ToolchainRelease",
   id: "bazelisk",
   version,
   platforms,
 };
 const manifestText = `${JSON.stringify(manifest, null, 2)}\n`;
-const target = resolve(root, "formulae/bazelisk/versions", `${version}.json`);
+const target = resolve(root, "toolchains/bazelisk/versions", `${version}.json`);
 mkdirSync(dirname(target), { recursive: true });
 if (existsSync(target)) {
-  if (readFileSync(target, "utf8") !== manifestText) throw new Error("Refusing to modify an existing release manifest");
+  if (readFileSync(target, "utf8") !== manifestText) throw new Error("Refusing to modify a published release manifest");
 } else {
   writeFileSync(target, manifestText, { flag: "wx" });
 }
-const formulaPath = resolve(root, "formulae/bazelisk/formula.json");
-const formula = JSON.parse(readFileSync(formulaPath, "utf8"));
-formula.status = "recipe";
-formula.defaultVersion = version;
-if (!formula.releases.some((release) => release.version === version)) {
-  formula.releases.push({ version, manifest: `versions/${version}.json` });
+const toolchainPath = resolve(root, "toolchains/bazelisk/toolchain.json");
+const toolchain = JSON.parse(readFileSync(toolchainPath, "utf8"));
+toolchain.status = "published";
+toolchain.defaultVersion = version;
+if (!toolchain.releases.some((release) => release.version === version)) {
+  toolchain.releases.push({ version, manifest: `versions/${version}.json` });
 }
-writeFileSync(formulaPath, `${JSON.stringify(formula, null, 2)}\n`);
+writeFileSync(toolchainPath, `${JSON.stringify(toolchain, null, 2)}\n`);
 console.log(`Recorded Bazelisk ${version}: ${Object.keys(platforms).length} hosts, published SHA-256 files matched. No binaries executed.`);

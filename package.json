@@ -2,7 +2,7 @@
   "name": "gizmoth-devenv",
   "version": "0.1.0",
   "private": true,
-  "description": "The official development-environment tap and draft package protocol for GizMoth.",
+  "description": "GizMoth's development-environment registry: chips, SDKs and toolchains.",
   "license": "MIT",
   "type": "module",
   "engines": { "node": ">=22.19.0" },

@@ -1,48 +1,45 @@
-# GizMoth integration contract
+# GizMoth integration
 
-This describes the next application change; the current catalog repository does not implement the UI or native engine.
+This describes the next GizMoth change; this repository does not implement the page or the native engine.
 
-## Navigation and discovery
+## Page structure
 
-Add a top-level **Development Environments / 开发环境** sidebar entry. Use the plugin-catalog pattern with **Discover / 发现**, **Installed / 已安装** and **Sources / 来源** views.
+Add a top-level **Development Environments / 开发环境** sidebar entry with two views.
 
-Discover shows searchable package cards grouped by SDK, toolchain, build tool, runtime or utility. A card shows its source, description, recipe/default version, local state and host compatibility. Planned entries show that a recipe is pending, with no installation action. Unsupported hosts show a clear reason. Downloading a Linux executable on macOS must not become a "ready" badge.
+**Chips / 芯片**: a grid of cards, one per chip, grouped or searchable by vendor. A card shows the chip, vendor, SDK version and local state: not installed, installing (phase and log), installed, update available, or unsupported on this computer with the reason, such as "requires Linux x86_64" or "requires Rosetta". Planned chips show that a recipe is pending and have no install action. **Install** sets up the SDK, toolchains and build tools automatically. Chip details can switch the SDK version and list the toolchains that will be installed; dependencies are shown, not chosen. Removing a chip previews what will be deleted and kept.
 
-Opening a recipe shows exact versions, inputs, prerequisites, dependencies, installation path and available checks. Install starts a native job and displays its phases and logs. Existing versions remain visible. Installed uses local receipts, so it works without the network and can expose check, select, remove and dependency details. Removal previews dependent packages and profile references before confirmation.
+**Toolchains / 工具链**: a table with name, version, category, chips using it, origin (automatic, user-installed or local path), status and actions. Users can install any published toolchain version or register a toolchain they downloaded themselves. Removal follows [the lifecycle rules](lifecycle.md): toolchains in use are blocked with the reason, and local paths are only unregistered.
 
-Sources contains the official `GizClaw/gizmoth-devenv` tap and explicitly added GitHub repositories. Adding a source validates and binds its origin; refresh changes metadata only. Do not offer arbitrary package names or shell commands in the source input. Removing a source does not remove its installed packages.
+SDKs have no page of their own; they appear in chip details. The registry URL is a setting, not a navigation item.
 
-## Ownership boundary
+## Ownership
 
 | Owner | Responsibility |
 | --- | --- |
-| Tap repository | Catalog, pinned vendor inputs, exact dependency declarations, platform recipes and checks |
-| GizMoth Rust backend | Fetch/validate snapshots, resolve dependencies, download/verify, execute operations, compose process environments, hold locks/leases, persist receipts and recover jobs |
-| GizMoth frontend | Discovery, details, user actions, task logs, compatibility and removal previews |
-| User projects | Source code, build targets and explicit environment/version selection |
+| This repository | Chips, SDK and toolchain entries, pinned vendor inputs, exact dependencies, platform recipes and checks |
+| GizMoth native backend | Fetch and validate snapshots, resolve chip environments, download and verify, run installation steps, build process environments, hold locks and usage leases, write records, recover jobs |
+| GizMoth frontend | Chip cards, toolchain table, details, task logs, compatibility and removal previews |
+| User projects | Source code, build targets and the chip each project uses |
 
-This is a development-environment package system. Formulae do not inject JavaScript into GizMoth or modify its frontend. There is no runtime dependency on the GizOS environment CLI and no requirement to install Bun merely to use this catalog. The app may use ordinary vendor build tools declared by each recipe.
+Registry entries never inject code into GizMoth's interface. GizMoth needs no GizOS environment CLI, Bun or Homebrew to use this registry; recipes declare the vendor tools they need.
 
-## Native API expectations
+## Native operations
 
-The frontend should call typed, allowlisted operations rather than accepting shell strings. The exact IPC names can follow GizMoth's existing conventions, but the operations need these semantics:
+The frontend calls typed operations instead of passing shell strings:
 
-- List sources and catalog packages from validated snapshots; add, refresh or remove a bound source.
-- Inspect installed environments and run explicit health checks.
-- Resolve an installation plan, start it, inspect its current state/events, and request cancellation by job ID.
-- Preview and execute removal of an explicit installation-ID set; preview and execute pruning/cache cleanup separately.
-- Read and change a profile's exact environment selections.
-- Compose a process environment and launch a selected project command with a usage lease held for its lifetime.
+- Refresh and read the registry snapshot; list chips and toolchains with local state and host support.
+- Plan and start a chip installation, a toolchain installation or a local toolchain registration; read a job's state and events; cancel by job ID.
+- Preview and confirm removal of a chip or one toolchain installation; preview and confirm cache cleanup.
+- Change an installed chip's SDK version through the update flow.
+- Build the process environment for a chip and run a project command while holding a usage lease.
 
-Plans and jobs are native records tied to the resolved commit, manifest digest, host and dependency graph. Revalidate a preview before mutation; a stale frontend object cannot authorize a different package version, repository or deletion target. Cross-process locks coordinate app windows and any future CLI/API client.
+Plans are tied to the snapshot commit, release digests, host and resolved installations. GizMoth recomputes a plan before changing anything, so a stale preview cannot authorize a different version or deletion target. Locks coordinate app windows and any future CLI or service client. Job state and logs survive frontend reloads; events carry sequence numbers so a reconnecting view resumes without starting a duplicate job.
 
-Keep receipt state and logs queryable after frontend reloads. Stream sequenced events with job IDs and support resuming from an event cursor; dropped UI connections must not launch duplicate jobs. Client-generated idempotency keys or an equivalent native reservation must protect retries after ambiguous IPC failures.
+## Implementation order
 
-## Implementation order and acceptance
+1. Native snapshot fetching and validation, with read-only Chips and Toolchains views. Test offline use and failed refreshes.
+2. Bazelisk end to end in the Toolchains view: verified download, managed directory, record, environment, a real build using a project's `.bazelversion`, cancellation, restart recovery and removal. Also local toolchain registration and unregistration.
+3. The first chip: ESP32-S3 with ESP-IDF and `xtensa-esp-elf`, including per-target dependencies, chip installation, update and chip removal with shared toolchains. Then Beken, then JieLi, keeping unfinished families planned.
+4. Connect project creation, builds and flashing to the installed chip environment.
 
-1. Implement schema/semantic validation in the native backend and read-only source/discovery/installed views. Pin one catalog commit per refresh; test offline and failed-refresh behavior.
-2. Implement the Bazelisk file recipe end to end: verified download, owned prefix, receipt, process environment, real project-selected Bazel execution, cancellation, restart recovery and removal. Exercise platform-specific filesystem and process behavior in native tests; catalog validation is insufficient.
-3. Add SDK/compiler recipes one family at a time, with pinned inputs, actual host checks, explicit vendor prerequisites and installation-side-effect tests. Keep incomplete families planned.
-4. Connect project creation/build/run flows to exact environment profiles after the environment manager is verified.
-
-No installer success, health check or first-build success should be inferred from the presence of a catalog card. Report these states separately in the app.
+A card's presence does not mean an installation, health check or first build has succeeded; the app reports those states separately.

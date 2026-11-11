@@ -1,0 +1,15 @@
+{
+  "$schema": "../../schemas/devenv.schema.json",
+  "apiVersion": "devenv.gizmoth.dev/v1alpha1",
+  "kind": "Chip",
+  "id": "ac707n",
+  "name": "AC707N",
+  "vendor": "JieLi",
+  "description": "JieLi Bluetooth SoC supported by GizOS.",
+  "homepage": "https://www.zh-jieli.com/",
+  "status": "planned",
+  "notes": "Publish after the SDK and JieLi toolchain have downloadable releases. The current toolchain runs only on Linux x86_64.",
+  "sdk": "jieli-ac707n",
+  "target": "ac707n",
+  "tools": ["bazelisk"]
+}

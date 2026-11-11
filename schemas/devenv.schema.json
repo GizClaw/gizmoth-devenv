@@ -1,187 +1,386 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://raw.githubusercontent.com/GizClaw/gizmoth-devenv/main/schemas/devenv.schema.json",
-  "title": "GizMoth development-environment protocol (draft)",
+  "title": "GizMoth development-environment registry (draft)",
   "oneOf": [
-    { "$ref": "#/$defs/Tap" },
-    { "$ref": "#/$defs/Formula" },
-    { "$ref": "#/$defs/Release" },
-    { "$ref": "#/$defs/Receipt" }
+    { "$ref": "#/$defs/Registry" },
+    { "$ref": "#/$defs/Chip" },
+    { "$ref": "#/$defs/Sdk" },
+    { "$ref": "#/$defs/Toolchain" },
+    { "$ref": "#/$defs/SdkRelease" },
+    { "$ref": "#/$defs/ToolchainRelease" },
+    { "$ref": "#/$defs/Installation" },
+    { "$ref": "#/$defs/InstalledChip" }
   ],
   "$defs": {
+    "apiVersion": { "const": "devenv.gizmoth.dev/v1alpha1" },
     "id": { "type": "string", "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$", "maxLength": 64 },
+    "ids": { "type": "array", "uniqueItems": true, "items": { "$ref": "#/$defs/id" } },
+    "text": { "type": "string", "minLength": 1, "maxLength": 2000 },
     "version": { "type": "string", "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(?:-[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?(?:\\+[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?$", "maxLength": 96 },
     "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
     "commit": { "type": "string", "pattern": "^[a-f0-9]{40}$" },
     "uuid": { "type": "string", "pattern": "^[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$" },
+    "timestamp": { "type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(?:\\.[0-9]+)?Z$" },
     "httpsUrl": { "type": "string", "pattern": "^https://[^\\s]+$" },
     "repository": { "type": "string", "pattern": "^https://github\\.com/[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$" },
     "relativePath": { "type": "string", "pattern": "^(?!/)(?!.*(?:^|/)\\.{1,2}(?:/|$))[A-Za-z0-9._+-]+(?:/[A-Za-z0-9._+-]+)*$", "maxLength": 512 },
+    "absolutePath": { "type": "string", "pattern": "^(?:/|[A-Za-z]:[\\\\/])[^\\u0000]*$", "maxLength": 4096 },
     "platform": { "enum": ["macos-arm64", "macos-x86_64", "linux-arm64", "linux-x86_64", "windows-arm64", "windows-x86_64"] },
+    "status": { "enum": ["planned", "published"] },
     "variables": { "type": "object", "propertyNames": { "pattern": "^[A-Za-z_][A-Za-z0-9_]*$" }, "additionalProperties": { "type": "string", "maxLength": 4096 } },
-    "Tap": {
+
+    "Registry": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["apiVersion", "kind", "id", "name", "description", "repository", "formulae"],
+      "required": ["apiVersion", "kind", "name", "description", "repository", "chips", "sdks", "toolchains"],
       "properties": {
         "$schema": { "type": "string" },
-        "apiVersion": { "const": "gizmoth.dev/v1alpha1" },
-        "kind": { "const": "Tap" },
-        "id": { "$ref": "#/$defs/id" },
-        "name": { "type": "string", "minLength": 1 },
-        "description": { "type": "string", "minLength": 1 },
+        "apiVersion": { "$ref": "#/$defs/apiVersion" },
+        "kind": { "const": "Registry" },
+        "name": { "$ref": "#/$defs/text" },
+        "description": { "$ref": "#/$defs/text" },
         "repository": { "$ref": "#/$defs/repository" },
-        "formulae": { "type": "array", "uniqueItems": true, "items": { "type": "string", "pattern": "^formulae/[a-z][a-z0-9]*(?:-[a-z0-9]+)*/formula\\.json$" } }
+        "chips": { "$ref": "#/$defs/ids" },
+        "sdks": { "$ref": "#/$defs/ids" },
+        "toolchains": { "$ref": "#/$defs/ids" }
       }
     },
-    "Formula": {
+
+    "Chip": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["apiVersion", "kind", "id", "name", "vendor", "description", "homepage", "status", "sdk", "target", "tools"],
+      "properties": {
+        "$schema": { "type": "string" },
+        "apiVersion": { "$ref": "#/$defs/apiVersion" },
+        "kind": { "const": "Chip" },
+        "id": { "$ref": "#/$defs/id" },
+        "name": { "$ref": "#/$defs/text" },
+        "vendor": { "$ref": "#/$defs/text" },
+        "description": { "$ref": "#/$defs/text" },
+        "homepage": { "$ref": "#/$defs/httpsUrl" },
+        "status": { "$ref": "#/$defs/status" },
+        "notes": { "$ref": "#/$defs/text" },
+        "sdk": { "$ref": "#/$defs/id" },
+        "target": { "$ref": "#/$defs/id" },
+        "tools": { "$ref": "#/$defs/ids" }
+      }
+    },
+
+    "releases": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["version", "manifest"],
+        "properties": {
+          "version": { "$ref": "#/$defs/version" },
+          "manifest": { "type": "string", "pattern": "^versions/[A-Za-z0-9][A-Za-z0-9.+-]*\\.json$" }
+        }
+      }
+    },
+    "publication": {
+      "type": "object",
+      "if": { "properties": { "status": { "const": "planned" } } },
+      "then": { "properties": { "releases": { "type": "array", "maxItems": 0 }, "defaultVersion": false } },
+      "else": { "required": ["defaultVersion"], "properties": { "releases": { "type": "array", "minItems": 1 }, "defaultVersion": { "$ref": "#/$defs/version" } } }
+    },
+    "Sdk": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["apiVersion", "kind", "id", "name", "description", "homepage", "license", "status", "releases"],
+      "properties": {
+        "$schema": { "type": "string" },
+        "apiVersion": { "$ref": "#/$defs/apiVersion" },
+        "kind": { "const": "Sdk" },
+        "id": { "$ref": "#/$defs/id" },
+        "name": { "$ref": "#/$defs/text" },
+        "description": { "$ref": "#/$defs/text" },
+        "homepage": { "$ref": "#/$defs/httpsUrl" },
+        "license": { "$ref": "#/$defs/text" },
+        "status": { "$ref": "#/$defs/status" },
+        "notes": { "$ref": "#/$defs/text" },
+        "defaultVersion": { "$ref": "#/$defs/version" },
+        "releases": { "$ref": "#/$defs/releases" }
+      },
+      "allOf": [{ "$ref": "#/$defs/publication" }]
+    },
+    "Toolchain": {
       "type": "object",
       "additionalProperties": false,
       "required": ["apiVersion", "kind", "id", "name", "description", "category", "homepage", "license", "status", "releases"],
       "properties": {
         "$schema": { "type": "string" },
-        "apiVersion": { "const": "gizmoth.dev/v1alpha1" },
-        "kind": { "const": "Formula" },
+        "apiVersion": { "$ref": "#/$defs/apiVersion" },
+        "kind": { "const": "Toolchain" },
         "id": { "$ref": "#/$defs/id" },
-        "name": { "type": "string", "minLength": 1 },
-        "description": { "type": "string", "minLength": 1 },
-        "category": { "enum": ["sdk", "toolchain", "build-tool", "runtime", "utility"] },
+        "name": { "$ref": "#/$defs/text" },
+        "description": { "$ref": "#/$defs/text" },
+        "category": { "enum": ["compiler", "build-tool", "post-build", "debugger", "utility"] },
         "homepage": { "$ref": "#/$defs/httpsUrl" },
-        "license": { "type": "string", "minLength": 1 },
-        "status": { "enum": ["recipe", "planned"] },
-        "notes": { "type": "string", "minLength": 1 },
+        "license": { "$ref": "#/$defs/text" },
+        "status": { "$ref": "#/$defs/status" },
+        "notes": { "$ref": "#/$defs/text" },
         "defaultVersion": { "$ref": "#/$defs/version" },
-        "releases": {
-          "type": "array",
-          "items": {
-            "type": "object", "additionalProperties": false, "required": ["version", "manifest"],
-            "properties": {
-              "version": { "$ref": "#/$defs/version" },
-              "manifest": { "type": "string", "pattern": "^versions/[A-Za-z0-9][A-Za-z0-9.+-]*\\.json$" }
-            }
-          }
-        }
+        "releases": { "$ref": "#/$defs/releases" }
       },
-      "allOf": [
-        { "if": { "properties": { "status": { "const": "planned" } } }, "then": { "properties": { "releases": { "type": "array", "maxItems": 0 }, "defaultVersion": false } }, "else": { "required": ["defaultVersion"], "properties": { "releases": { "type": "array", "minItems": 1 }, "defaultVersion": { "$ref": "#/$defs/version" } } } }
-      ]
+      "allOf": [{ "$ref": "#/$defs/publication" }]
     },
+
     "dependency": {
-      "type": "object", "additionalProperties": false, "required": ["package", "version"],
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["toolchain", "version"],
       "properties": {
-        "package": { "type": "string", "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*/[a-z][a-z0-9]*(?:-[a-z0-9]+)*$" },
+        "toolchain": { "$ref": "#/$defs/id" },
         "version": { "$ref": "#/$defs/version" }
       }
     },
+    "dependencies": { "type": "array", "items": { "$ref": "#/$defs/dependency" } },
+    "requires": { "type": "array", "uniqueItems": true, "items": { "type": "string", "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._+-]*$" } },
     "source": {
       "oneOf": [
         {
-          "type": "object", "additionalProperties": false, "required": ["id", "type", "url", "sha256", "size"],
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["id", "type", "url", "sha256", "size"],
           "properties": {
-            "id": { "$ref": "#/$defs/id" }, "type": { "const": "file" },
-            "url": { "$ref": "#/$defs/httpsUrl" }, "sha256": { "$ref": "#/$defs/sha256" },
+            "id": { "$ref": "#/$defs/id" },
+            "type": { "const": "file" },
+            "url": { "$ref": "#/$defs/httpsUrl" },
+            "sha256": { "$ref": "#/$defs/sha256" },
             "size": { "type": "integer", "minimum": 1 }
           }
         },
         {
-          "type": "object", "additionalProperties": false, "required": ["id", "type", "url", "commit", "submodules"],
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["id", "type", "url", "commit", "submodules"],
           "properties": {
-            "id": { "$ref": "#/$defs/id" }, "type": { "const": "git" },
-            "url": { "$ref": "#/$defs/httpsUrl" }, "commit": { "$ref": "#/$defs/commit" },
+            "id": { "$ref": "#/$defs/id" },
+            "type": { "const": "git" },
+            "url": { "$ref": "#/$defs/httpsUrl" },
+            "commit": { "$ref": "#/$defs/commit" },
             "submodules": { "type": "boolean" }
           }
         }
       ]
     },
+    "sources": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/source" } },
     "copy": {
-      "type": "object", "additionalProperties": false, "required": ["type", "source", "to", "executable"],
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "source", "to", "executable"],
       "properties": {
-        "type": { "const": "copy" }, "source": { "$ref": "#/$defs/id" },
-        "to": { "$ref": "#/$defs/relativePath" }, "executable": { "type": "boolean" }
+        "type": { "const": "copy" },
+        "source": { "$ref": "#/$defs/id" },
+        "to": { "$ref": "#/$defs/relativePath" },
+        "executable": { "type": "boolean" }
       }
     },
     "extract": {
-      "type": "object", "additionalProperties": false, "required": ["type", "source", "to", "format", "stripComponents"],
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "source", "to", "format", "stripComponents"],
       "properties": {
-        "type": { "const": "extract" }, "source": { "$ref": "#/$defs/id" }, "to": { "$ref": "#/$defs/relativePath" },
+        "type": { "const": "extract" },
+        "source": { "$ref": "#/$defs/id" },
+        "to": { "$ref": "#/$defs/relativePath" },
         "format": { "enum": ["zip", "tar.gz", "tar.xz", "tar.bz2", "tar.zst"] },
         "stripComponents": { "type": "integer", "minimum": 0, "maximum": 16 }
       }
     },
     "checkout": {
-      "type": "object", "additionalProperties": false, "required": ["type", "source", "to"],
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "source", "to"],
       "properties": {
-        "type": { "const": "checkout" }, "source": { "$ref": "#/$defs/id" }, "to": { "$ref": "#/$defs/relativePath" }
+        "type": { "const": "checkout" },
+        "source": { "$ref": "#/$defs/id" },
+        "to": { "$ref": "#/$defs/relativePath" }
       }
     },
     "run": {
-      "type": "object", "additionalProperties": false, "required": ["type", "program", "args", "cwd", "environment", "timeoutSeconds"],
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "program", "args", "cwd", "environment", "timeoutSeconds"],
       "properties": {
-        "type": { "const": "run" }, "program": { "type": "string", "minLength": 1 },
-        "args": { "type": "array", "items": { "type": "string" } }, "cwd": { "$ref": "#/$defs/relativePath" },
-        "environment": { "$ref": "#/$defs/variables" }, "timeoutSeconds": { "type": "integer", "minimum": 1, "maximum": 7200 }
+        "type": { "const": "run" },
+        "program": { "type": "string", "minLength": 1 },
+        "args": { "type": "array", "items": { "type": "string" } },
+        "cwd": { "$ref": "#/$defs/relativePath" },
+        "environment": { "$ref": "#/$defs/variables" },
+        "timeoutSeconds": { "type": "integer", "minimum": 1, "maximum": 7200 }
+      }
+    },
+    "install": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "oneOf": [{ "$ref": "#/$defs/copy" }, { "$ref": "#/$defs/extract" }, { "$ref": "#/$defs/checkout" }, { "$ref": "#/$defs/run" }] }
+    },
+    "environment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["prependPath", "variables"],
+      "properties": {
+        "prependPath": { "type": "array", "uniqueItems": true, "items": { "$ref": "#/$defs/relativePath" } },
+        "variables": { "$ref": "#/$defs/variables" }
       }
     },
     "check": {
       "oneOf": [
         {
-          "type": "object", "additionalProperties": false, "required": ["type", "path", "executable"],
-          "properties": { "type": { "const": "file" }, "path": { "$ref": "#/$defs/relativePath" }, "executable": { "type": "boolean" } }
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["type", "path", "executable"],
+          "properties": {
+            "type": { "const": "file" },
+            "path": { "$ref": "#/$defs/relativePath" },
+            "executable": { "type": "boolean" }
+          }
         },
         {
-          "type": "object", "additionalProperties": false, "required": ["type", "program", "args", "timeoutSeconds"],
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["type", "program", "args", "timeoutSeconds"],
           "properties": {
-            "type": { "const": "command" }, "program": { "type": "string", "minLength": 1 },
-            "args": { "type": "array", "items": { "type": "string" } }, "stdoutContains": { "type": "string", "minLength": 1 },
+            "type": { "const": "command" },
+            "program": { "type": "string", "minLength": 1 },
+            "args": { "type": "array", "items": { "type": "string" } },
+            "stdoutContains": { "type": "string", "minLength": 1 },
             "timeoutSeconds": { "type": "integer", "minimum": 1, "maximum": 60 }
           }
         }
       ]
     },
-    "platformRecipe": {
-      "type": "object", "additionalProperties": false, "required": ["requires", "dependencies", "sources", "install", "environment", "checks"],
+    "checks": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/check" } },
+    "toolchainRecipe": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["requires", "dependencies", "sources", "install", "environment", "checks"],
       "properties": {
-        "requires": { "type": "array", "uniqueItems": true, "items": { "type": "string", "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._+-]*$" } },
-        "dependencies": { "type": "array", "items": { "$ref": "#/$defs/dependency" } },
-        "sources": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/source" } },
-        "install": { "type": "array", "minItems": 1, "items": { "oneOf": [{ "$ref": "#/$defs/copy" }, { "$ref": "#/$defs/extract" }, { "$ref": "#/$defs/checkout" }, { "$ref": "#/$defs/run" }] } },
-        "environment": {
-          "type": "object", "additionalProperties": false, "required": ["prependPath", "variables"],
-          "properties": {
-            "prependPath": { "type": "array", "uniqueItems": true, "items": { "$ref": "#/$defs/relativePath" } },
-            "variables": { "$ref": "#/$defs/variables" }
+        "requires": { "$ref": "#/$defs/requires" },
+        "dependencies": { "$ref": "#/$defs/dependencies" },
+        "sources": { "$ref": "#/$defs/sources" },
+        "install": { "$ref": "#/$defs/install" },
+        "environment": { "$ref": "#/$defs/environment" },
+        "checks": { "$ref": "#/$defs/checks" }
+      }
+    },
+    "sdkRecipe": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["requires", "dependencies", "targets", "sources", "install", "environment", "checks"],
+      "properties": {
+        "requires": { "$ref": "#/$defs/requires" },
+        "dependencies": { "$ref": "#/$defs/dependencies" },
+        "targets": {
+          "type": "object",
+          "minProperties": 1,
+          "propertyNames": { "$ref": "#/$defs/id" },
+          "additionalProperties": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["dependencies"],
+            "properties": { "dependencies": { "$ref": "#/$defs/dependencies" } }
           }
         },
-        "checks": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/check" } }
+        "sources": { "$ref": "#/$defs/sources" },
+        "install": { "$ref": "#/$defs/install" },
+        "environment": { "$ref": "#/$defs/environment" },
+        "checks": { "$ref": "#/$defs/checks" }
       }
     },
-    "Release": {
-      "type": "object", "additionalProperties": false, "required": ["apiVersion", "kind", "id", "version", "platforms"],
+    "SdkRelease": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["apiVersion", "kind", "id", "version", "platforms"],
       "properties": {
-        "$schema": { "type": "string" }, "apiVersion": { "const": "gizmoth.dev/v1alpha1" }, "kind": { "const": "Release" },
-        "id": { "$ref": "#/$defs/id" }, "version": { "$ref": "#/$defs/version" },
-        "platforms": { "type": "object", "minProperties": 1, "propertyNames": { "$ref": "#/$defs/platform" }, "additionalProperties": { "$ref": "#/$defs/platformRecipe" } }
+        "$schema": { "type": "string" },
+        "apiVersion": { "$ref": "#/$defs/apiVersion" },
+        "kind": { "const": "SdkRelease" },
+        "id": { "$ref": "#/$defs/id" },
+        "version": { "$ref": "#/$defs/version" },
+        "platforms": { "type": "object", "minProperties": 1, "propertyNames": { "$ref": "#/$defs/platform" }, "additionalProperties": { "$ref": "#/$defs/sdkRecipe" } }
       }
     },
-    "Receipt": {
-      "type": "object", "additionalProperties": false,
-      "required": ["apiVersion", "kind", "installationId", "tap", "id", "version", "platform", "manifest", "prefix", "ownership", "requested", "dependencies", "sourceDigests", "installedAt"],
+    "ToolchainRelease": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["apiVersion", "kind", "id", "version", "platforms"],
       "properties": {
-        "$schema": { "type": "string" }, "apiVersion": { "const": "gizmoth.dev/v1alpha1" }, "kind": { "const": "Receipt" },
-        "installationId": { "$ref": "#/$defs/uuid" },
-        "tap": {
-          "type": "object", "additionalProperties": false, "required": ["id", "repository", "commit"],
-          "properties": { "id": { "$ref": "#/$defs/id" }, "repository": { "$ref": "#/$defs/repository" }, "commit": { "$ref": "#/$defs/commit" } }
+        "$schema": { "type": "string" },
+        "apiVersion": { "$ref": "#/$defs/apiVersion" },
+        "kind": { "const": "ToolchainRelease" },
+        "id": { "$ref": "#/$defs/id" },
+        "version": { "$ref": "#/$defs/version" },
+        "platforms": { "type": "object", "minProperties": 1, "propertyNames": { "$ref": "#/$defs/platform" }, "additionalProperties": { "$ref": "#/$defs/toolchainRecipe" } }
+      }
+    },
+
+    "managedOrigin": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "registry", "manifest", "prefix", "sourceDigests"],
+      "properties": {
+        "type": { "const": "managed" },
+        "registry": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["repository", "commit"],
+          "properties": { "repository": { "$ref": "#/$defs/repository" }, "commit": { "$ref": "#/$defs/commit" } }
         },
-        "id": { "$ref": "#/$defs/id" }, "version": { "$ref": "#/$defs/version" }, "platform": { "$ref": "#/$defs/platform" },
         "manifest": {
-          "type": "object", "additionalProperties": false, "required": ["path", "sha256"],
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["path", "sha256"],
           "properties": { "path": { "$ref": "#/$defs/relativePath" }, "sha256": { "$ref": "#/$defs/sha256" } }
         },
-        "prefix": { "$ref": "#/$defs/relativePath" }, "ownership": { "const": "managed" }, "requested": { "type": "boolean" },
+        "prefix": { "$ref": "#/$defs/relativePath" },
+        "sourceDigests": { "type": "array", "uniqueItems": true, "items": { "$ref": "#/$defs/sha256" } }
+      }
+    },
+    "localOrigin": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "path"],
+      "properties": {
+        "type": { "const": "local" },
+        "path": { "$ref": "#/$defs/absolutePath" }
+      }
+    },
+    "Installation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["apiVersion", "kind", "installationId", "type", "id", "version", "platform", "origin", "requestedByUser", "dependencies", "installedAt"],
+      "properties": {
+        "$schema": { "type": "string" },
+        "apiVersion": { "$ref": "#/$defs/apiVersion" },
+        "kind": { "const": "Installation" },
+        "installationId": { "$ref": "#/$defs/uuid" },
+        "type": { "enum": ["sdk", "toolchain"] },
+        "id": { "$ref": "#/$defs/id" },
+        "version": { "type": "string", "pattern": "^[0-9A-Za-z][0-9A-Za-z.+_-]*$", "maxLength": 96 },
+        "platform": { "$ref": "#/$defs/platform" },
+        "origin": { "oneOf": [{ "$ref": "#/$defs/managedOrigin" }, { "$ref": "#/$defs/localOrigin" }] },
+        "requestedByUser": { "type": "boolean" },
         "dependencies": { "type": "array", "uniqueItems": true, "items": { "$ref": "#/$defs/uuid" } },
-        "sourceDigests": { "type": "array", "uniqueItems": true, "items": { "$ref": "#/$defs/sha256" } },
-        "installedAt": { "type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(?:\\.[0-9]+)?Z$" }
+        "installedAt": { "$ref": "#/$defs/timestamp" }
+      }
+    },
+    "InstalledChip": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["apiVersion", "kind", "chip", "sdk", "toolchains", "installedAt"],
+      "properties": {
+        "$schema": { "type": "string" },
+        "apiVersion": { "$ref": "#/$defs/apiVersion" },
+        "kind": { "const": "InstalledChip" },
+        "chip": { "$ref": "#/$defs/id" },
+        "sdk": { "$ref": "#/$defs/uuid" },
+        "toolchains": { "type": "array", "uniqueItems": true, "items": { "$ref": "#/$defs/uuid" } },
+        "installedAt": { "$ref": "#/$defs/timestamp" }
       }
     }
   }

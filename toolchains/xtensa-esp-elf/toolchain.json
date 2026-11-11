@@ -1,0 +1,14 @@
+{
+  "$schema": "../../schemas/devenv.schema.json",
+  "apiVersion": "devenv.gizmoth.dev/v1alpha1",
+  "kind": "Toolchain",
+  "id": "xtensa-esp-elf",
+  "name": "Xtensa ESP Toolchain",
+  "description": "Espressif's GCC toolchain for Xtensa-based ESP32 chips.",
+  "category": "compiler",
+  "homepage": "https://github.com/espressif/crosstool-NG",
+  "license": "GPL-3.0-or-later WITH GCC-exception-3.1",
+  "status": "planned",
+  "notes": "Generate releases from the exact versions and digests in each supported ESP-IDF release's tools.json.",
+  "releases": []
+}
