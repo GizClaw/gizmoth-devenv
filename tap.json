@@ -1,0 +1,17 @@
+{
+  "$schema": "./schemas/devenv.schema.json",
+  "apiVersion": "gizmoth.dev/v1alpha1",
+  "kind": "Tap",
+  "id": "gizclaw",
+  "name": "GizClaw Development Environments",
+  "description": "SDKs, toolchains and build tools for GizMoth.",
+  "repository": "https://github.com/GizClaw/gizmoth-devenv",
+  "formulae": [
+    "formulae/bazelisk/formula.json",
+    "formulae/esp-idf/formula.json",
+    "formulae/beken-bk7258/formula.json",
+    "formulae/jieli-ac707n/formula.json",
+    "formulae/arm-gnu/formula.json",
+    "formulae/jieli-toolchain/formula.json"
+  ]
+}

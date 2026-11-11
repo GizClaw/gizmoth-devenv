@@ -1,0 +1,14 @@
+{
+  "$schema": "../../schemas/devenv.schema.json",
+  "apiVersion": "gizmoth.dev/v1alpha1",
+  "kind": "Formula",
+  "id": "arm-gnu",
+  "name": "Arm GNU Toolchain",
+  "description": "Versioned Arm cross-compilers shared by compatible firmware SDKs.",
+  "category": "toolchain",
+  "homepage": "https://developer.arm.com/Tools%20and%20Software/GNU%20Toolchain",
+  "license": "LicenseRef-Vendor-Bundle",
+  "status": "planned",
+  "notes": "Select exact vendor releases and target triples per SDK; verify each host archive and its bundled licenses before adding a release.",
+  "releases": []
+}

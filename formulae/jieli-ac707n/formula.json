@@ -1,0 +1,14 @@
+{
+  "$schema": "../../schemas/devenv.schema.json",
+  "apiVersion": "gizmoth.dev/v1alpha1",
+  "kind": "Formula",
+  "id": "jieli-ac707n",
+  "name": "JieLi AC707N SDK",
+  "description": "The vendor SDK for AC707N firmware development.",
+  "category": "sdk",
+  "homepage": "https://www.zh-jieli.com/",
+  "license": "LicenseRef-Vendor",
+  "status": "planned",
+  "notes": "Add a pinned vendor checkout and explicit compiler/post-build dependencies. Do not infer local build support from the ability to download SDK sources.",
+  "releases": []
+}
