@@ -1,0 +1,43 @@
+{
+  "$schema": "../../../schemas/devenv.schema.json",
+  "apiVersion": "devenv.gizmoth.dev/v1alpha1",
+  "kind": "ToolchainRelease",
+  "id": "linux-x86-binutils-common",
+  "version": "12.0.0",
+  "platforms": {
+    "linux-arm64": {
+      "guestRoot": true,
+      "requires": [],
+      "dependencies": [],
+      "sources": [
+        {
+          "id": "binutils-common",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/b/binutils/binutils-common_2.40-2_amd64.deb",
+          "sha256": "ab314134f43a0891a48f69a9bc33d825da748fa5e0ba2bebb7a5c491b026f1a0",
+          "size": 2486664
+        }
+      ],
+      "install": [
+        {
+          "type": "extract",
+          "source": "binutils-common",
+          "to": "opt/gizmoth/x86_64",
+          "format": "deb",
+          "stripComponents": 0
+        }
+      ],
+      "environment": {
+        "prependPath": [],
+        "variables": {}
+      },
+      "checks": [
+        {
+          "type": "file",
+          "path": "opt/gizmoth/x86_64/usr/share/doc/binutils-common/copyright",
+          "executable": false
+        }
+      ]
+    }
+  }
+}

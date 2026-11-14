@@ -1,0 +1,20 @@
+{
+  "$schema": "../../schemas/devenv.schema.json",
+  "apiVersion": "devenv.gizmoth.dev/v1alpha1",
+  "kind": "Toolchain",
+  "id": "linux-qemu-user",
+  "name": "Linux QEMU user translation",
+  "description": "Native ARM64 static QEMU 7.2 interpreters, including qemu-x86_64-static, for binfmt_misc.",
+  "category": "utility",
+  "homepage": "https://www.debian.org/releases/bookworm/",
+  "license": "Upstream licenses included in usr/share/doc/*/copyright (GPL, LGPL, BSD, MIT and others)",
+  "status": "published",
+  "defaultVersion": "12.0.0",
+  "releases": [
+    {
+      "version": "12.0.0",
+      "manifest": "versions/12.0.0.json"
+    }
+  ],
+  "notes": "The complete upstream qemu-user-static package is extracted without running registration/maintainer scripts. GizMoth owns binfmt_misc registration. The ARM64 download is 56,490,396 bytes; no inclusion-filter schema or repackaged binary is used."
+}

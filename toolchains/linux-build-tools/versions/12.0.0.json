@@ -1,0 +1,2003 @@
+{
+  "$schema": "../../../schemas/devenv.schema.json",
+  "apiVersion": "devenv.gizmoth.dev/v1alpha1",
+  "kind": "ToolchainRelease",
+  "id": "linux-build-tools",
+  "version": "12.0.0",
+  "platforms": {
+    "linux-arm64": {
+      "guestRoot": true,
+      "requires": [],
+      "dependencies": [
+        {
+          "toolchain": "linux-runtime",
+          "version": "12.0.0"
+        },
+        {
+          "toolchain": "linux-network-libs",
+          "version": "12.0.0"
+        }
+      ],
+      "sources": [
+        {
+          "id": "binutils",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/b/binutils/binutils_2.40-2_arm64.deb",
+          "sha256": "546129bb85470fa3b5398d7429cd87c5353ab47f37e9d5e28abc57e6923a24fa",
+          "size": 64944
+        },
+        {
+          "id": "binutils-aarch64-linux-gnu",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/b/binutils/binutils-aarch64-linux-gnu_2.40-2_arm64.deb",
+          "sha256": "fa154fed9b3bb5e11c4c152c3faaa5b56dce9ea39fed68156c3d656c97b4a11e",
+          "size": 2637164
+        },
+        {
+          "id": "binutils-common",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/b/binutils/binutils-common_2.40-2_arm64.deb",
+          "sha256": "2e340788164c94d876ab88c41f85ec0875a9f4324f83c93a44a14879925a11a0",
+          "size": 2486664
+        },
+        {
+          "id": "ccache",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/c/ccache/ccache_4.8+really4.7.5-1_arm64.deb",
+          "sha256": "bc7a7686e021296ac2964a3dfef790213ab6b9b1bcef653eb128fbd46dd965e2",
+          "size": 569720
+        },
+        {
+          "id": "cmake",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/c/cmake/cmake_3.25.1-1_arm64.deb",
+          "sha256": "457c1e246b50bbfc2cd6f0f0d1da09889c8bc24677b9acb8946c4c778eaa74e5",
+          "size": 6806404
+        },
+        {
+          "id": "cmake-data",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/c/cmake/cmake-data_3.25.1-1_all.deb",
+          "sha256": "8371f9694da94fd551a3ea653e2e25d99747471ca0b48cc029bf5c792ea590a3",
+          "size": 2026484
+        },
+        {
+          "id": "cpp",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/g/gcc-defaults/cpp_12.2.0-3_arm64.deb",
+          "sha256": "b4a7ff301927330e6120450fcfcbcf016cf58e485dc6f113b110e8a8280fbfca",
+          "size": 6832
+        },
+        {
+          "id": "cpp-12",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/g/gcc-12/cpp-12_12.2.0-14+deb12u1_arm64.deb",
+          "sha256": "f95ae5b0f967bf9de96c952e12b865b133756f3f07f904a64a1fec5fcf3d20e7",
+          "size": 8228384
+        },
+        {
+          "id": "file",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/f/file/file_5.44-3_arm64.deb",
+          "sha256": "de027231666482a8ae108f7f9c64711e08382b23476bb1f67979f9e3c39905c6",
+          "size": 42476
+        },
+        {
+          "id": "gxx",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/g/gcc-defaults/g++_12.2.0-3_arm64.deb",
+          "sha256": "12d5e878436f9fd76802f46aeb635a404b946facb49f151bc3960a3267dd07fc",
+          "size": 1336
+        },
+        {
+          "id": "gxx-12",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/g/gcc-12/g++-12_12.2.0-14+deb12u1_arm64.deb",
+          "sha256": "cb6c11930cf7ad0e9baa5561b1f5fd033bed829e4acfc4472335bef99ca4cd71",
+          "size": 9071580
+        },
+        {
+          "id": "gcc",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/g/gcc-defaults/gcc_12.2.0-3_arm64.deb",
+          "sha256": "81e86d3d3cd6731201b88fe5d8881aa281d7ffbfd8cc1c269c7a116c7b405e8d",
+          "size": 5244
+        },
+        {
+          "id": "gcc-12",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/g/gcc-12/gcc-12_12.2.0-14+deb12u1_arm64.deb",
+          "sha256": "d4f6bc31cefeb188eddc7e0f738f51c12f863cd03502935c388a9f305f558996",
+          "size": 16300644
+        },
+        {
+          "id": "libarchive13",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/liba/libarchive/libarchive13_3.6.2-1+deb12u4_arm64.deb",
+          "sha256": "04fa92e0fac6c44d41259802692d1ca065b65fb7909b9419a2f0e496de442fdb",
+          "size": 318108
+        },
+        {
+          "id": "libasan8",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/g/gcc-12/libasan8_12.2.0-14+deb12u1_arm64.deb",
+          "sha256": "e458ed0f5a845d0f247de5985aa2478e78619e3bf054de7a2a02ec5e200e34f4",
+          "size": 2096136
+        },
+        {
+          "id": "libatomic1",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/g/gcc-12/libatomic1_12.2.0-14+deb12u1_arm64.deb",
+          "sha256": "1693aa13ce2b30d061a519fc28b77b9bab8c8e45804ced5969d99821e1bc2159",
+          "size": 9568
+        },
+        {
+          "id": "libbinutils",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/b/binutils/libbinutils_2.40-2_arm64.deb",
+          "sha256": "1987db5a2ca550be3153dce8b23d6b2e038079c4de0b26b349e5b742e293ad23",
+          "size": 645336
+        },
+        {
+          "id": "libc-dev-bin",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/g/glibc/libc-dev-bin_2.36-9+deb12u14_arm64.deb",
+          "sha256": "8fc74833f9eb19e39e760bff5b9d7e85a06d6513edf3685bf2ea6f9c710867a6",
+          "size": 47220
+        },
+        {
+          "id": "libc6-dev",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/g/glibc/libc6-dev_2.36-9+deb12u14_arm64.deb",
+          "sha256": "8bc395bf2ee9939f1a6ae395f974cffdcf541d98f99adfe89ce7e4bef36d159e",
+          "size": 1435692
+        },
+        {
+          "id": "libcap2",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/libc/libcap2/libcap2_2.66-4+deb12u3+b1_arm64.deb",
+          "sha256": "b3a21ae1cef9c2f3fa340007100fb0aa934ab6a4d8aed131660de9713db2bb6e",
+          "size": 27072
+        },
+        {
+          "id": "libcc1-0",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/g/gcc-12/libcc1-0_12.2.0-14+deb12u1_arm64.deb",
+          "sha256": "ed4d33378031fb5138486e3aa648d57003456f257265a54059042fe952026fd8",
+          "size": 37700
+        },
+        {
+          "id": "libcrypt-dev",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/libx/libxcrypt/libcrypt-dev_4.4.33-2_arm64.deb",
+          "sha256": "8f40a050f6d54b47b0972f77ea29932573e0e6b4521b833c9d825f46a9db8b75",
+          "size": 120532
+        },
+        {
+          "id": "libctf-nobfd0",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/b/binutils/libctf-nobfd0_2.40-2_arm64.deb",
+          "sha256": "27a232cba9b33bd8495e7ccc8ffbe24c729574a8073df0851decba037fb12a63",
+          "size": 143508
+        },
+        {
+          "id": "libctf0",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/b/binutils/libctf0_2.40-2_arm64.deb",
+          "sha256": "539036b9ecf8af5e803962ffcf0639332dcb3a027a7ab10b174f8f92272f5b21",
+          "size": 79188
+        },
+        {
+          "id": "libcurl4",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/c/curl/libcurl4_7.88.1-10+deb12u15_arm64.deb",
+          "sha256": "e54bdd269c960b643ded903c3dbde36fe5d4d5f5b6389b47a0344d4a711cf70a",
+          "size": 367496
+        },
+        {
+          "id": "libgcc-12-dev",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/g/gcc-12/libgcc-12-dev_12.2.0-14+deb12u1_arm64.deb",
+          "sha256": "c83d28b7c3397c25f15ae17783fce78716a3d7cd415940940cc2af8dc4db8d6d",
+          "size": 955600
+        },
+        {
+          "id": "libgcrypt20",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/libg/libgcrypt20/libgcrypt20_1.10.1-3+deb12u1_arm64.deb",
+          "sha256": "140af58350c9b15bfa611000d9e0205528bbed2cba39271bf12bd36de2678f2e",
+          "size": 620056
+        },
+        {
+          "id": "libgomp1",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/g/gcc-12/libgomp1_12.2.0-14+deb12u1_arm64.deb",
+          "sha256": "a48b70dd1a95585466b40bd94564bce56ebcb2566e49ccdb6441e996aaab2098",
+          "size": 104092
+        },
+        {
+          "id": "libgpg-error0",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/libg/libgpg-error/libgpg-error0_1.46-1_arm64.deb",
+          "sha256": "aff6ce011ae9abf7090e906f0cf6bc2b447bbc4cc7e03ff117f9d73528857352",
+          "size": 72764
+        },
+        {
+          "id": "libgprofng0",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/b/binutils/libgprofng0_2.40-2_arm64.deb",
+          "sha256": "dd0d7fe758461a2a5560b272a7b71b26b571258554adfb5e9b72c4f18ddf6b24",
+          "size": 680048
+        },
+        {
+          "id": "libhiredis0-14",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/h/hiredis/libhiredis0.14_0.14.1-3_arm64.deb",
+          "sha256": "da132b0b01fe9bc765d5c8eb7b36891ddbe3b9eae7720fd3dd1668b766f3ccba",
+          "size": 33760
+        },
+        {
+          "id": "libhwasan0",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/g/gcc-12/libhwasan0_12.2.0-14+deb12u1_arm64.deb",
+          "sha256": "48085824a1a42c0a85bbe37381b49eeee3e43305827ac193e184d0d9a5306481",
+          "size": 998584
+        },
+        {
+          "id": "libicu72",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/i/icu/libicu72_72.1-3+deb12u1_arm64.deb",
+          "sha256": "4f5d892fd81110435e45ed0a5f1b12899d7ff989d51db283cbc043f5631646d8",
+          "size": 9202292
+        },
+        {
+          "id": "libisl23",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/i/isl/libisl23_0.25-1.1_arm64.deb",
+          "sha256": "e7232e299714254a9473d7eacdf6879eedf02b950c87da145f5d605800710c6c",
+          "size": 609984
+        },
+        {
+          "id": "libitm1",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/g/gcc-12/libitm1_12.2.0-14+deb12u1_arm64.deb",
+          "sha256": "bec6094592fe01ac103ef45d7f16ffa3ada2e98e26769bd1ed43283703bb08bd",
+          "size": 23964
+        },
+        {
+          "id": "libjansson4",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/j/jansson/libjansson4_2.14-2_arm64.deb",
+          "sha256": "49fda2bcfdf6b78098a5cdc9eaee23ef1f3b331559f02f1e32bc26f1fb6b4aec",
+          "size": 40208
+        },
+        {
+          "id": "libjsoncpp25",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/libj/libjsoncpp/libjsoncpp25_1.9.5-4_arm64.deb",
+          "sha256": "6d2f5cbc0b8ae2c263262fc1f3d891ebc46f9dcc73d0c4013eddb20e20079a91",
+          "size": 72340
+        },
+        {
+          "id": "liblsan0",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/g/gcc-12/liblsan0_12.2.0-14+deb12u1_arm64.deb",
+          "sha256": "1422f9aafe1ef8adfe8568e34040409db374f06696990cd3a7a16de3f490dd58",
+          "size": 926140
+        },
+        {
+          "id": "libmagic-mgc",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/f/file/libmagic-mgc_5.44-3_arm64.deb",
+          "sha256": "ff57ca94d3c1231b16d10587e60a2cf6c53b53249879235c59fa0b19e832974c",
+          "size": 304888
+        },
+        {
+          "id": "libmagic1",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/f/file/libmagic1_5.44-3_arm64.deb",
+          "sha256": "2fbaa1e2efdb80cf20cb13b2c523e82602c117cf5ec922c6d1d4ce6e18440052",
+          "size": 98536
+        },
+        {
+          "id": "libmpc3",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/m/mpclib3/libmpc3_1.3.1-1_arm64.deb",
+          "sha256": "19fd1712d02a9ee3eeff5b6678a8766a12f2858c3384258c7abc15edd891739f",
+          "size": 49200
+        },
+        {
+          "id": "libncursesw6",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/n/ncurses/libncursesw6_6.4-4_arm64.deb",
+          "sha256": "cf32cb6751718872c6def448b82211eec494f688e2f1a3e6c71bfdaf6b0722c5",
+          "size": 121688
+        },
+        {
+          "id": "libnsl-dev",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/libn/libnsl/libnsl-dev_1.3.0-2_arm64.deb",
+          "sha256": "baf8a2ef1e9faec26dd84e62d0e8b653f54d2211a7a89c1b67965aee8a3da790",
+          "size": 66132
+        },
+        {
+          "id": "libnsl2",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/libn/libnsl/libnsl2_1.3.0-2_arm64.deb",
+          "sha256": "8f9ba58b219779b43c4ccc78c79b0a23f721fc96323c202abb31e02f942104b3",
+          "size": 36908
+        },
+        {
+          "id": "libpkgconf3",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/p/pkgconf/libpkgconf3_1.8.1-1_arm64.deb",
+          "sha256": "8638db13be90ebceb2f3feb23780564f279b4e8b14b8b3000ad02c8ff27b1f02",
+          "size": 35320
+        },
+        {
+          "id": "libproc2-0",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/p/procps/libproc2-0_4.0.2-3_arm64.deb",
+          "sha256": "d2d31e0f862dd60a813e245024d00cf47deb6465fd42122543824652487224be",
+          "size": 60116
+        },
+        {
+          "id": "librhash0",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/r/rhash/librhash0_1.4.3-3_arm64.deb",
+          "sha256": "9ec3a2819dd2b66837b11bb961347aca9f5c7fc215e0709f78ec7e5da4748a53",
+          "size": 130904
+        },
+        {
+          "id": "libstdcxx-12-dev",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/g/gcc-12/libstdc++-12-dev_12.2.0-14+deb12u1_arm64.deb",
+          "sha256": "b74b18927037498c10c8c5dd7a0abe132b4d90188ca5d6e899a4f777c6d52a74",
+          "size": 2006588
+        },
+        {
+          "id": "libstdcxx6",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/g/gcc-12/libstdc++6_12.2.0-14+deb12u1_arm64.deb",
+          "sha256": "26e138c677a985775331373828a6c286c551ff397cb735d00e2383cb273d1cb2",
+          "size": 556608
+        },
+        {
+          "id": "libsystemd0",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/s/systemd/libsystemd0_252.39-1~deb12u2_arm64.deb",
+          "sha256": "293ab474b90276dae9ebc03ed01e622e0c1f2578e83ed3aa926ae1eaf84dda9c",
+          "size": 308928
+        },
+        {
+          "id": "libtirpc-common",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/libt/libtirpc/libtirpc-common_1.3.3+ds-1_all.deb",
+          "sha256": "3e3ef129b4bf61513144236e15e1b4ec57fa5ae3dc8a72137abdbefb7a63af85",
+          "size": 14048
+        },
+        {
+          "id": "libtirpc-dev",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/libt/libtirpc/libtirpc-dev_1.3.3+ds-1_arm64.deb",
+          "sha256": "bec1ab917db9f30e08e209281ce5f073a2d4f7ac43aabb658780fccaa822341a",
+          "size": 193960
+        },
+        {
+          "id": "libtirpc3",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/libt/libtirpc/libtirpc3_1.3.3+ds-1_arm64.deb",
+          "sha256": "deaf9ea54f74cab6690b4bc0b427f05cbe62cc073580d84f5f18a8d9e2ece401",
+          "size": 80940
+        },
+        {
+          "id": "libtsan2",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/g/gcc-12/libtsan2_12.2.0-14+deb12u1_arm64.deb",
+          "sha256": "c805db45db024c7c38bdf5b2ab8fd126a6c5572893bd8a458c541a555dae3334",
+          "size": 2178092
+        },
+        {
+          "id": "libubsan1",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/g/gcc-12/libubsan1_12.2.0-14+deb12u1_arm64.deb",
+          "sha256": "3c658e6b8091f133bac398a4629383d74bef230215224cd2add6dab38ca4e4d8",
+          "size": 861608
+        },
+        {
+          "id": "libuv1",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/libu/libuv1/libuv1_1.44.2-1+deb12u1_arm64.deb",
+          "sha256": "96022663d045c9599cf664b98db45e254b05b0661860ad89f1501b7dbf0da258",
+          "size": 129764
+        },
+        {
+          "id": "libxml2",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/libx/libxml2/libxml2_2.9.14+dfsg-1.3~deb12u6_arm64.deb",
+          "sha256": "0bc00975e459387535a4bbabe98a398f0e77c9ab82474face18d01ae8ed0dae4",
+          "size": 620500
+        },
+        {
+          "id": "linux-libc-dev",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/l/linux/linux-libc-dev_6.1.176-1_arm64.deb",
+          "sha256": "eeca5ec13bed7206f8171fab9a48e84119dcc20cc79557f104628447a524ad10",
+          "size": 2280448
+        },
+        {
+          "id": "make",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/m/make-dfsg/make_4.3-4.1_arm64.deb",
+          "sha256": "7ef5f5c0e3f909c811f941598107119af0a0554641b5cc590f584cea6a55d204",
+          "size": 391184
+        },
+        {
+          "id": "ninja-build",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/n/ninja-build/ninja-build_1.11.1-2~deb12u1_arm64.deb",
+          "sha256": "28e211d931c561cb48df5bfe06a98b26ba1874d677aca07ddf1172b255f8937f",
+          "size": 126044
+        },
+        {
+          "id": "patch",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/p/patch/patch_2.7.6-7_arm64.deb",
+          "sha256": "11e5e56f3cb4b306c9589bb37f9c701bf23bb37c410bac12e6a50d6461e71bd6",
+          "size": 120712
+        },
+        {
+          "id": "pkg-config",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/p/pkgconf/pkg-config_1.8.1-1_arm64.deb",
+          "sha256": "9fa52c7b352fec0bfdb4cfb17f64bb17939207e04c88022635f43a8c9ad2fc11",
+          "size": 13688
+        },
+        {
+          "id": "pkgconf",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/p/pkgconf/pkgconf_1.8.1-1_arm64.deb",
+          "sha256": "e51f35ecd6a544e072c758f060c7724344b513869b6514d1a493fa14429777b0",
+          "size": 25864
+        },
+        {
+          "id": "pkgconf-bin",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/p/pkgconf/pkgconf-bin_1.8.1-1_arm64.deb",
+          "sha256": "6cd07c60b8d60978fa7e43d3b9d1d35e57c5750ea61d67fca451e145aaab8d1b",
+          "size": 28892
+        },
+        {
+          "id": "procps",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/p/procps/procps_4.0.2-3_arm64.deb",
+          "sha256": "94414d947f009b55d50e2adf19d92038998bf7fa9ec553b1b6167fb02b5c1855",
+          "size": 698228
+        },
+        {
+          "id": "rpcsvc-proto",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/r/rpcsvc-proto/rpcsvc-proto_1.4.3-1_arm64.deb",
+          "sha256": "2915158484a5bcb7fe2124944e66f859e7fb030d8ec6a4478ce273d385708851",
+          "size": 59716
+        },
+        {
+          "id": "unzip",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/u/unzip/unzip_6.0-28_arm64.deb",
+          "sha256": "2ab1b850b61f4c5666903827f04e6c6297363868354d0a6c1ff2f5edb106d243",
+          "size": 157072
+        }
+      ],
+      "install": [
+        {
+          "type": "extract",
+          "source": "binutils",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "binutils-aarch64-linux-gnu",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "binutils-common",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "ccache",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "cmake",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "cmake-data",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "cpp",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "cpp-12",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "file",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "gxx",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "gxx-12",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "gcc",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "gcc-12",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libarchive13",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libasan8",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libatomic1",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libbinutils",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libc-dev-bin",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libc6-dev",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libcap2",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libcc1-0",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libcrypt-dev",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libctf-nobfd0",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libctf0",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libcurl4",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libgcc-12-dev",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libgcrypt20",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libgomp1",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libgpg-error0",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libgprofng0",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libhiredis0-14",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libhwasan0",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libicu72",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libisl23",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libitm1",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libjansson4",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libjsoncpp25",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "liblsan0",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libmagic-mgc",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libmagic1",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libmpc3",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libncursesw6",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libnsl-dev",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libnsl2",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libpkgconf3",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libproc2-0",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "librhash0",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libstdcxx-12-dev",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libstdcxx6",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libsystemd0",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libtirpc-common",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libtirpc-dev",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libtirpc3",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libtsan2",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libubsan1",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libuv1",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libxml2",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "linux-libc-dev",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "make",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "ninja-build",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "patch",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "pkg-config",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "pkgconf",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "pkgconf-bin",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "procps",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "rpcsvc-proto",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "unzip",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        }
+      ],
+      "environment": {
+        "prependPath": [],
+        "variables": {}
+      },
+      "checks": [
+        {
+          "type": "file",
+          "path": "usr/bin/aarch64-linux-gnu-gcc-12",
+          "executable": true
+        },
+        {
+          "type": "file",
+          "path": "usr/bin/aarch64-linux-gnu-g++-12",
+          "executable": true
+        },
+        {
+          "type": "file",
+          "path": "usr/bin/make",
+          "executable": true
+        },
+        {
+          "type": "file",
+          "path": "usr/bin/cmake",
+          "executable": true
+        },
+        {
+          "type": "file",
+          "path": "usr/bin/ninja",
+          "executable": true
+        },
+        {
+          "type": "file",
+          "path": "usr/bin/pkgconf",
+          "executable": true
+        },
+        {
+          "type": "file",
+          "path": "usr/bin/ccache",
+          "executable": true
+        }
+      ]
+    },
+    "linux-x86_64": {
+      "guestRoot": true,
+      "requires": [],
+      "dependencies": [
+        {
+          "toolchain": "linux-runtime",
+          "version": "12.0.0"
+        },
+        {
+          "toolchain": "linux-network-libs",
+          "version": "12.0.0"
+        }
+      ],
+      "sources": [
+        {
+          "id": "binutils",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/b/binutils/binutils_2.40-2_amd64.deb",
+          "sha256": "83c3e20b53e1fbd84d764c3ba27d26a0376e361ae5d7fb37120196934dd87424",
+          "size": 64980
+        },
+        {
+          "id": "binutils-common",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/b/binutils/binutils-common_2.40-2_amd64.deb",
+          "sha256": "ab314134f43a0891a48f69a9bc33d825da748fa5e0ba2bebb7a5c491b026f1a0",
+          "size": 2486664
+        },
+        {
+          "id": "binutils-x86-64-linux-gnu",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/b/binutils/binutils-x86-64-linux-gnu_2.40-2_amd64.deb",
+          "sha256": "2d7ea8a570d768224d7f2424abbe6f373d2154865a1fa7f56c80d43ecf492521",
+          "size": 2245848
+        },
+        {
+          "id": "ccache",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/c/ccache/ccache_4.8+really4.7.5-1_amd64.deb",
+          "sha256": "d6562e03b90d4bbe299966117aef44975f57bea8270c233b1d71f1e6ba157e7d",
+          "size": 643900
+        },
+        {
+          "id": "cmake",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/c/cmake/cmake_3.25.1-1_amd64.deb",
+          "sha256": "257a11063855f09e48696057fdb1ba2bcf1069502e0302576831dc2fb1571d7f",
+          "size": 8692248
+        },
+        {
+          "id": "cmake-data",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/c/cmake/cmake-data_3.25.1-1_all.deb",
+          "sha256": "8371f9694da94fd551a3ea653e2e25d99747471ca0b48cc029bf5c792ea590a3",
+          "size": 2026484
+        },
+        {
+          "id": "cpp",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/g/gcc-defaults/cpp_12.2.0-3_amd64.deb",
+          "sha256": "a63db920f7aa1857a57beab185423deffb6111fa09437a99bbb4ef724fb7ba78",
+          "size": 6836
+        },
+        {
+          "id": "cpp-12",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/g/gcc-12/cpp-12_12.2.0-14+deb12u1_amd64.deb",
+          "sha256": "fedbb98e877adde83c983c6071537ea25ac52b277ac6e4637d85025949ca1454",
+          "size": 9767788
+        },
+        {
+          "id": "file",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/f/file/file_5.44-3_amd64.deb",
+          "sha256": "2c57221bf8cc0ff5d2295ececb9215cc1b9ff9040dacb152c385bba3087ab1df",
+          "size": 42472
+        },
+        {
+          "id": "gxx",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/g/gcc-defaults/g++_12.2.0-3_amd64.deb",
+          "sha256": "26c451a660728cf7c15548a281e17eef2f36fab28499371e83fc2d3accb499d7",
+          "size": 1356
+        },
+        {
+          "id": "gxx-12",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/g/gcc-12/g++-12_12.2.0-14+deb12u1_amd64.deb",
+          "sha256": "68b182badae4ace7d472f1393c559d3532a95a2d70817498b10bb481d2627251",
+          "size": 10694076
+        },
+        {
+          "id": "gcc",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/g/gcc-defaults/gcc_12.2.0-3_amd64.deb",
+          "sha256": "bb63b0fb2797e2a3a294dab8a02614930c557ec1f4ea96637c244b8b5f87e630",
+          "size": 5216
+        },
+        {
+          "id": "gcc-12",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/g/gcc-12/gcc-12_12.2.0-14+deb12u1_amd64.deb",
+          "sha256": "b46f33cc2ec245e435e043807038cecf4b201ef004800e9dfc1455240360e49d",
+          "size": 19268852
+        },
+        {
+          "id": "libarchive13",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/liba/libarchive/libarchive13_3.6.2-1+deb12u4_amd64.deb",
+          "sha256": "ceacf45baae5fdf1ff9b80d9871c17a029c864c928af7620e456454d90c987f3",
+          "size": 344764
+        },
+        {
+          "id": "libasan8",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/g/gcc-12/libasan8_12.2.0-14+deb12u1_amd64.deb",
+          "sha256": "e7ac5d797d7d438a130674a8e463530f06aa02ecf919ca054d75eaa2f7849ec7",
+          "size": 2192652
+        },
+        {
+          "id": "libatomic1",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/g/gcc-12/libatomic1_12.2.0-14+deb12u1_amd64.deb",
+          "sha256": "fbd4e154a6b444229ea002cc209df099209c0adc09102e5fd21239a3d2b55e2d",
+          "size": 9376
+        },
+        {
+          "id": "libbinutils",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/b/binutils/libbinutils_2.40-2_amd64.deb",
+          "sha256": "fcf55b99e5f8a78f3c8ce9b6957f1024f394cf20c196b100d308a57e43547710",
+          "size": 572104
+        },
+        {
+          "id": "libc-dev-bin",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/g/glibc/libc-dev-bin_2.36-9+deb12u14_amd64.deb",
+          "sha256": "f61d923b703401023bec2ac3d9d1c9ad7341930fbe11736f7f5ef64b489d03c4",
+          "size": 48056
+        },
+        {
+          "id": "libc6-dev",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/g/glibc/libc6-dev_2.36-9+deb12u14_amd64.deb",
+          "sha256": "0218fc2befcd784c1b0c6292c0a137ce89fad054efaa579ad083bee0f2c01aae",
+          "size": 1903668
+        },
+        {
+          "id": "libcap2",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/libc/libcap2/libcap2_2.66-4+deb12u3+b1_amd64.deb",
+          "sha256": "8d684c673e7483802a5c447834b0df6fce006eb3a7109e1be412f5ad425bb24f",
+          "size": 27708
+        },
+        {
+          "id": "libcc1-0",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/g/gcc-12/libcc1-0_12.2.0-14+deb12u1_amd64.deb",
+          "sha256": "4ee6009633003f47de98333ea7f7d8835ec563ae2ac4f30251dbfee04d75d46b",
+          "size": 41736
+        },
+        {
+          "id": "libcrypt-dev",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/libx/libxcrypt/libcrypt-dev_4.4.33-2_amd64.deb",
+          "sha256": "81ccd29130f75a9e3adabc80e61921abff42f76761e1f792fa2d1bb69af7f52f",
+          "size": 118144
+        },
+        {
+          "id": "libctf-nobfd0",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/b/binutils/libctf-nobfd0_2.40-2_amd64.deb",
+          "sha256": "ef1dfcf22de41ea90ebd3d505447ccccd999e96b85aa777a1d7d981dc3b347aa",
+          "size": 153384
+        },
+        {
+          "id": "libctf0",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/b/binutils/libctf0_2.40-2_amd64.deb",
+          "sha256": "3fb7b6f326be3fae4a87a3d33b9269bd06c1e4346a24bd737f265067e3b7427f",
+          "size": 89796
+        },
+        {
+          "id": "libcurl4",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/c/curl/libcurl4_7.88.1-10+deb12u15_amd64.deb",
+          "sha256": "3042904de01f9c4fbdcf1452b8f81abedcf2b015f9b9deba109063322b5bd68b",
+          "size": 392184
+        },
+        {
+          "id": "libgcc-12-dev",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/g/gcc-12/libgcc-12-dev_12.2.0-14+deb12u1_amd64.deb",
+          "sha256": "d720259380a84f2ffc6fe516eff5cbe9c8a005138e8d6a5748747ba4b3404a82",
+          "size": 2437204
+        },
+        {
+          "id": "libgcrypt20",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/libg/libgcrypt20/libgcrypt20_1.10.1-3+deb12u1_amd64.deb",
+          "sha256": "e7a56552139c693904a6f9712234c05fe918353273a7cbdb5e62f423ad71bb97",
+          "size": 696204
+        },
+        {
+          "id": "libgomp1",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/g/gcc-12/libgomp1_12.2.0-14+deb12u1_amd64.deb",
+          "sha256": "48fec46bda7f5b1638b9e959889bfbc20491247d402d120bb152687eb48143d7",
+          "size": 115772
+        },
+        {
+          "id": "libgpg-error0",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/libg/libgpg-error/libgpg-error0_1.46-1_amd64.deb",
+          "sha256": "89944ee11d7370ce6ef46fc52f094c4a6512eff8943ec4c6ebefeae6360ceada",
+          "size": 76888
+        },
+        {
+          "id": "libgprofng0",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/b/binutils/libgprofng0_2.40-2_amd64.deb",
+          "sha256": "a3c4092d84f19d13caf90f3c96eec53db8819f0e3a5247434944d71ed75fa53d",
+          "size": 812120
+        },
+        {
+          "id": "libhiredis0-14",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/h/hiredis/libhiredis0.14_0.14.1-3_amd64.deb",
+          "sha256": "61f25d841052ad6cd6adfa9fad050345ea1047abc6ea79f931ab1a9ed55af3ae",
+          "size": 35872
+        },
+        {
+          "id": "libicu72",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/i/icu/libicu72_72.1-3+deb12u1_amd64.deb",
+          "sha256": "f7f6f99c6d7b025914df2447fc93e11d22c44c0c8bdd8b6f36691c9e7ddcef88",
+          "size": 9376124
+        },
+        {
+          "id": "libisl23",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/i/isl/libisl23_0.25-1.1_amd64.deb",
+          "sha256": "ebff0b2f8b220c74224197523019366e97ee4770d464bebc48e4865114e4da0e",
+          "size": 683060
+        },
+        {
+          "id": "libitm1",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/g/gcc-12/libitm1_12.2.0-14+deb12u1_amd64.deb",
+          "sha256": "0ed5b35dfd1346cccbf065408ec789db6c44c1d0a16ae84533411dea09632979",
+          "size": 26140
+        },
+        {
+          "id": "libjansson4",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/j/jansson/libjansson4_2.14-2_amd64.deb",
+          "sha256": "3fc9742f9f1a37bcb9931df6074b4d1483419ef832ad5349f47323e75fc27864",
+          "size": 40788
+        },
+        {
+          "id": "libjsoncpp25",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/libj/libjsoncpp/libjsoncpp25_1.9.5-4_amd64.deb",
+          "sha256": "4ab06b9ce67470579be3112bf2b6b314012f93bfff619580b93a902d6b1221c5",
+          "size": 78572
+        },
+        {
+          "id": "liblsan0",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/g/gcc-12/liblsan0_12.2.0-14+deb12u1_amd64.deb",
+          "sha256": "d234ab339c0ba31a4fb44e2334cf5a8d15b87f2c2f9e74fadfaa877f92dcf22a",
+          "size": 969300
+        },
+        {
+          "id": "libmagic-mgc",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/f/file/libmagic-mgc_5.44-3_amd64.deb",
+          "sha256": "bad01673ba5dfb9b5db4f3ae6a71f18d492cb6801eab45ad3c7d483c0a1f6ad2",
+          "size": 304888
+        },
+        {
+          "id": "libmagic1",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/f/file/libmagic1_5.44-3_amd64.deb",
+          "sha256": "a241c2adc7438a7e217f32544028489981768a349d3e48673392703255c7b88e",
+          "size": 103752
+        },
+        {
+          "id": "libmpc3",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/m/mpclib3/libmpc3_1.3.1-1_amd64.deb",
+          "sha256": "d7f79544790e44f9b0c8cb9034a18c58d37f8702a15f32539050718679e52f80",
+          "size": 51480
+        },
+        {
+          "id": "libncursesw6",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/n/ncurses/libncursesw6_6.4-4_amd64.deb",
+          "sha256": "98fa7a53dc565a38b65fb70422ad08001bf5361d8fbc74255280c329996a6bec",
+          "size": 133824
+        },
+        {
+          "id": "libnsl-dev",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/libn/libnsl/libnsl-dev_1.3.0-2_amd64.deb",
+          "sha256": "bb81a188c119cd7fdebae723cbc95887b6c549b2fe4fb7e268a9c8846444da99",
+          "size": 66436
+        },
+        {
+          "id": "libnsl2",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/libn/libnsl/libnsl2_1.3.0-2_amd64.deb",
+          "sha256": "c0d83437fdb016cb289436f49f28a36be44b3e8f1f2498c7e3a095f709c0d6f8",
+          "size": 39480
+        },
+        {
+          "id": "libpkgconf3",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/p/pkgconf/libpkgconf3_1.8.1-1_amd64.deb",
+          "sha256": "da01fb901123ae498c36387a32240e09e1f2866810146c5a574273f7eaf31093",
+          "size": 36084
+        },
+        {
+          "id": "libproc2-0",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/p/procps/libproc2-0_4.0.2-3_amd64.deb",
+          "sha256": "e82ba5d01929eafb8b9954606a3c38b0332a987c2b3432388b4ee7365e54deae",
+          "size": 62804
+        },
+        {
+          "id": "libquadmath0",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/g/gcc-12/libquadmath0_12.2.0-14+deb12u1_amd64.deb",
+          "sha256": "3f0c9a4c730da2fdab001cae596625438598fd2996d29d888feeb4c1cdc9011f",
+          "size": 144616
+        },
+        {
+          "id": "librhash0",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/r/rhash/librhash0_1.4.3-3_amd64.deb",
+          "sha256": "d9ba48a51fd4734aaaf3a75fd94b6352a02f9eaa88d3bec84cd0b5d3090f9d2a",
+          "size": 134112
+        },
+        {
+          "id": "libstdcxx-12-dev",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/g/gcc-12/libstdc++-12-dev_12.2.0-14+deb12u1_amd64.deb",
+          "sha256": "d28def6c23630432b57cb38a4c2fd67a79d4e0484027386ca6e8d6005c3d7a73",
+          "size": 2047292
+        },
+        {
+          "id": "libstdcxx6",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/g/gcc-12/libstdc++6_12.2.0-14+deb12u1_amd64.deb",
+          "sha256": "5cd3171216d4ab0fc911cfe9c35509bf2dd8f47761c43b7f6a4296701551a24d",
+          "size": 612604
+        },
+        {
+          "id": "libsystemd0",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/s/systemd/libsystemd0_252.39-1~deb12u2_amd64.deb",
+          "sha256": "013c07514a9e4933b2d5c098018695a6aa42d085dbc483ce2c094a954c8a1b0a",
+          "size": 332372
+        },
+        {
+          "id": "libtirpc-common",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/libt/libtirpc/libtirpc-common_1.3.3+ds-1_all.deb",
+          "sha256": "3e3ef129b4bf61513144236e15e1b4ec57fa5ae3dc8a72137abdbefb7a63af85",
+          "size": 14048
+        },
+        {
+          "id": "libtirpc-dev",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/libt/libtirpc/libtirpc-dev_1.3.3+ds-1_amd64.deb",
+          "sha256": "03326473eed54ffa27efae19aa5d6aeb402930968f869f318445513093691d55",
+          "size": 191428
+        },
+        {
+          "id": "libtirpc3",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/libt/libtirpc/libtirpc3_1.3.3+ds-1_amd64.deb",
+          "sha256": "2a46d5a5e9486da11ffeff5740931740d6deae4f92cd6098df060dc5dff1e1c7",
+          "size": 85192
+        },
+        {
+          "id": "libtsan2",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/g/gcc-12/libtsan2_12.2.0-14+deb12u1_amd64.deb",
+          "sha256": "06906663d644a75a1a836382ecd80b61461129c06f02935ce408b25809f6c958",
+          "size": 2196972
+        },
+        {
+          "id": "libubsan1",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/g/gcc-12/libubsan1_12.2.0-14+deb12u1_amd64.deb",
+          "sha256": "744f52adf00ffd45d44806b1c7e802a36bd27e479c9bc8457128fde357faa530",
+          "size": 883056
+        },
+        {
+          "id": "libuv1",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/libu/libuv1/libuv1_1.44.2-1+deb12u1_amd64.deb",
+          "sha256": "204f0e13354b44e6d19317887a53dab6f26696e8d95838db970b81f2a393f7fd",
+          "size": 135616
+        },
+        {
+          "id": "libxml2",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/libx/libxml2/libxml2_2.9.14+dfsg-1.3~deb12u6_amd64.deb",
+          "sha256": "4460e39dda10a815881374217cde08474747cfa018358cd8612c14b390eff53b",
+          "size": 688760
+        },
+        {
+          "id": "linux-libc-dev",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/l/linux/linux-libc-dev_6.1.176-1_amd64.deb",
+          "sha256": "8bb258735b9dffbb111da778ebdd024750878e435ffd9dfcadcb6762ede6b4cf",
+          "size": 2303828
+        },
+        {
+          "id": "make",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/m/make-dfsg/make_4.3-4.1_amd64.deb",
+          "sha256": "a1a83af8cbd854af887b72ad196b1f4af58387815e21ced1000253a116a46e2a",
+          "size": 395632
+        },
+        {
+          "id": "ninja-build",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/n/ninja-build/ninja-build_1.11.1-2~deb12u1_amd64.deb",
+          "sha256": "e75fe14ee81334f52efe955aaaddac07d26f117bac60488ea19ea7a8b564e62c",
+          "size": 134996
+        },
+        {
+          "id": "patch",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/p/patch/patch_2.7.6-7_amd64.deb",
+          "sha256": "8c6d49b771530dbe26d7bd060582dc7d2b4eeb603a20789debc1ef4bbbc4ef67",
+          "size": 127848
+        },
+        {
+          "id": "pkg-config",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/p/pkgconf/pkg-config_1.8.1-1_amd64.deb",
+          "sha256": "312b2bdeff4671f8e0d589c124554890e944dd083061e9ad6f129bc76a970765",
+          "size": 13688
+        },
+        {
+          "id": "pkgconf",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/p/pkgconf/pkgconf_1.8.1-1_amd64.deb",
+          "sha256": "4e3ce982b5fedc6c6119268435504a64f5ffcc6d93aaecaea902d816eba1215f",
+          "size": 25892
+        },
+        {
+          "id": "pkgconf-bin",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/p/pkgconf/pkgconf-bin_1.8.1-1_amd64.deb",
+          "sha256": "8fb5a8f83e46ad04b4cf02651ceec56c0611a335cf0d30780d859a95d0400174",
+          "size": 29472
+        },
+        {
+          "id": "procps",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/p/procps/procps_4.0.2-3_amd64.deb",
+          "sha256": "d9d0e75779cb79af869181f17b93c5c263a2b89cac6a0193c436160a4483ddc1",
+          "size": 708712
+        },
+        {
+          "id": "rpcsvc-proto",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/r/rpcsvc-proto/rpcsvc-proto_1.4.3-1_amd64.deb",
+          "sha256": "32ac0692694f8a34cc90c895f4fc739680fb2ef0e2d4870a68833682bf1c81a3",
+          "size": 63268
+        },
+        {
+          "id": "unzip",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/u/unzip/unzip_6.0-28_amd64.deb",
+          "sha256": "b3d9529c34382cc8d2e6cc8299a18536504edbc284b9133ffbe522704865068e",
+          "size": 166496
+        }
+      ],
+      "install": [
+        {
+          "type": "extract",
+          "source": "binutils",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "binutils-common",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "binutils-x86-64-linux-gnu",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "ccache",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "cmake",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "cmake-data",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "cpp",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "cpp-12",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "file",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "gxx",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "gxx-12",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "gcc",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "gcc-12",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libarchive13",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libasan8",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libatomic1",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libbinutils",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libc-dev-bin",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libc6-dev",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libcap2",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libcc1-0",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libcrypt-dev",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libctf-nobfd0",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libctf0",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libcurl4",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libgcc-12-dev",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libgcrypt20",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libgomp1",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libgpg-error0",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libgprofng0",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libhiredis0-14",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libicu72",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libisl23",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libitm1",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libjansson4",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libjsoncpp25",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "liblsan0",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libmagic-mgc",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libmagic1",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libmpc3",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libncursesw6",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libnsl-dev",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libnsl2",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libpkgconf3",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libproc2-0",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libquadmath0",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "librhash0",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libstdcxx-12-dev",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libstdcxx6",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libsystemd0",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libtirpc-common",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libtirpc-dev",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libtirpc3",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libtsan2",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libubsan1",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libuv1",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libxml2",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "linux-libc-dev",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "make",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "ninja-build",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "patch",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "pkg-config",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "pkgconf",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "pkgconf-bin",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "procps",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "rpcsvc-proto",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "unzip",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        }
+      ],
+      "environment": {
+        "prependPath": [],
+        "variables": {}
+      },
+      "checks": [
+        {
+          "type": "file",
+          "path": "usr/bin/x86_64-linux-gnu-gcc-12",
+          "executable": true
+        },
+        {
+          "type": "file",
+          "path": "usr/bin/x86_64-linux-gnu-g++-12",
+          "executable": true
+        },
+        {
+          "type": "file",
+          "path": "usr/bin/make",
+          "executable": true
+        },
+        {
+          "type": "file",
+          "path": "usr/bin/cmake",
+          "executable": true
+        },
+        {
+          "type": "file",
+          "path": "usr/bin/ninja",
+          "executable": true
+        },
+        {
+          "type": "file",
+          "path": "usr/bin/pkgconf",
+          "executable": true
+        },
+        {
+          "type": "file",
+          "path": "usr/bin/ccache",
+          "executable": true
+        }
+      ]
+    }
+  }
+}

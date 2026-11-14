@@ -1,0 +1,20 @@
+{
+  "$schema": "../../schemas/devenv.schema.json",
+  "apiVersion": "devenv.gizmoth.dev/v1alpha1",
+  "kind": "Toolchain",
+  "id": "linux-x86-zlib1g",
+  "name": "x86 library layer: zlib1g",
+  "description": "Pinned amd64 Debian Bookworm payload for the opt/gizmoth/x86_64 compatibility runtime.",
+  "category": "runtime",
+  "homepage": "https://www.debian.org/releases/bookworm/",
+  "license": "Upstream licenses included in usr/share/doc/*/copyright (GPL, LGPL, BSD, MIT and others)",
+  "status": "published",
+  "defaultVersion": "12.0.0",
+  "releases": [
+    {
+      "version": "12.0.0",
+      "manifest": "versions/12.0.0.json"
+    }
+  ],
+  "notes": "Inert foreign library/data layer. linux-x86-runtime declares and selects the complete exact closure. This ARM64-host recipe intentionally contains amd64 payloads. No PATH entries or native-root writes."
+}

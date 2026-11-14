@@ -1,0 +1,48 @@
+{
+  "$schema": "../../../schemas/devenv.schema.json",
+  "apiVersion": "devenv.gizmoth.dev/v1alpha1",
+  "kind": "ToolchainRelease",
+  "id": "linux-qemu-user",
+  "version": "12.0.0",
+  "platforms": {
+    "linux-arm64": {
+      "guestRoot": true,
+      "requires": [],
+      "dependencies": [
+        {
+          "toolchain": "linux-runtime",
+          "version": "12.0.0"
+        }
+      ],
+      "sources": [
+        {
+          "id": "qemu-user-static",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/q/qemu/qemu-user-static_7.2+dfsg-7+deb12u18+b3_arm64.deb",
+          "sha256": "e420c417c12b42ca774795b62888d5388da0e08c1ef263dea1490e5ce4e32a0b",
+          "size": 56490396
+        }
+      ],
+      "install": [
+        {
+          "type": "extract",
+          "source": "qemu-user-static",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        }
+      ],
+      "environment": {
+        "prependPath": [],
+        "variables": {}
+      },
+      "checks": [
+        {
+          "type": "file",
+          "path": "usr/bin/qemu-x86_64-static",
+          "executable": true
+        }
+      ]
+    }
+  }
+}

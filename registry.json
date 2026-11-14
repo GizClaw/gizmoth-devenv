@@ -5,8 +5,42 @@
   "name": "GizMoth Development Environments",
   "description": "Chips, environments, SDKs and toolchains for GizMoth.",
   "repository": "https://github.com/GizClaw/gizmoth-devenv",
-  "chips": ["esp32s3", "bk7258", "ac707n"],
-  "sdks": ["esp-idf", "beken-bk7258", "jieli-ac707n"],
-  "toolchains": ["bazelisk", "python", "arm-gnu", "xtensa-esp-elf", "jieli"],
-  "environments": ["gizos"]
+  "chips": [
+    "esp32s3",
+    "bk7258",
+    "ac707n"
+  ],
+  "sdks": [
+    "esp-idf",
+    "beken-bk7258",
+    "jieli-ac707n"
+  ],
+  "toolchains": [
+    "bazelisk",
+    "python",
+    "arm-gnu",
+    "xtensa-esp-elf",
+    "jieli",
+    "linux-runtime",
+    "linux-network-libs",
+    "linux-git",
+    "linux-build-tools",
+    "linux-qemu-user",
+    "linux-x86-binutils-common",
+    "linux-x86-gcc-12-base",
+    "linux-x86-libbinutils",
+    "linux-x86-libctf-nobfd0",
+    "linux-x86-libctf0",
+    "linux-x86-libgcc-s1",
+    "linux-x86-libgprofng0",
+    "linux-x86-libjansson4",
+    "linux-x86-libstdcxx6",
+    "linux-x86-libzstd1",
+    "linux-x86-zlib1g",
+    "linux-x86-runtime",
+    "linux-x86-binutils"
+  ],
+  "environments": [
+    "gizos"
+  ]
 }

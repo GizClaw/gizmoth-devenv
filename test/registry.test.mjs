@@ -49,8 +49,34 @@ function publish(f, type, id, version, platforms) {
   });
 }
 
-test("official registry validates offline with GizOS, two Python versions and two Bazelisk versions", () => {
-  assert.deepEqual(validateRegistry(root), { chips: 3, environments: 1, sdks: 3, toolchains: 5, planned: 9, releases: 4, platforms: 24 });
+test("official registry validates offline with generic tools and minimal guest formulae", () => {
+  assert.deepEqual(validateRegistry(root), { chips: 3, environments: 1, sdks: 3, toolchains: 23, planned: 9, releases: 22, platforms: 46 });
+});
+
+test("Linux guest roots merge deb layers, and bootstrap implies guestRoot", (t) => {
+  const f = fixture(t);
+  const rootRecipe = recipe(f);
+  rootRecipe.bootstrap = true;
+  rootRecipe.install = [
+    { type: "extract", source: rootRecipe.sources[0].id, to: ".", format: "deb", stripComponents: 0 },
+    { type: "extract", source: rootRecipe.sources[0].id, to: ".", format: "deb", stripComponents: 0 },
+  ];
+  publish(f, "toolchain", "arm-gnu", "10.3.0", { "linux-arm64": rootRecipe });
+  assert.ok(validateRegistry(f.directory));
+  const path = "toolchains/arm-gnu/versions/10.3.0.json";
+  for (const mutate of [
+    (value) => { value.platforms = { "macos-arm64": rootRecipe }; },
+    (value) => { value.platforms["linux-arm64"].bootstrap = false; },
+    (value) => { value.platforms["linux-arm64"].install[0].stripComponents = 1; },
+    (value) => { value.platforms["linux-arm64"].install[0].format = "tar.gz"; },
+    (value) => { value.platforms["linux-arm64"].install.forEach((step) => { step.to = "usr"; }); },
+    (value) => { value.platforms["linux-arm64"].install[0] = { type: "copy", source: rootRecipe.sources[0].id, to: ".", executable: false }; },
+  ]) {
+    const original = f.read(path);
+    f.mutate(path, mutate);
+    assert.throws(() => validateRegistry(f.directory));
+    f.write(path, original);
+  }
 });
 
 test("rejects traversal, absolute paths, Windows paths and reserved device names", () => {
@@ -239,7 +265,7 @@ test("multiple exact versions coexist directly and transitively, with shared gra
     release.platforms[host].dependencies = [{ toolchain: "python", version: "3.12.16" }];
   });
   f.mutate(environmentPath, (item) => { item.dependencies.push({ toolchain: "python", version: "3.11.18" }); });
-  assert.equal(validateRegistry(f.directory).releases, 4);
+  assert.equal(validateRegistry(f.directory).releases, 22);
   // A cycle through two versions of the same tool is still a cycle.
   f.mutate("toolchains/python/versions/3.12.16.json", (release) => {
     release.platforms[host].dependencies = [{ toolchain: "python", version: "3.11.18" }];
@@ -289,6 +315,35 @@ test("Python recipes use pinned six-host archives, isolated paths and file check
   assert.equal(toolchain.defaultVersion, "3.12.16");
   assert.ok(validateDocument(toolchain));
   assert.throws(() => validateDocument({ ...toolchain, category: "interpreter" }), /Toolchain:/);
+});
+
+test("Linux formulae pin raw Debian payloads and isolate foreign tool paths", () => {
+  const registry = JSON.parse(readFileSync(join(root, "registry.json"), "utf8"));
+  const ids = registry.toolchains.filter((id) => id.startsWith("linux-"));
+  assert.equal(ids.length, 18);
+  for (const id of ids) {
+    const release = JSON.parse(readFileSync(join(root, `toolchains/${id}/versions/12.0.0.json`), "utf8"));
+    for (const [platform, recipe] of Object.entries(release.platforms)) {
+      assert.match(platform, /^linux-/);
+      assert.equal(recipe.guestRoot, true);
+      assert.deepEqual(recipe.requires, []);
+      assert.deepEqual(recipe.environment.prependPath, []);
+      for (const source of recipe.sources) {
+        assert.match(source.url, /^https:\/\/deb\.debian\.org\/debian\/pool\/main\/.+\.deb$/);
+        assert.match(source.sha256, /^[a-f0-9]{64}$/);
+        assert.ok(source.size > 0);
+      }
+      for (const step of recipe.install) {
+        assert.equal(step.type, "extract");
+        assert.equal(step.format, "deb");
+        assert.equal(step.stripComponents, 0);
+        assert.equal(step.to, id.startsWith("linux-x86-") ? "opt/gizmoth/x86_64" : ".");
+      }
+      assert.ok(recipe.checks.every((check) => check.type === "file"));
+      if (id.startsWith("linux-x86-") || id === "linux-qemu-user") assert.equal(platform, "linux-arm64");
+      assert.equal(recipe.bootstrap ?? false, id === "linux-runtime");
+    }
+  }
 });
 
 test("the published Bazelisk 1.30.0 manifest is byte-for-byte unchanged", () => {

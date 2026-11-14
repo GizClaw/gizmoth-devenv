@@ -58,6 +58,8 @@ Each platform recipe contains:
 
 | Field | Meaning |
 | --- | --- |
+| `guestRoot` | Optional boolean (default false): Linux payload layer for the guest root |
+| `bootstrap` | Optional boolean (default false): early filesystem-construction payload; implies `guestRoot` |
 | `requires` | Host executables checked before any change; never installed globally |
 | `dependencies` | Exact toolchain versions, resolved on the same host |
 | `targets` | SDK releases only: each supported chip target and its additional toolchains |
@@ -89,7 +91,13 @@ Python 3.11.18 and 3.12.16 use the `astral-sh/python-build-standalone` release `
 | `checkout` | Materialize a pinned Git source inside a relative directory |
 | `run` | Run a program with an argument array, relative working directory, declared variables and a timeout |
 
-Destinations are relative to the installation directory. Archives must reject absolute paths, path traversal, device files, links that leave the installation and path or case collisions. GizMoth checks real paths at runtime because static validation cannot prove containment.
+Destinations are relative to the installation directory. `extract.format` accepts `zip`, `tar.gz`, `tar.xz`, `tar.bz2`, `tar.zst` and `deb`. Debian extraction is Linux-only, requires `stripComponents: 0`, and reads the ar member's data tar without invoking dpkg, apt or maintainer scripts. `guestRoot` and `bootstrap` are also Linux-only. A bootstrap recipe is always a guest root, even if `guestRoot` is omitted.
+
+A guest-root Debian extraction may use `to: "."`; several such steps merge distinct package payloads into the same root. This is the only duplicate install-destination exception. Every other destination must be a normalized relative path, and duplicate destinations remain invalid, including two extractions to `opt/gizmoth/x86_64`. Foreign library layers therefore use separate one-source recipes. Copy/checkout/run paths cannot use `.`. Archives must reject traversal, device files, escaping links and conflicting file or case collisions. GizMoth normalizes package root links within the selected extraction root; it checks real paths at runtime because static validation cannot prove containment.
+
+`linux-runtime` supplies the native dynamic loader, shell/basic utilities, certificate PEMs, `mke2fs` and `mkfs.erofs` used by GizMoth to create a read-only guest root from verified downloads. No Ubuntu system disk, runtime bundle or package-producing CI belongs in this registry. Debian configuration-only dependencies (`dpkg`, `debconf` and `init-system-helpers`) are deliberately excluded; GizMoth supplies the required account files, certificate bundle and aliases itself. Root layers use the selected default release only; Python and Bazelisk remain normal isolated packages.
+
+`linux-qemu-user` supplies native ARM64 `usr/bin/qemu-x86_64-static`. `linux-x86-runtime` selects the exact amd64 library layers below `opt/gizmoth/x86_64`; those inert layers have no executable PATH entries. The aggregate declares the entire library closure, rather than reproducing Debian's circular libc/libgcc package relationships. `linux-x86-binutils` supplies real amd64 executables at `opt/gizmoth/x86_64/usr/bin/x86_64-linux-gnu-as` and `x86_64-linux-gnu-ld.bfd`. GizMoth owns binfmt_misc registration and the process-local `QEMU_LD_PREFIX=/opt/gizmoth/x86_64`. All compatibility recipes use `linux-arm64`, describing the host that consumes the foreign payload, and leave `prependPath` empty so the native compiler remains selected.
 
 A program is a host executable listed in `requires`, or a path below `${prefix}`, `${work}` or a declared `${toolchain:<id>}`. Arguments go directly to the operating system without shell interpretation. A recipe that needs Bash declares it and runs the vendor script explicitly. Commands must exit with status zero; command checks may also require literal `stdoutContains` text.
 

@@ -37,6 +37,16 @@ There are two kinds of `Installation`:
 
 `requestedByUser` marks a toolchain the user installed or registered directly, rather than one installed for a chip or generic environment. Several versions of the same tool can coexist; references always point to specific installation UUIDs, and reuse requires matching both ID and version.
 
+## Linux guest root layers
+
+Recipes with `guestRoot: true` or `bootstrap: true` describe pinned payload layers for GizMoth's Linux guest. This repository publishes only formula metadata: upstream URLs, exact source versions in filenames, SHA-256 digests, sizes, dependencies and install/check metadata. It builds no packages, distributes no guest runtime image and runs no vendor installer.
+
+GizMoth downloads and verifies each raw Debian file, then safely reads its ar/data-tar payload without dpkg, apt or maintainer scripts. `linux-runtime` is the bootstrap closure: it supplies the dynamic runtime, shell/basic tools, certificates, `mke2fs` and `mkfs.erofs` needed to construct the read-only root. Native Git/build layers are separately managed downloads. GizMoth generates account configuration, the certificate bundle and executable aliases after payload extraction.
+
+Root layers select only the registry item's default release because their filesystem paths overlap across versions. They are inputs to a rebuilt immutable root and are never activated by mixing arbitrary root versions. Normal packages such as Python and Bazelisk remain versioned under `/opt/gizmoth/packages/<kind>/<id>/<version>` in the guest; their selected versions can coexist as before.
+
+The ARM64 QEMU interpreter is a separate native root layer. Foreign amd64 libraries and binutils are extracted below `/opt/gizmoth/x86_64`, preserving a separate loader/library namespace. GizMoth owns binfmt_misc registration and process-local `QEMU_LD_PREFIX`; foreign layers never prepend their `as` or `ld` to native PATH. Removing or rebuilding a root uses verified source/manifest identities and keeps user projects and ordinary package volumes under their existing lifecycle rules.
+
 ## Install a chip
 
 1. From one registry snapshot, resolve the chip's SDK version, the SDK's common and target dependencies and the chip's tools to exact versions for this host. Check host prerequisites and validate the whole set before changing anything.
