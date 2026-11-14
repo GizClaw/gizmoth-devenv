@@ -92,7 +92,9 @@ function dependencyNames(dependencies, location) {
   return new Set(dependencies.map(({ toolchain }) => toolchain));
 }
 
-function validateRecipe(recipe, location) {
+function validateRecipe(recipe, location, host) {
+  const guestRoot = recipe.guestRoot === true || recipe.bootstrap === true;
+  requireThat(!guestRoot || host.startsWith("linux-"), `${location}: guestRoot/bootstrap requires Linux`);
   const sources = new Map();
   for (const source of recipe.sources) {
     requireThat(!sources.has(source.id), `${location}: duplicate source ${source.id}`);
@@ -115,9 +117,13 @@ function validateRecipe(recipe, location) {
       validateVariables(step.environment, toolchains);
       continue;
     }
-    safeRelative(step.to);
+    const mergeRoot = guestRoot && step.type === "extract" && step.format === "deb" && step.to === ".";
+    if (step.type === "extract" && step.format === "deb") {
+      requireThat(host.startsWith("linux-") && step.stripComponents === 0, `${location}: deb requires Linux and stripComponents: 0`);
+    }
+    if (!mergeRoot) safeRelative(step.to);
     const destination = step.to.toLowerCase();
-    requireThat(!destinations.has(destination), `${location}: duplicate destination ${step.to}`);
+    requireThat(!destinations.has(destination) || mergeRoot, `${location}: duplicate destination ${step.to}`);
     destinations.add(destination);
     const source = sources.get(step.source);
     requireThat(source, `${location}: unknown source ${step.source}`);
@@ -178,7 +184,7 @@ export function validateRegistry(input = projectRoot) {
         requireThat(reference.manifest === `versions/${reference.version}.json`, `${type} ${id}: version path mismatch`);
         const manifest = validateDocument(load(root, `${base}/${reference.manifest}`), release);
         requireThat(manifest.id === id && manifest.version === reference.version, `${type} ${id}: release identity mismatch`);
-        for (const [host, recipe] of Object.entries(manifest.platforms)) validateRecipe(recipe, `${type} ${id}@${manifest.version}:${host}`);
+        for (const [host, recipe] of Object.entries(manifest.platforms)) validateRecipe(recipe, `${type} ${id}@${manifest.version}:${host}`, host);
         platforms += Object.keys(manifest.platforms).length;
         releases[type].set(`${id}@${manifest.version}`, manifest);
       }

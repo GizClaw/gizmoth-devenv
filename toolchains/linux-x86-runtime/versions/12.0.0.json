@@ -1,0 +1,92 @@
+{
+  "$schema": "../../../schemas/devenv.schema.json",
+  "apiVersion": "devenv.gizmoth.dev/v1alpha1",
+  "kind": "ToolchainRelease",
+  "id": "linux-x86-runtime",
+  "version": "12.0.0",
+  "platforms": {
+    "linux-arm64": {
+      "guestRoot": true,
+      "requires": [],
+      "dependencies": [
+        {
+          "toolchain": "linux-runtime",
+          "version": "12.0.0"
+        },
+        {
+          "toolchain": "linux-x86-binutils-common",
+          "version": "12.0.0"
+        },
+        {
+          "toolchain": "linux-x86-gcc-12-base",
+          "version": "12.0.0"
+        },
+        {
+          "toolchain": "linux-x86-libbinutils",
+          "version": "12.0.0"
+        },
+        {
+          "toolchain": "linux-x86-libctf-nobfd0",
+          "version": "12.0.0"
+        },
+        {
+          "toolchain": "linux-x86-libctf0",
+          "version": "12.0.0"
+        },
+        {
+          "toolchain": "linux-x86-libgcc-s1",
+          "version": "12.0.0"
+        },
+        {
+          "toolchain": "linux-x86-libgprofng0",
+          "version": "12.0.0"
+        },
+        {
+          "toolchain": "linux-x86-libjansson4",
+          "version": "12.0.0"
+        },
+        {
+          "toolchain": "linux-x86-libstdcxx6",
+          "version": "12.0.0"
+        },
+        {
+          "toolchain": "linux-x86-libzstd1",
+          "version": "12.0.0"
+        },
+        {
+          "toolchain": "linux-x86-zlib1g",
+          "version": "12.0.0"
+        }
+      ],
+      "sources": [
+        {
+          "id": "libc6",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/g/glibc/libc6_2.36-9+deb12u14_amd64.deb",
+          "sha256": "ba4f88f73dbc3ae9055f3c20f4523bfdbaf1ad13ff95e258924f77d20b4fbedf",
+          "size": 2759320
+        }
+      ],
+      "install": [
+        {
+          "type": "extract",
+          "source": "libc6",
+          "to": "opt/gizmoth/x86_64",
+          "format": "deb",
+          "stripComponents": 0
+        }
+      ],
+      "environment": {
+        "prependPath": [],
+        "variables": {}
+      },
+      "checks": [
+        {
+          "type": "file",
+          "path": "opt/gizmoth/x86_64/lib/x86_64-linux-gnu/libc.so.6",
+          "executable": true
+        }
+      ]
+    }
+  }
+}

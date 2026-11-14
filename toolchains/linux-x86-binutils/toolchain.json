@@ -1,0 +1,20 @@
+{
+  "$schema": "../../schemas/devenv.schema.json",
+  "apiVersion": "devenv.gizmoth.dev/v1alpha1",
+  "kind": "Toolchain",
+  "id": "linux-x86-binutils",
+  "name": "Linux x86_64 binutils proof",
+  "description": "Real amd64 GNU binutils 2.40 executables for ARM64 QEMU user translation qualification.",
+  "category": "post-build",
+  "homepage": "https://www.debian.org/releases/bookworm/",
+  "license": "Upstream licenses included in usr/share/doc/*/copyright (GPL, LGPL, BSD, MIT and others)",
+  "status": "published",
+  "defaultVersion": "12.0.0",
+  "releases": [
+    {
+      "version": "12.0.0",
+      "manifest": "versions/12.0.0.json"
+    }
+  ],
+  "notes": "Deliberately x86-only executable payload on an ARM64 host. Invoke /opt/gizmoth/x86_64/usr/bin/x86_64-linux-gnu-as explicitly; prependPath is empty so native as/ld stay selected. GizMoth registers binfmt_misc and sets QEMU_LD_PREFIX for compatibility checks."
+}

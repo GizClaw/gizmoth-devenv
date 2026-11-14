@@ -25,6 +25,12 @@ SDKs have no page of their own; they appear in chip details. The registry URL is
 
 Registry entries never inject code into GizMoth's interface. GizMoth needs no GizOS environment CLI, Bun or Homebrew to use this registry; recipes declare the vendor tools they need.
 
+Linux `guestRoot`/`bootstrap` recipes remain metadata-only formulae. GizMoth fetches and verifies their raw Debian files and extracts payloads with its static Rust ar/xz/tar reader. It does not run dpkg, apt, maintainer scripts or a registry installer. `linux-runtime` is the bootstrap source set for constructing a read-only root; native Git and build tools arrive as separate formulas. Root layers select only their default release, while normal Python/Bazelisk versions remain isolated under `/opt/gizmoth/packages/<kind>/<id>/<version>`. There is no registry-built runtime artifact or base system disk.
+
+For ARM64 x86 compatibility, GizMoth owns binfmt_misc registration for `usr/bin/qemu-x86_64-static` and sets `QEMU_LD_PREFIX=/opt/gizmoth/x86_64` when appropriate. Foreign Debian payloads stay under that prefix and have no PATH activation. The binutils proof is invoked by its full path so it cannot replace the native compiler's assembler/linker.
+
+Local integration can seed the saved snapshot with `node scripts/export-snapshot.mjs <app-data>/compile/registry` while GizMoth is stopped. It reads validated working-tree metadata and writes `{commit, fetchedAt, files}` plus `current.json`, where `files` maps relevant relative JSON paths to their exact UTF-8 text. The synthetic development identity never changes production Git transport settings; a normal registry refresh supersedes it. GizMoth's ignored `devenv::registry::tests::development_snapshot_validates` test accepts the exported snapshot filename through `GIZMOTH_TEST_REGISTRY_SNAPSHOT`.
+
 ## Native operations
 
 The frontend calls typed operations instead of passing shell strings:

@@ -1,0 +1,43 @@
+{
+  "$schema": "../../../schemas/devenv.schema.json",
+  "apiVersion": "devenv.gizmoth.dev/v1alpha1",
+  "kind": "ToolchainRelease",
+  "id": "linux-x86-libgprofng0",
+  "version": "12.0.0",
+  "platforms": {
+    "linux-arm64": {
+      "guestRoot": true,
+      "requires": [],
+      "dependencies": [],
+      "sources": [
+        {
+          "id": "libgprofng0",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/b/binutils/libgprofng0_2.40-2_amd64.deb",
+          "sha256": "a3c4092d84f19d13caf90f3c96eec53db8819f0e3a5247434944d71ed75fa53d",
+          "size": 812120
+        }
+      ],
+      "install": [
+        {
+          "type": "extract",
+          "source": "libgprofng0",
+          "to": "opt/gizmoth/x86_64",
+          "format": "deb",
+          "stripComponents": 0
+        }
+      ],
+      "environment": {
+        "prependPath": [],
+        "variables": {}
+      },
+      "checks": [
+        {
+          "type": "file",
+          "path": "opt/gizmoth/x86_64/usr/lib/x86_64-linux-gnu/gprofng/libgp-collector.so",
+          "executable": false
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,347 @@
+{
+  "$schema": "../../../schemas/devenv.schema.json",
+  "apiVersion": "devenv.gizmoth.dev/v1alpha1",
+  "kind": "ToolchainRelease",
+  "id": "linux-git",
+  "version": "12.0.0",
+  "platforms": {
+    "linux-arm64": {
+      "guestRoot": true,
+      "requires": [],
+      "dependencies": [
+        {
+          "toolchain": "linux-runtime",
+          "version": "12.0.0"
+        },
+        {
+          "toolchain": "linux-network-libs",
+          "version": "12.0.0"
+        }
+      ],
+      "sources": [
+        {
+          "id": "git",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/g/git/git_2.39.5-0+deb12u3_arm64.deb",
+          "sha256": "435176549a9f5c8bbadaa126b64a036b38ea34ad9f3eb128dc40b8407a5b5620",
+          "size": 7152820
+        },
+        {
+          "id": "git-man",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/g/git/git-man_2.39.5-0+deb12u3_all.deb",
+          "sha256": "904dbd8dbc3db34c6780fb0abfe35816d4a90a490126ef0a055a77a0c5dcab82",
+          "size": 2053236
+        },
+        {
+          "id": "libcurl3-gnutls",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/c/curl/libcurl3-gnutls_7.88.1-10+deb12u15_arm64.deb",
+          "sha256": "053f0518249c0be7f476b73b28d9c9922ea5597d744e86736f89ced17e4a1ec1",
+          "size": 362416
+        },
+        {
+          "id": "liberror-perl",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/libe/liberror-perl/liberror-perl_0.17029-2_all.deb",
+          "sha256": "5a466348531b9c38c8e5ccb18c231f27a98b9fdab61b37ea22592553de5d2ced",
+          "size": 29032
+        },
+        {
+          "id": "libgdbm-compat4",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/g/gdbm/libgdbm-compat4_1.23-3_arm64.deb",
+          "sha256": "acc13a12acbf3b17dbacc77e3c22c6c273a552150cd50fdc9bd70cdb5169af73",
+          "size": 47996
+        },
+        {
+          "id": "libgdbm6",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/g/gdbm/libgdbm6_1.23-3_arm64.deb",
+          "sha256": "3c704feaf89c5f2709a76b84126ac8affe4ddff69dc0b91af0ca9910c7e75714",
+          "size": 70948
+        },
+        {
+          "id": "libperl5-36",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/p/perl/libperl5.36_5.36.0-7+deb12u3_arm64.deb",
+          "sha256": "9f88187766759ddc21b4b2fe2956929c4883a6674884cedde261e3ccf9a32d5c",
+          "size": 4009260
+        },
+        {
+          "id": "perl",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/p/perl/perl_5.36.0-7+deb12u3_arm64.deb",
+          "sha256": "a11f259b6768c8eae0d8d2b1127621ff60dfbce7ae4f6cfc5e55e10a7cb15be4",
+          "size": 238900
+        },
+        {
+          "id": "perl-base",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/p/perl/perl-base_5.36.0-7+deb12u3_arm64.deb",
+          "sha256": "8257ca5f2debe0b4229d98667fe0ed24a8b3b9421c96f847f4f48e9012659174",
+          "size": 1475288
+        },
+        {
+          "id": "perl-modules-5-36",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/p/perl/perl-modules-5.36_5.36.0-7+deb12u3_all.deb",
+          "sha256": "3d237ccb1ea32727b6573d43c67d78337aa928a81148d36cef54b369a07c240a",
+          "size": 2815332
+        }
+      ],
+      "install": [
+        {
+          "type": "extract",
+          "source": "git",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "git-man",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libcurl3-gnutls",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "liberror-perl",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libgdbm-compat4",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libgdbm6",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libperl5-36",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "perl",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "perl-base",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "perl-modules-5-36",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        }
+      ],
+      "environment": {
+        "prependPath": [],
+        "variables": {}
+      },
+      "checks": [
+        {
+          "type": "file",
+          "path": "usr/bin/git",
+          "executable": true
+        }
+      ]
+    },
+    "linux-x86_64": {
+      "guestRoot": true,
+      "requires": [],
+      "dependencies": [
+        {
+          "toolchain": "linux-runtime",
+          "version": "12.0.0"
+        },
+        {
+          "toolchain": "linux-network-libs",
+          "version": "12.0.0"
+        }
+      ],
+      "sources": [
+        {
+          "id": "git",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/g/git/git_2.39.5-0+deb12u3_amd64.deb",
+          "sha256": "637a85ddd6247fab13bdd0592f2f39aff04ce4dbf0655d3ab553ac359a38ce6f",
+          "size": 7264380
+        },
+        {
+          "id": "git-man",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/g/git/git-man_2.39.5-0+deb12u3_all.deb",
+          "sha256": "904dbd8dbc3db34c6780fb0abfe35816d4a90a490126ef0a055a77a0c5dcab82",
+          "size": 2053236
+        },
+        {
+          "id": "libcurl3-gnutls",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/c/curl/libcurl3-gnutls_7.88.1-10+deb12u15_amd64.deb",
+          "sha256": "bf430ecf80f7808704e0187cddc582fd57fc98789ea356d4797651edad387ef3",
+          "size": 386008
+        },
+        {
+          "id": "liberror-perl",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/libe/liberror-perl/liberror-perl_0.17029-2_all.deb",
+          "sha256": "5a466348531b9c38c8e5ccb18c231f27a98b9fdab61b37ea22592553de5d2ced",
+          "size": 29032
+        },
+        {
+          "id": "libgdbm-compat4",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/g/gdbm/libgdbm-compat4_1.23-3_amd64.deb",
+          "sha256": "4af36a590b68d415a78d9238b932b6a4579f515ec8a8016597498acff5b515a4",
+          "size": 48156
+        },
+        {
+          "id": "libgdbm6",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/g/gdbm/libgdbm6_1.23-3_amd64.deb",
+          "sha256": "95fe4a1336532450e67bd067892f46eaa484139919ea8d067a9ffcbf5a4bf883",
+          "size": 72248
+        },
+        {
+          "id": "libperl5-36",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/p/perl/libperl5.36_5.36.0-7+deb12u3_amd64.deb",
+          "sha256": "591903643119c7e1735011369287976eccab1d79b1d2f210760e2138d0a3aa46",
+          "size": 4195924
+        },
+        {
+          "id": "perl",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/p/perl/perl_5.36.0-7+deb12u3_amd64.deb",
+          "sha256": "afa50ec7d9b1a407cd0187dae033644ef13578d4f3792435e0c41b962ffec0c4",
+          "size": 238900
+        },
+        {
+          "id": "perl-base",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/p/perl/perl-base_5.36.0-7+deb12u3_amd64.deb",
+          "sha256": "8ec874926e211807cde71e1b0a2311d2534ab3539dffcb2c8553633f542efc1a",
+          "size": 1607712
+        },
+        {
+          "id": "perl-modules-5-36",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/p/perl/perl-modules-5.36_5.36.0-7+deb12u3_all.deb",
+          "sha256": "3d237ccb1ea32727b6573d43c67d78337aa928a81148d36cef54b369a07c240a",
+          "size": 2815332
+        }
+      ],
+      "install": [
+        {
+          "type": "extract",
+          "source": "git",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "git-man",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libcurl3-gnutls",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "liberror-perl",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libgdbm-compat4",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libgdbm6",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libperl5-36",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "perl",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "perl-base",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "perl-modules-5-36",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        }
+      ],
+      "environment": {
+        "prependPath": [],
+        "variables": {}
+      },
+      "checks": [
+        {
+          "type": "file",
+          "path": "usr/bin/git",
+          "executable": true
+        }
+      ]
+    }
+  }
+}

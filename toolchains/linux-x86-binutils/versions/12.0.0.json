@@ -1,0 +1,57 @@
+{
+  "$schema": "../../../schemas/devenv.schema.json",
+  "apiVersion": "devenv.gizmoth.dev/v1alpha1",
+  "kind": "ToolchainRelease",
+  "id": "linux-x86-binutils",
+  "version": "12.0.0",
+  "platforms": {
+    "linux-arm64": {
+      "guestRoot": true,
+      "requires": [],
+      "dependencies": [
+        {
+          "toolchain": "linux-qemu-user",
+          "version": "12.0.0"
+        },
+        {
+          "toolchain": "linux-x86-runtime",
+          "version": "12.0.0"
+        }
+      ],
+      "sources": [
+        {
+          "id": "binutils-x86-64-linux-gnu",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/b/binutils/binutils-x86-64-linux-gnu_2.40-2_amd64.deb",
+          "sha256": "2d7ea8a570d768224d7f2424abbe6f373d2154865a1fa7f56c80d43ecf492521",
+          "size": 2245848
+        }
+      ],
+      "install": [
+        {
+          "type": "extract",
+          "source": "binutils-x86-64-linux-gnu",
+          "to": "opt/gizmoth/x86_64",
+          "format": "deb",
+          "stripComponents": 0
+        }
+      ],
+      "environment": {
+        "prependPath": [],
+        "variables": {}
+      },
+      "checks": [
+        {
+          "type": "file",
+          "path": "opt/gizmoth/x86_64/usr/bin/x86_64-linux-gnu-as",
+          "executable": true
+        },
+        {
+          "type": "file",
+          "path": "opt/gizmoth/x86_64/usr/bin/x86_64-linux-gnu-ld.bfd",
+          "executable": true
+        }
+      ]
+    }
+  }
+}

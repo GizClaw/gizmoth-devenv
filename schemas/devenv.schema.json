@@ -209,10 +209,12 @@
       "properties": {
         "type": { "const": "extract" },
         "source": { "$ref": "#/$defs/id" },
-        "to": { "$ref": "#/$defs/relativePath" },
-        "format": { "enum": ["zip", "tar.gz", "tar.xz", "tar.bz2", "tar.zst"] },
+        "to": { "oneOf": [{ "$ref": "#/$defs/relativePath" }, { "const": "." }] },
+        "format": { "enum": ["zip", "tar.gz", "tar.xz", "tar.bz2", "tar.zst", "deb"] },
         "stripComponents": { "type": "integer", "minimum": 0, "maximum": 16 }
-      }
+      },
+      "if": { "properties": { "format": { "const": "deb" } } },
+      "then": { "properties": { "stripComponents": { "const": 0 } } }
     },
     "checkout": {
       "type": "object",
@@ -283,6 +285,8 @@
       "additionalProperties": false,
       "required": ["requires", "dependencies", "sources", "install", "environment", "checks"],
       "properties": {
+        "guestRoot": { "type": "boolean", "default": false },
+        "bootstrap": { "type": "boolean", "default": false },
         "requires": { "$ref": "#/$defs/requires" },
         "dependencies": { "$ref": "#/$defs/dependencies" },
         "sources": { "$ref": "#/$defs/sources" },
@@ -296,6 +300,8 @@
       "additionalProperties": false,
       "required": ["requires", "dependencies", "targets", "sources", "install", "environment", "checks"],
       "properties": {
+        "guestRoot": { "type": "boolean", "default": false },
+        "bootstrap": { "type": "boolean", "default": false },
         "requires": { "$ref": "#/$defs/requires" },
         "dependencies": { "$ref": "#/$defs/dependencies" },
         "targets": {
