@@ -1,0 +1,45 @@
+{
+  "$schema": "../../../schemas/devenv.schema.json",
+  "apiVersion": "devenv.gizmoth.dev/v1alpha1",
+  "kind": "ToolchainRelease",
+  "id": "linux-locale",
+  "version": "12.0.0",
+  "platforms": {
+    "linux-arm64": {
+      "guestRoot": true,
+      "requires": [],
+      "dependencies": [{ "toolchain": "linux-runtime", "version": "12.0.0" }],
+      "sources": [{
+        "id": "libc-bin", "type": "file",
+        "url": "https://deb.debian.org/debian/pool/main/g/glibc/libc-bin_2.36-9+deb12u14_arm64.deb",
+        "sha256": "65166ea54c05213c4f48d889138179f1b7345edd05031a9af276aa5fb4a45c05",
+        "size": 534528
+      }],
+      "install": [{ "type": "extract", "source": "libc-bin", "to": ".", "format": "deb", "stripComponents": 0 }],
+      "environment": { "prependPath": [], "variables": { "LANG": "C.UTF-8", "LC_ALL": "C.UTF-8" } },
+      "checks": [
+        { "type": "file", "path": "usr/lib/locale/C.utf8/LC_CTYPE", "executable": false },
+        { "type": "file", "path": "usr/bin/locale", "executable": true },
+        { "type": "command", "program": "${prefix}/usr/bin/locale", "args": ["charmap"], "stdoutContains": "UTF-8", "timeoutSeconds": 10 }
+      ]
+    },
+    "linux-x86_64": {
+      "guestRoot": true,
+      "requires": [],
+      "dependencies": [{ "toolchain": "linux-runtime", "version": "12.0.0" }],
+      "sources": [{
+        "id": "libc-bin", "type": "file",
+        "url": "https://deb.debian.org/debian/pool/main/g/glibc/libc-bin_2.36-9+deb12u14_amd64.deb",
+        "sha256": "e667401af91fad95f15b3ebd25d1abd8373fd18b00dc32219678413170544e84",
+        "size": 609144
+      }],
+      "install": [{ "type": "extract", "source": "libc-bin", "to": ".", "format": "deb", "stripComponents": 0 }],
+      "environment": { "prependPath": [], "variables": { "LANG": "C.UTF-8", "LC_ALL": "C.UTF-8" } },
+      "checks": [
+        { "type": "file", "path": "usr/lib/locale/C.utf8/LC_CTYPE", "executable": false },
+        { "type": "file", "path": "usr/bin/locale", "executable": true },
+        { "type": "command", "program": "${prefix}/usr/bin/locale", "args": ["charmap"], "stdoutContains": "UTF-8", "timeoutSeconds": 10 }
+      ]
+    }
+  }
+}

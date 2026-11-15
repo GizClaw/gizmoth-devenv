@@ -1,0 +1,145 @@
+{
+  "$schema": "../../../schemas/devenv.schema.json",
+  "apiVersion": "devenv.gizmoth.dev/v1alpha1",
+  "kind": "ToolchainRelease",
+  "id": "jieli-postbuild",
+  "version": "2026.7.28+1",
+  "platforms": {
+    "linux-arm64": {
+      "requires": [
+        "sh",
+        "mv"
+      ],
+      "dependencies": [
+        {
+          "toolchain": "linux-qemu-user",
+          "version": "12.0.0"
+        },
+        {
+          "toolchain": "linux-x86-runtime",
+          "version": "12.0.0"
+        }
+      ],
+      "sources": [
+        {
+          "id": "postbuild",
+          "type": "file",
+          "url": "https://jl-update.oss-cn-shenzhen.aliyuncs.com/jieli-linux-post-build-tools-20260728.1.tar.xz",
+          "sha256": "f4a458738c5eec32e78377c76b346bcac1cd515b03eda2b7eb11ab183298a858",
+          "size": 41151180
+        }
+      ],
+      "install": [
+        {
+          "type": "extract",
+          "source": "postbuild",
+          "to": "tools",
+          "format": "tar.xz",
+          "stripComponents": 1
+        },
+        {
+          "type": "run",
+          "program": "sh",
+          "args": [
+            "-ec",
+            "mv packres pack_res; printf '%s\\n' '20260728.1' > .firmware-devenv-version"
+          ],
+          "cwd": "tools",
+          "environment": {},
+          "timeoutSeconds": 30
+        }
+      ],
+      "environment": {
+        "prependPath": [
+          "tools"
+        ],
+        "variables": {
+          "JIELI_POSTBUILD_ROOT": "${prefix}/tools"
+        }
+      },
+      "checks": [
+        {
+          "type": "file",
+          "path": "tools/fw_add",
+          "executable": true
+        },
+        {
+          "type": "file",
+          "path": "tools/ufw_maker",
+          "executable": true
+        },
+        {
+          "type": "file",
+          "path": "tools/pack_res",
+          "executable": true
+        }
+      ]
+    },
+    "linux-x86_64": {
+      "requires": [
+        "sh",
+        "mv"
+      ],
+      "dependencies": [
+        {
+          "toolchain": "linux-cxx-runtime",
+          "version": "12.0.0"
+        }
+      ],
+      "sources": [
+        {
+          "id": "postbuild",
+          "type": "file",
+          "url": "https://jl-update.oss-cn-shenzhen.aliyuncs.com/jieli-linux-post-build-tools-20260728.1.tar.xz",
+          "sha256": "f4a458738c5eec32e78377c76b346bcac1cd515b03eda2b7eb11ab183298a858",
+          "size": 41151180
+        }
+      ],
+      "install": [
+        {
+          "type": "extract",
+          "source": "postbuild",
+          "to": "tools",
+          "format": "tar.xz",
+          "stripComponents": 1
+        },
+        {
+          "type": "run",
+          "program": "sh",
+          "args": [
+            "-ec",
+            "mv packres pack_res; printf '%s\\n' '20260728.1' > .firmware-devenv-version"
+          ],
+          "cwd": "tools",
+          "environment": {},
+          "timeoutSeconds": 30
+        }
+      ],
+      "environment": {
+        "prependPath": [
+          "tools"
+        ],
+        "variables": {
+          "JIELI_POSTBUILD_ROOT": "${prefix}/tools"
+        }
+      },
+      "checks": [
+        {
+          "type": "file",
+          "path": "tools/fw_add",
+          "executable": true
+        },
+        {
+          "type": "file",
+          "path": "tools/ufw_maker",
+          "executable": true
+        },
+        {
+          "type": "file",
+          "path": "tools/pack_res",
+          "executable": true
+        }
+      ]
+    }
+  }
+}

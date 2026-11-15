@@ -1,0 +1,20 @@
+{
+  "$schema": "../../schemas/devenv.schema.json",
+  "apiVersion": "devenv.gizmoth.dev/v1alpha1",
+  "kind": "Toolchain",
+  "id": "esp-rom-elfs",
+  "name": "ESP ROM ELFs",
+  "description": "ROM ELF symbol data selected by pinned ESP-IDF ddb3852ab5c7f9e6dbc268203ef9d612de391bf8.",
+  "category": "build-tool",
+  "homepage": "https://github.com/espressif/esp-rom-elfs",
+  "license": "Apache-2.0",
+  "notes": "Registry version 2026.5.28 maps to official SDK-selected upstream 20260528. The any-host archive is flat: preserve every ROM ELF with stripComponents=0. Qualification reads Xtensa ESP32-S3 and RISC-V ESP32-P4 ELF headers; no ROM payload is executed.",
+  "status": "published",
+  "defaultVersion": "2026.5.28",
+  "releases": [
+    {
+      "version": "2026.5.28",
+      "manifest": "versions/2026.5.28.json"
+    }
+  ]
+}

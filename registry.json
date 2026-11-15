@@ -18,6 +18,7 @@
   "toolchains": [
     "bazelisk",
     "python",
+    "git-lfs",
     "arm-gnu",
     "xtensa-esp-elf",
     "jieli",
@@ -38,7 +39,15 @@
     "linux-x86-libzstd1",
     "linux-x86-zlib1g",
     "linux-x86-runtime",
-    "linux-x86-binutils"
+    "linux-x86-binutils",
+    "linux-cxx-runtime",
+    "jieli-postbuild",
+    "riscv32-esp-elf",
+    "esp32ulp-elf",
+    "ninja",
+    "linux-locale",
+    "linux-text-tools",
+    "esp-rom-elfs"
   ],
   "environments": [
     "gizos"

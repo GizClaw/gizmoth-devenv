@@ -1,0 +1,123 @@
+{
+  "$schema": "../../../schemas/devenv.schema.json",
+  "apiVersion": "devenv.gizmoth.dev/v1alpha1",
+  "kind": "ToolchainRelease",
+  "id": "esp-rom-elfs",
+  "version": "2026.5.28",
+  "platforms": {
+    "linux-arm64": {
+      "requires": [],
+      "dependencies": [
+        {
+          "toolchain": "python",
+          "version": "3.12.16"
+        }
+      ],
+      "sources": [
+        {
+          "id": "rom-elfs",
+          "type": "file",
+          "url": "https://github.com/espressif/esp-rom-elfs/releases/download/20260528/esp-rom-elfs-20260528.tar.gz",
+          "sha256": "caa463d3cbef2430a5a35847c1d9f2f152403b17a802050927ff60c8da54fe46",
+          "size": 4902355
+        }
+      ],
+      "install": [
+        {
+          "type": "extract",
+          "source": "rom-elfs",
+          "to": "rom",
+          "format": "tar.gz",
+          "stripComponents": 0
+        }
+      ],
+      "environment": {
+        "prependPath": [],
+        "variables": {
+          "ESP_ROM_ELF_DIR": "${prefix}/rom/"
+        }
+      },
+      "checks": [
+        {
+          "type": "file",
+          "path": "rom/esp32s3_rev0_rom.elf",
+          "executable": false
+        },
+        {
+          "type": "file",
+          "path": "rom/esp32p4_rev0_rom.elf",
+          "executable": false
+        },
+        {
+          "type": "command",
+          "program": "${toolchain:python}/python/bin/python3",
+          "args": [
+            "-I",
+            "-c",
+            "from pathlib import Path; import sys\nroot = Path(sys.argv[1])\nfor name, machine in ((\"esp32s3_rev0_rom.elf\", 94), (\"esp32p4_rev0_rom.elf\", 243)):\n with (root / name).open(\"rb\") as stream: header = stream.read(20)\n assert len(header) == 20 and header[:4] == bytes.fromhex(\"7f454c46\") and header[4:6] == bytes((1, 1)) and int.from_bytes(header[18:20], \"little\") == machine, name\nprint(\"gizmoth-esp-rom-elfs-ok\")",
+            "${prefix}/rom"
+          ],
+          "stdoutContains": "gizmoth-esp-rom-elfs-ok",
+          "timeoutSeconds": 10
+        }
+      ]
+    },
+    "linux-x86_64": {
+      "requires": [],
+      "dependencies": [
+        {
+          "toolchain": "python",
+          "version": "3.12.16"
+        }
+      ],
+      "sources": [
+        {
+          "id": "rom-elfs",
+          "type": "file",
+          "url": "https://github.com/espressif/esp-rom-elfs/releases/download/20260528/esp-rom-elfs-20260528.tar.gz",
+          "sha256": "caa463d3cbef2430a5a35847c1d9f2f152403b17a802050927ff60c8da54fe46",
+          "size": 4902355
+        }
+      ],
+      "install": [
+        {
+          "type": "extract",
+          "source": "rom-elfs",
+          "to": "rom",
+          "format": "tar.gz",
+          "stripComponents": 0
+        }
+      ],
+      "environment": {
+        "prependPath": [],
+        "variables": {
+          "ESP_ROM_ELF_DIR": "${prefix}/rom/"
+        }
+      },
+      "checks": [
+        {
+          "type": "file",
+          "path": "rom/esp32s3_rev0_rom.elf",
+          "executable": false
+        },
+        {
+          "type": "file",
+          "path": "rom/esp32p4_rev0_rom.elf",
+          "executable": false
+        },
+        {
+          "type": "command",
+          "program": "${toolchain:python}/python/bin/python3",
+          "args": [
+            "-I",
+            "-c",
+            "from pathlib import Path; import sys\nroot = Path(sys.argv[1])\nfor name, machine in ((\"esp32s3_rev0_rom.elf\", 94), (\"esp32p4_rev0_rom.elf\", 243)):\n with (root / name).open(\"rb\") as stream: header = stream.read(20)\n assert len(header) == 20 and header[:4] == bytes.fromhex(\"7f454c46\") and header[4:6] == bytes((1, 1)) and int.from_bytes(header[18:20], \"little\") == machine, name\nprint(\"gizmoth-esp-rom-elfs-ok\")",
+            "${prefix}/rom"
+          ],
+          "stdoutContains": "gizmoth-esp-rom-elfs-ok",
+          "timeoutSeconds": 10
+        }
+      ]
+    }
+  }
+}
