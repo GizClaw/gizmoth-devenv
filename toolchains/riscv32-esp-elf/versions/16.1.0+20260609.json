@@ -1,0 +1,115 @@
+{
+  "$schema": "../../../schemas/devenv.schema.json",
+  "apiVersion": "devenv.gizmoth.dev/v1alpha1",
+  "kind": "ToolchainRelease",
+  "id": "riscv32-esp-elf",
+  "version": "16.1.0+20260609",
+  "platforms": {
+    "linux-arm64": {
+      "requires": [],
+      "dependencies": [
+        {
+          "toolchain": "linux-cxx-runtime",
+          "version": "12.0.0"
+        },
+        {
+          "toolchain": "linux-network-libs",
+          "version": "12.0.0"
+        }
+      ],
+      "sources": [
+        {
+          "id": "toolchain",
+          "type": "file",
+          "url": "https://github.com/espressif/crosstool-NG/releases/download/esp-16.1.0_20260609/riscv32-esp-elf-16.1.0_20260609-aarch64-linux-gnu.tar.xz",
+          "sha256": "d669ad2d452caf0f7887262cd1b2ce44921e2ffd8ee3e94062b50ac655dfb382",
+          "size": 140733560
+        }
+      ],
+      "install": [
+        {
+          "type": "extract",
+          "source": "toolchain",
+          "to": "toolchain",
+          "format": "tar.xz",
+          "stripComponents": 1
+        }
+      ],
+      "environment": {
+        "prependPath": [
+          "toolchain/bin"
+        ],
+        "variables": {}
+      },
+      "checks": [
+        {
+          "type": "file",
+          "path": "toolchain/bin/riscv32-esp-elf-gcc",
+          "executable": true
+        },
+        {
+          "type": "command",
+          "program": "${prefix}/toolchain/bin/riscv32-esp-elf-gcc",
+          "args": [
+            "--version"
+          ],
+          "stdoutContains": "16.1.0",
+          "timeoutSeconds": 30
+        }
+      ]
+    },
+    "linux-x86_64": {
+      "requires": [],
+      "dependencies": [
+        {
+          "toolchain": "linux-cxx-runtime",
+          "version": "12.0.0"
+        },
+        {
+          "toolchain": "linux-network-libs",
+          "version": "12.0.0"
+        }
+      ],
+      "sources": [
+        {
+          "id": "toolchain",
+          "type": "file",
+          "url": "https://github.com/espressif/crosstool-NG/releases/download/esp-16.1.0_20260609/riscv32-esp-elf-16.1.0_20260609-x86_64-linux-gnu.tar.xz",
+          "sha256": "0b029ab31ebc7f74e2c4779077251b21a22cd620669dc4c82e7adc478d403a8d",
+          "size": 148659348
+        }
+      ],
+      "install": [
+        {
+          "type": "extract",
+          "source": "toolchain",
+          "to": "toolchain",
+          "format": "tar.xz",
+          "stripComponents": 1
+        }
+      ],
+      "environment": {
+        "prependPath": [
+          "toolchain/bin"
+        ],
+        "variables": {}
+      },
+      "checks": [
+        {
+          "type": "file",
+          "path": "toolchain/bin/riscv32-esp-elf-gcc",
+          "executable": true
+        },
+        {
+          "type": "command",
+          "program": "${prefix}/toolchain/bin/riscv32-esp-elf-gcc",
+          "args": [
+            "--version"
+          ],
+          "stdoutContains": "16.1.0",
+          "timeoutSeconds": 30
+        }
+      ]
+    }
+  }
+}

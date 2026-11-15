@@ -1,0 +1,233 @@
+{
+  "$schema": "../../../schemas/devenv.schema.json",
+  "apiVersion": "devenv.gizmoth.dev/v1alpha1",
+  "kind": "SdkRelease",
+  "id": "jieli-ac791n",
+  "version": "0.1.0+geb04f196",
+  "platforms": {
+    "linux-arm64": {
+      "requires": [
+        "git",
+        "git-lfs"
+      ],
+      "dependencies": [
+        {
+          "toolchain": "jieli",
+          "version": "4.0.1+20250805.1"
+        },
+        {
+          "toolchain": "jieli-postbuild",
+          "version": "2026.7.28+1"
+        },
+        {
+          "toolchain": "python",
+          "version": "3.12.16"
+        },
+        {
+          "toolchain": "linux-git",
+          "version": "12.0.0"
+        },
+        {
+          "toolchain": "linux-build-tools",
+          "version": "12.0.0"
+        },
+        {
+          "toolchain": "linux-text-tools",
+          "version": "12.0.0"
+        },
+        {
+          "toolchain": "git-lfs",
+          "version": "3.8.1"
+        }
+      ],
+      "targets": {
+        "ac791n": {
+          "dependencies": []
+        }
+      },
+      "sources": [
+        {
+          "id": "sdk",
+          "type": "git",
+          "url": "https://github.com/GizClaw/fw-AC791N_SDK.git",
+          "commit": "eb04f1966cf2b7cbb72cbb54db906bcb293b5a4a",
+          "submodules": false
+        }
+      ],
+      "install": [
+        {
+          "type": "checkout",
+          "source": "sdk",
+          "to": "payload/sdk"
+        }
+      ],
+      "environment": {
+        "prependPath": [],
+        "variables": {
+          "JIELI_AC791N_SDK_PATH": "${prefix}/payload/sdk"
+        }
+      },
+      "checks": [
+        {
+          "type": "file",
+          "path": "payload/sdk/.git/HEAD",
+          "executable": false
+        },
+        {
+          "type": "file",
+          "path": "payload/sdk/cpu/wl82/sdk_ld.c",
+          "executable": false
+        },
+        {
+          "type": "file",
+          "path": "payload/sdk/cpu/wl82/tools/download.c",
+          "executable": false
+        },
+        {
+          "type": "file",
+          "path": "payload/sdk/cpu/wl82/tools/isd_config_rule.c",
+          "executable": false
+        },
+        {
+          "type": "command",
+          "program": "git",
+          "args": [
+            "-C",
+            "${prefix}/payload/sdk",
+            "rev-parse",
+            "HEAD"
+          ],
+          "stdoutContains": "eb04f1966cf2b7cbb72cbb54db906bcb293b5a4a",
+          "timeoutSeconds": 30
+        },
+        {
+          "type": "command",
+          "program": "git",
+          "args": [
+            "-C",
+            "${prefix}/payload/sdk",
+            "diff",
+            "--quiet",
+            "--exit-code",
+            "--ignore-submodules=none",
+            "HEAD",
+            "--"
+          ],
+          "timeoutSeconds": 60
+        }
+      ]
+    },
+    "linux-x86_64": {
+      "requires": [
+        "git",
+        "git-lfs"
+      ],
+      "dependencies": [
+        {
+          "toolchain": "jieli",
+          "version": "4.0.1+20250805.1"
+        },
+        {
+          "toolchain": "jieli-postbuild",
+          "version": "2026.7.28+1"
+        },
+        {
+          "toolchain": "python",
+          "version": "3.12.16"
+        },
+        {
+          "toolchain": "linux-git",
+          "version": "12.0.0"
+        },
+        {
+          "toolchain": "linux-build-tools",
+          "version": "12.0.0"
+        },
+        {
+          "toolchain": "linux-text-tools",
+          "version": "12.0.0"
+        },
+        {
+          "toolchain": "git-lfs",
+          "version": "3.8.1"
+        }
+      ],
+      "targets": {
+        "ac791n": {
+          "dependencies": []
+        }
+      },
+      "sources": [
+        {
+          "id": "sdk",
+          "type": "git",
+          "url": "https://github.com/GizClaw/fw-AC791N_SDK.git",
+          "commit": "eb04f1966cf2b7cbb72cbb54db906bcb293b5a4a",
+          "submodules": false
+        }
+      ],
+      "install": [
+        {
+          "type": "checkout",
+          "source": "sdk",
+          "to": "payload/sdk"
+        }
+      ],
+      "environment": {
+        "prependPath": [],
+        "variables": {
+          "JIELI_AC791N_SDK_PATH": "${prefix}/payload/sdk"
+        }
+      },
+      "checks": [
+        {
+          "type": "file",
+          "path": "payload/sdk/.git/HEAD",
+          "executable": false
+        },
+        {
+          "type": "file",
+          "path": "payload/sdk/cpu/wl82/sdk_ld.c",
+          "executable": false
+        },
+        {
+          "type": "file",
+          "path": "payload/sdk/cpu/wl82/tools/download.c",
+          "executable": false
+        },
+        {
+          "type": "file",
+          "path": "payload/sdk/cpu/wl82/tools/isd_config_rule.c",
+          "executable": false
+        },
+        {
+          "type": "command",
+          "program": "git",
+          "args": [
+            "-C",
+            "${prefix}/payload/sdk",
+            "rev-parse",
+            "HEAD"
+          ],
+          "stdoutContains": "eb04f1966cf2b7cbb72cbb54db906bcb293b5a4a",
+          "timeoutSeconds": 30
+        },
+        {
+          "type": "command",
+          "program": "git",
+          "args": [
+            "-C",
+            "${prefix}/payload/sdk",
+            "diff",
+            "--quiet",
+            "--exit-code",
+            "--ignore-submodules=none",
+            "HEAD",
+            "--"
+          ],
+          "timeoutSeconds": 60
+        }
+      ]
+    }
+  }
+}

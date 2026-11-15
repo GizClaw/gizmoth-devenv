@@ -3,12 +3,18 @@
   "apiVersion": "devenv.gizmoth.dev/v1alpha1",
   "kind": "Toolchain",
   "id": "jieli",
-  "name": "JieLi Toolchain",
-  "description": "JieLi compiler and post-build tools.",
+  "name": "JieLi compiler tools",
+  "description": "Pinned pi32v2 and q32s compilers; ARM64 hosts explicitly use the managed x86 QEMU/runtime formulas.",
   "category": "compiler",
-  "homepage": "https://www.zh-jieli.com/",
+  "homepage": "https://pkgman.jieliapp.com/doc/all",
   "license": "LicenseRef-Vendor",
-  "status": "planned",
-  "notes": "Needs an anonymously downloadable, redistributable source and real host checks. Do not publish macOS or Windows platforms for Linux-only executables.",
-  "releases": []
+  "status": "published",
+  "notes": "Both compiler banners and x86 loader/library closure verified on aarch64. The deterministic version marker preserves the existing GizOS expanded-tree identity without invoking an environment manager.",
+  "releases": [
+    {
+      "version": "4.0.1+20250805.1",
+      "manifest": "versions/4.0.1+20250805.1.json"
+    }
+  ],
+  "defaultVersion": "4.0.1+20250805.1"
 }

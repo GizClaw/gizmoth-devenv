@@ -1,0 +1,115 @@
+{
+  "$schema": "../../../schemas/devenv.schema.json",
+  "apiVersion": "devenv.gizmoth.dev/v1alpha1",
+  "kind": "ToolchainRelease",
+  "id": "esp32ulp-elf",
+  "version": "2.38.0+20240113",
+  "platforms": {
+    "linux-arm64": {
+      "requires": [],
+      "dependencies": [
+        {
+          "toolchain": "linux-cxx-runtime",
+          "version": "12.0.0"
+        },
+        {
+          "toolchain": "linux-network-libs",
+          "version": "12.0.0"
+        }
+      ],
+      "sources": [
+        {
+          "id": "toolchain",
+          "type": "file",
+          "url": "https://github.com/espressif/binutils-gdb/releases/download/esp32ulp-elf-2.38_20240113/esp32ulp-elf-2.38_20240113-linux-arm64.tar.gz",
+          "sha256": "ecce0788ce1000e5c669c5adaf2fd5bf7f9bf96dcdbd3555d1d9ce4dcb311038",
+          "size": 10471496
+        }
+      ],
+      "install": [
+        {
+          "type": "extract",
+          "source": "toolchain",
+          "to": "toolchain",
+          "format": "tar.gz",
+          "stripComponents": 1
+        }
+      ],
+      "environment": {
+        "prependPath": [
+          "toolchain/bin"
+        ],
+        "variables": {}
+      },
+      "checks": [
+        {
+          "type": "file",
+          "path": "toolchain/bin/esp32ulp-elf-as",
+          "executable": true
+        },
+        {
+          "type": "command",
+          "program": "${prefix}/toolchain/bin/esp32ulp-elf-as",
+          "args": [
+            "--version"
+          ],
+          "stdoutContains": "2.38",
+          "timeoutSeconds": 30
+        }
+      ]
+    },
+    "linux-x86_64": {
+      "requires": [],
+      "dependencies": [
+        {
+          "toolchain": "linux-cxx-runtime",
+          "version": "12.0.0"
+        },
+        {
+          "toolchain": "linux-network-libs",
+          "version": "12.0.0"
+        }
+      ],
+      "sources": [
+        {
+          "id": "toolchain",
+          "type": "file",
+          "url": "https://github.com/espressif/binutils-gdb/releases/download/esp32ulp-elf-2.38_20240113/esp32ulp-elf-2.38_20240113-linux-amd64.tar.gz",
+          "sha256": "d13a808365b78465fa6591636dfbbb9604d9d15a397c3d9cd22626d54828ac2c",
+          "size": 11138071
+        }
+      ],
+      "install": [
+        {
+          "type": "extract",
+          "source": "toolchain",
+          "to": "toolchain",
+          "format": "tar.gz",
+          "stripComponents": 1
+        }
+      ],
+      "environment": {
+        "prependPath": [
+          "toolchain/bin"
+        ],
+        "variables": {}
+      },
+      "checks": [
+        {
+          "type": "file",
+          "path": "toolchain/bin/esp32ulp-elf-as",
+          "executable": true
+        },
+        {
+          "type": "command",
+          "program": "${prefix}/toolchain/bin/esp32ulp-elf-as",
+          "args": [
+            "--version"
+          ],
+          "stdoutContains": "2.38",
+          "timeoutSeconds": 30
+        }
+      ]
+    }
+  }
+}

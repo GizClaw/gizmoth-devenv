@@ -1,0 +1,43 @@
+{
+  "$schema": "../../../schemas/devenv.schema.json",
+  "apiVersion": "devenv.gizmoth.dev/v1alpha1",
+  "kind": "ToolchainRelease",
+  "id": "linux-text-tools",
+  "version": "12.0.0",
+  "platforms": {
+    "linux-arm64": {
+      "guestRoot": true,
+      "requires": [],
+      "dependencies": [{ "toolchain": "linux-runtime", "version": "12.0.0" }],
+      "sources": [{
+        "id": "mawk", "type": "file",
+        "url": "https://deb.debian.org/debian/pool/main/m/mawk/mawk_1.3.4.20200120-3.1_arm64.deb",
+        "sha256": "af76445b28d3de5b9587b231893d5fc594a6eecdc842cc9a7f401f788cc0288f",
+        "size": 112492
+      }],
+      "install": [{ "type": "extract", "source": "mawk", "to": ".", "format": "deb", "stripComponents": 0 }],
+      "environment": { "prependPath": [], "variables": {} },
+      "checks": [
+        { "type": "file", "path": "usr/bin/mawk", "executable": true },
+        { "type": "command", "program": "${prefix}/usr/bin/awk", "args": ["BEGIN { config[++count] = \"gizmoth-awk-ok\"; for (i = 1; i <= count; ++i) print config[i]; if (count != 1) exit 1 }"], "stdoutContains": "gizmoth-awk-ok", "timeoutSeconds": 10 }
+      ]
+    },
+    "linux-x86_64": {
+      "guestRoot": true,
+      "requires": [],
+      "dependencies": [{ "toolchain": "linux-runtime", "version": "12.0.0" }],
+      "sources": [{
+        "id": "mawk", "type": "file",
+        "url": "https://deb.debian.org/debian/pool/main/m/mawk/mawk_1.3.4.20200120-3.1_amd64.deb",
+        "sha256": "bcbc83f391854ea9d50ce2a4101aacf330de3b8b71d81a798faadba14a157f78",
+        "size": 119144
+      }],
+      "install": [{ "type": "extract", "source": "mawk", "to": ".", "format": "deb", "stripComponents": 0 }],
+      "environment": { "prependPath": [], "variables": {} },
+      "checks": [
+        { "type": "file", "path": "usr/bin/mawk", "executable": true },
+        { "type": "command", "program": "${prefix}/usr/bin/awk", "args": ["BEGIN { config[++count] = \"gizmoth-awk-ok\"; for (i = 1; i <= count; ++i) print config[i]; if (count != 1) exit 1 }"], "stdoutContains": "gizmoth-awk-ok", "timeoutSeconds": 10 }
+      ]
+    }
+  }
+}

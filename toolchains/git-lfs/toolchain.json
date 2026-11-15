@@ -1,0 +1,16 @@
+{
+  "$schema": "../../schemas/devenv.schema.json",
+  "apiVersion": "devenv.gizmoth.dev/v1alpha1",
+  "kind": "Toolchain",
+  "id": "git-lfs",
+  "name": "Git LFS",
+  "description": "Native Git LFS client for verified SDK source objects and clean checkout checks.",
+  "category": "utility",
+  "homepage": "https://github.com/git-lfs/git-lfs",
+  "license": "MIT",
+  "status": "published",
+  "defaultVersion": "3.8.1",
+  "releases": [
+    { "version": "3.8.1", "manifest": "versions/3.8.1.json" }
+  ]
+}

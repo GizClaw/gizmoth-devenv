@@ -4,11 +4,17 @@
   "kind": "Toolchain",
   "id": "xtensa-esp-elf",
   "name": "Xtensa ESP Toolchain",
-  "description": "Espressif's GCC toolchain for Xtensa-based ESP32 chips.",
+  "description": "Native Linux tools selected by GizClaw ESP-IDF ddb3852ab5c7f9e6dbc268203ef9d612de391bf8.",
   "category": "compiler",
   "homepage": "https://github.com/espressif/crosstool-NG",
   "license": "GPL-3.0-or-later WITH GCC-exception-3.1",
-  "status": "planned",
-  "notes": "Generate releases from the exact versions and digests in each supported ESP-IDF release's tools.json.",
-  "releases": []
+  "status": "published",
+  "notes": "Upstream tool version esp-16.1.0_20260609; both host archives are pinned by the exact SDK tools.json. SDK target-specific dynamic configuration is selected by the build.",
+  "releases": [
+    {
+      "version": "16.1.0+20260609",
+      "manifest": "versions/16.1.0+20260609.json"
+    }
+  ],
+  "defaultVersion": "16.1.0+20260609"
 }

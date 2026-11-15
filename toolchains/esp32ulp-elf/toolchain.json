@@ -1,0 +1,20 @@
+{
+  "$schema": "../../schemas/devenv.schema.json",
+  "apiVersion": "devenv.gizmoth.dev/v1alpha1",
+  "kind": "Toolchain",
+  "id": "esp32ulp-elf",
+  "name": "ESP ULP assembler",
+  "description": "Native Linux tools selected by GizClaw ESP-IDF ddb3852ab5c7f9e6dbc268203ef9d612de391bf8.",
+  "category": "compiler",
+  "homepage": "https://github.com/espressif/binutils-gdb",
+  "license": "GPL-3.0-or-later",
+  "notes": "Upstream tool version 2.38_20240113; both host archives are pinned by the exact SDK tools.json. SDK target-specific dynamic configuration is selected by the build.",
+  "status": "published",
+  "defaultVersion": "2.38.0+20240113",
+  "releases": [
+    {
+      "version": "2.38.0+20240113",
+      "manifest": "versions/2.38.0+20240113.json"
+    }
+  ]
+}

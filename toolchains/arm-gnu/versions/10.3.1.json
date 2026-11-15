@@ -1,0 +1,141 @@
+{
+  "$schema": "../../../schemas/devenv.schema.json",
+  "apiVersion": "devenv.gizmoth.dev/v1alpha1",
+  "kind": "ToolchainRelease",
+  "id": "arm-gnu",
+  "version": "10.3.1",
+  "platforms": {
+    "linux-arm64": {
+      "requires": [
+        "sh",
+        "mktemp",
+        "rm"
+      ],
+      "dependencies": [
+        {
+          "toolchain": "linux-cxx-runtime",
+          "version": "12.0.0"
+        }
+      ],
+      "sources": [
+        {
+          "id": "toolchain",
+          "type": "file",
+          "url": "https://armkeil.blob.core.windows.net/developer/Files/downloads/gnu-rm/10.3-2021.10/gcc-arm-none-eabi-10.3-2021.10-aarch64-linux.tar.bz2",
+          "sha256": "f605b5f23ca898e9b8b665be208510a54a6e9fdd0fa5bfc9592002f6e7431208",
+          "size": 168772350
+        }
+      ],
+      "install": [
+        {
+          "type": "extract",
+          "source": "toolchain",
+          "to": "toolchain",
+          "format": "tar.bz2",
+          "stripComponents": 1
+        }
+      ],
+      "environment": {
+        "prependPath": [
+          "toolchain/bin"
+        ],
+        "variables": {
+          "GIZOS_BK_TOOLCHAIN_ROOT": "${prefix}/toolchain",
+          "TOOLCHAIN_DIR": "${prefix}/toolchain/bin"
+        }
+      },
+      "checks": [
+        {
+          "type": "file",
+          "path": "toolchain/bin/arm-none-eabi-gcc",
+          "executable": true
+        },
+        {
+          "type": "command",
+          "program": "${prefix}/toolchain/bin/arm-none-eabi-gcc",
+          "args": [
+            "--version"
+          ],
+          "stdoutContains": "10.3.1",
+          "timeoutSeconds": 30
+        },
+        {
+          "type": "command",
+          "program": "sh",
+          "args": [
+            "-ec",
+            "d=\"$(mktemp -d \"${cache}/arm-gnu-check.XXXXXX\")\"; trap 'rm -rf \"$d\"' EXIT; printf 'void _start(void) { for (;;) {} }\\n' > \"$d/smoke.c\"; \"${prefix}/toolchain/bin/arm-none-eabi-gcc\" -mcpu=cortex-m33 -mthumb -nostdlib -Wl,-e,_start \"$d/smoke.c\" -o \"$d/smoke.elf\"; test -s \"$d/smoke.elf\"; printf 'gizmoth-arm-gnu-link-ok\\n'"
+          ],
+          "stdoutContains": "gizmoth-arm-gnu-link-ok",
+          "timeoutSeconds": 30
+        }
+      ]
+    },
+    "linux-x86_64": {
+      "requires": [
+        "sh",
+        "mktemp",
+        "rm"
+      ],
+      "dependencies": [
+        {
+          "toolchain": "linux-cxx-runtime",
+          "version": "12.0.0"
+        }
+      ],
+      "sources": [
+        {
+          "id": "toolchain",
+          "type": "file",
+          "url": "https://developer.arm.com/-/media/Files/downloads/gnu-rm/10.3-2021.10/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux.tar.bz2",
+          "sha256": "97dbb4f019ad1650b732faffcc881689cedc14e2b7ee863d390e0a41ef16c9a3",
+          "size": 157089706
+        }
+      ],
+      "install": [
+        {
+          "type": "extract",
+          "source": "toolchain",
+          "to": "toolchain",
+          "format": "tar.bz2",
+          "stripComponents": 1
+        }
+      ],
+      "environment": {
+        "prependPath": [
+          "toolchain/bin"
+        ],
+        "variables": {
+          "GIZOS_BK_TOOLCHAIN_ROOT": "${prefix}/toolchain",
+          "TOOLCHAIN_DIR": "${prefix}/toolchain/bin"
+        }
+      },
+      "checks": [
+        {
+          "type": "file",
+          "path": "toolchain/bin/arm-none-eabi-gcc",
+          "executable": true
+        },
+        {
+          "type": "command",
+          "program": "${prefix}/toolchain/bin/arm-none-eabi-gcc",
+          "args": [
+            "--version"
+          ],
+          "stdoutContains": "10.3.1",
+          "timeoutSeconds": 30
+        },
+        {
+          "type": "command",
+          "program": "sh",
+          "args": [
+            "-ec",
+            "d=\"$(mktemp -d \"${cache}/arm-gnu-check.XXXXXX\")\"; trap 'rm -rf \"$d\"' EXIT; printf 'void _start(void) { for (;;) {} }\\n' > \"$d/smoke.c\"; \"${prefix}/toolchain/bin/arm-none-eabi-gcc\" -mcpu=cortex-m33 -mthumb -nostdlib -Wl,-e,_start \"$d/smoke.c\" -o \"$d/smoke.elf\"; test -s \"$d/smoke.elf\"; printf 'gizmoth-arm-gnu-link-ok\\n'"
+          ],
+          "stdoutContains": "gizmoth-arm-gnu-link-ok",
+          "timeoutSeconds": 30
+        }
+      ]
+    }
+  }
+}

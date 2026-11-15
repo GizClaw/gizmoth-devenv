@@ -17,7 +17,7 @@ function fixture(t) {
   t.after(() => rmSync(directory, { recursive: true, force: true }));
   cpSync(join(root, "registry.json"), join(directory, "registry.json"));
   for (const entry of ["chips", "sdks", "toolchains", "environments"]) cpSync(join(root, entry), join(directory, entry), { recursive: true });
-  return {
+  const f = {
     directory,
     read(path) { return JSON.parse(readFileSync(join(directory, path), "utf8")); },
     write(path, value) {
@@ -30,6 +30,20 @@ function fixture(t) {
       this.write(path, value);
     },
   };
+  // These semantic tests publish synthetic vendor releases. Their starting
+  // state stays planned as the real registry gains qualified SDK/compiler data.
+  for (const [type, ids] of [["sdk", f.read("registry.json").sdks], ["toolchain", ["arm-gnu", "xtensa-esp-elf", "jieli"]]]) {
+    for (const id of ids) {
+      f.mutate(`${type}s/${id}/${type}.json`, (item) => {
+        item.status = "planned";
+        item.releases = [];
+        delete item.defaultVersion;
+      });
+      rmSync(join(directory, `${type}s/${id}/versions`), { recursive: true, force: true });
+    }
+  }
+  f.initialStats = validateRegistry(directory);
+  return f;
 }
 
 // Synthetic fixtures reuse the verified Bazelisk recipe shape; nothing is downloaded or installed.
@@ -50,7 +64,41 @@ function publish(f, type, id, version, platforms) {
 }
 
 test("official registry validates offline with generic tools and minimal guest formulae", () => {
-  assert.deepEqual(validateRegistry(root), { chips: 3, environments: 1, sdks: 3, toolchains: 23, planned: 9, releases: 22, platforms: 46 });
+  assert.deepEqual(validateRegistry(root), { chips: 3, environments: 1, sdks: 6, toolchains: 32, planned: 3, releases: 40, platforms: 79 });
+});
+
+test("SDK formulae reference upstream Git and package files without repacked releases", () => {
+  const registry = JSON.parse(readFileSync(join(root, "registry.json"), "utf8"));
+  for (const id of registry.sdks) {
+    const item = JSON.parse(readFileSync(join(root, `sdks/${id}/sdk.json`), "utf8"));
+    for (const release of item.releases) {
+      const document = JSON.parse(readFileSync(join(root, `sdks/${id}/${release.manifest}`), "utf8"));
+      for (const recipe of Object.values(document.platforms)) {
+        const source = recipe.sources.find((source) => source.id === "sdk");
+        assert.equal(source.type, "git");
+        assert.match(source.url, /^https:\/\/github\.com\/GizClaw\/[A-Za-z0-9_.-]+\.git$/);
+        assert.match(source.commit, /^[a-f0-9]{40}$/);
+        assert.equal(typeof source.submodules, "boolean");
+        assert.ok(recipe.install.some((step) => step.type === "checkout" && step.source === "sdk" && step.to === "payload/sdk"));
+        for (const file of recipe.sources.filter((source) => source.type === "file")) {
+          assert.ok(["files.pythonhosted.org", "dl.espressif.com"].includes(new URL(file.url).hostname), file.url);
+          assert.ok(!file.url.includes("gizmoth-sdk-source-"));
+        }
+        if (id === "jieli-ac791n") assert.ok(recipe.requires.includes("git-lfs"));
+      }
+    }
+  }
+});
+
+test("ESP Python formula uses upstream esptool source and local offline setup", () => {
+  const item = JSON.parse(readFileSync(join(root, "sdks/esp-idf/sdk.json"), "utf8"));
+  const release = JSON.parse(readFileSync(join(root, `sdks/esp-idf/versions/${item.defaultVersion}.json`), "utf8"));
+  for (const recipe of Object.values(release.platforms)) {
+    const source = recipe.sources.find((source) => source.url.endsWith("/esptool-5.6.0.tar.gz"));
+    assert.equal(source.sha256, "86c7249e9cc3a824e032ede9ba20abad057a2c49e231418cc4f02b177bb36f42");
+    assert.equal(source.size, 532408);
+    assert.ok(recipe.install.some((step) => step.type === "run" && step.args.includes("--no-build-isolation") && step.args.includes("--no-index") && step.args.includes("--require-hashes")));
+  }
 });
 
 test("Linux guest roots merge deb layers, and bootstrap implies guestRoot", (t) => {
@@ -164,7 +212,7 @@ test("resolves two versions of one toolchain in a published chip environment", (
     ] } } },
   });
   f.mutate("chips/esp32s3/chip.json", (chip) => { chip.status = "published"; });
-  assert.equal(validateRegistry(f.directory).planned, 5);
+  assert.equal(validateRegistry(f.directory).planned, f.initialStats.planned - 4);
 });
 
 test("rejects undeclared toolchain templates and temporary exported paths", (t) => {
@@ -195,7 +243,7 @@ test("a published chip needs a published SDK release that supports its target", 
   publish(f, "sdk", "esp-idf", "6.2.0", { [host]: { ...recipe(f), targets: { esp32c3: { dependencies: [] } } } });
   assert.throws(() => validateRegistry(f.directory), /does not support target esp32s3/);
   f.mutate("sdks/esp-idf/versions/6.2.0.json", (release) => { release.platforms[host].targets = { esp32s3: { dependencies: [] } }; });
-  assert.equal(validateRegistry(f.directory).planned, 7);
+  assert.equal(validateRegistry(f.directory).planned, f.initialStats.planned - 2);
 });
 
 test("SDK releases need chip targets; toolchain releases cannot declare them", (t) => {
@@ -236,7 +284,7 @@ test("published environments require exact published dependencies; planned envir
   f.mutate(environmentPath, (item) => { item.dependencies = []; });
   assert.throws(() => validateRegistry(f.directory), /Environment:/);
   f.mutate(environmentPath, (item) => { item.status = "planned"; });
-  assert.equal(validateRegistry(f.directory).planned, 10);
+  assert.equal(validateRegistry(f.directory).planned, f.initialStats.planned + 1);
   f.mutate(environmentPath, (item) => { item.status = "ready"; });
   assert.throws(() => validateRegistry(f.directory), /Environment:/);
   f.mutate(environmentPath, (item) => { item.status = "published"; item.dependencies = [{ toolchain: "python", version: "latest" }]; });
@@ -265,7 +313,7 @@ test("multiple exact versions coexist directly and transitively, with shared gra
     release.platforms[host].dependencies = [{ toolchain: "python", version: "3.12.16" }];
   });
   f.mutate(environmentPath, (item) => { item.dependencies.push({ toolchain: "python", version: "3.11.18" }); });
-  assert.equal(validateRegistry(f.directory).releases, 22);
+  assert.equal(validateRegistry(f.directory).releases, f.initialStats.releases);
   // A cycle through two versions of the same tool is still a cycle.
   f.mutate("toolchains/python/versions/3.12.16.json", (release) => {
     release.platforms[host].dependencies = [{ toolchain: "python", version: "3.11.18" }];
@@ -320,7 +368,7 @@ test("Python recipes use pinned six-host archives, isolated paths and file check
 test("Linux formulae pin raw Debian payloads and isolate foreign tool paths", () => {
   const registry = JSON.parse(readFileSync(join(root, "registry.json"), "utf8"));
   const ids = registry.toolchains.filter((id) => id.startsWith("linux-"));
-  assert.equal(ids.length, 18);
+  assert.equal(ids.length, 21);
   for (const id of ids) {
     const release = JSON.parse(readFileSync(join(root, `toolchains/${id}/versions/12.0.0.json`), "utf8"));
     for (const [platform, recipe] of Object.entries(release.platforms)) {
@@ -339,7 +387,13 @@ test("Linux formulae pin raw Debian payloads and isolate foreign tool paths", ()
         assert.equal(step.stripComponents, 0);
         assert.equal(step.to, id.startsWith("linux-x86-") ? "opt/gizmoth/x86_64" : ".");
       }
-      assert.ok(recipe.checks.every((check) => check.type === "file"));
+      if (id === "linux-locale") {
+        assert.ok(recipe.checks.some((check) => check.type === "command" && check.program === "${prefix}/usr/bin/locale" && check.stdoutContains === "UTF-8"));
+      } else if (id === "linux-text-tools") {
+        assert.ok(recipe.checks.some((check) => check.type === "command" && check.program === "${prefix}/usr/bin/awk" && check.stdoutContains === "gizmoth-awk-ok"));
+      } else {
+        assert.ok(recipe.checks.every((check) => check.type === "file"));
+      }
       if (id.startsWith("linux-x86-") || id === "linux-qemu-user") assert.equal(platform, "linux-arm64");
       assert.equal(recipe.bootstrap ?? false, id === "linux-runtime");
     }
