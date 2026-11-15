@@ -3,7 +3,7 @@
   "apiVersion": "devenv.gizmoth.dev/v1alpha1",
   "kind": "Toolchain",
   "id": "linux-cxx-runtime",
-  "name": "Linux C++ runtime",
+  "name": "libstdc++6",
   "description": "Native libstdc++ for vendor compilers; libc and libgcc come from the exact Linux runtime dependency.",
   "category": "runtime",
   "homepage": "https://packages.debian.org/bookworm/libstdc++6",

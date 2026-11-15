@@ -3,7 +3,7 @@
   "apiVersion": "devenv.gizmoth.dev/v1alpha1",
   "kind": "Toolchain",
   "id": "linux-qemu-user",
-  "name": "Linux QEMU user translation",
+  "name": "qemu-user-static",
   "description": "Native ARM64 static QEMU 7.2 interpreters, including qemu-x86_64-static, for binfmt_misc.",
   "category": "utility",
   "homepage": "https://www.debian.org/releases/bookworm/",

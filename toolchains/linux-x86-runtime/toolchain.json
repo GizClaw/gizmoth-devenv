@@ -3,7 +3,7 @@
   "apiVersion": "devenv.gizmoth.dev/v1alpha1",
   "kind": "Toolchain",
   "id": "linux-x86-runtime",
-  "name": "Linux x86_64 compatibility runtime",
+  "name": "libc6",
   "description": "glibc and the exact amd64 dependency closure for the translated x86_64 binutils proof.",
   "category": "runtime",
   "homepage": "https://www.debian.org/releases/bookworm/",

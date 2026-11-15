@@ -3,13 +3,18 @@
   "apiVersion": "devenv.gizmoth.dev/v1alpha1",
   "kind": "Toolchain",
   "id": "linux-text-tools",
-  "name": "Linux POSIX text tools",
+  "name": "mawk",
   "description": "Native mawk for SDK pre-build text processing and the managed POSIX awk alias.",
   "category": "build-tool",
   "homepage": "https://packages.debian.org/bookworm/mawk",
   "license": "GPL-2.0-only",
   "status": "published",
   "defaultVersion": "12.0.0",
-  "releases": [{ "version": "12.0.0", "manifest": "versions/12.0.0.json" }],
+  "releases": [
+    {
+      "version": "12.0.0",
+      "manifest": "versions/12.0.0.json"
+    }
+  ],
   "notes": "Adds mawk 1.3.4.20200120-3.1 without changing published runtime/build-tools releases. Raw Debian data only; no alternatives or maintainer scripts run. Qualification executes awk with array and loop syntax used by JieLi pre_build."
 }

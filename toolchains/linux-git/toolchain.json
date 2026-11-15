@@ -3,7 +3,7 @@
   "apiVersion": "devenv.gizmoth.dev/v1alpha1",
   "kind": "Toolchain",
   "id": "linux-git",
-  "name": "Linux Git",
+  "name": "git",
   "description": "Git 2.39.5 with Perl helpers and exact Debian Bookworm runtime dependencies.",
   "category": "utility",
   "homepage": "https://www.debian.org/releases/bookworm/",

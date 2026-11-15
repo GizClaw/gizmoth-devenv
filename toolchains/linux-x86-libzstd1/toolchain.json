@@ -3,7 +3,7 @@
   "apiVersion": "devenv.gizmoth.dev/v1alpha1",
   "kind": "Toolchain",
   "id": "linux-x86-libzstd1",
-  "name": "x86 library layer: libzstd1",
+  "name": "libzstd1",
   "description": "Pinned amd64 Debian Bookworm payload for the opt/gizmoth/x86_64 compatibility runtime.",
   "category": "runtime",
   "homepage": "https://www.debian.org/releases/bookworm/",

@@ -3,7 +3,7 @@
   "apiVersion": "devenv.gizmoth.dev/v1alpha1",
   "kind": "Toolchain",
   "id": "bazelisk",
-  "name": "Bazel (Bazelisk)",
+  "name": "Bazelisk",
   "description": "Runs the Bazel version selected by each project's .bazelversion file.",
   "category": "build-tool",
   "homepage": "https://github.com/bazelbuild/bazelisk",
