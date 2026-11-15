@@ -3,7 +3,7 @@
   "apiVersion": "devenv.gizmoth.dev/v1alpha1",
   "kind": "Toolchain",
   "id": "esp32ulp-elf",
-  "name": "ESP ULP assembler",
+  "name": "esp32ulp-elf",
   "description": "Native Linux tools selected by GizClaw ESP-IDF ddb3852ab5c7f9e6dbc268203ef9d612de391bf8.",
   "category": "compiler",
   "homepage": "https://github.com/espressif/binutils-gdb",

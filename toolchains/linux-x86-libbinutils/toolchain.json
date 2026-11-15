@@ -3,7 +3,7 @@
   "apiVersion": "devenv.gizmoth.dev/v1alpha1",
   "kind": "Toolchain",
   "id": "linux-x86-libbinutils",
-  "name": "x86 library layer: libbinutils",
+  "name": "libbinutils",
   "description": "Pinned amd64 Debian Bookworm payload for the opt/gizmoth/x86_64 compatibility runtime.",
   "category": "runtime",
   "homepage": "https://www.debian.org/releases/bookworm/",

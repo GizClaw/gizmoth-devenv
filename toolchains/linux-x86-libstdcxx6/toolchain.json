@@ -3,7 +3,7 @@
   "apiVersion": "devenv.gizmoth.dev/v1alpha1",
   "kind": "Toolchain",
   "id": "linux-x86-libstdcxx6",
-  "name": "x86 library layer: libstdc++6",
+  "name": "libstdc++6",
   "description": "Pinned amd64 Debian Bookworm payload for the opt/gizmoth/x86_64 compatibility runtime.",
   "category": "runtime",
   "homepage": "https://www.debian.org/releases/bookworm/",
