@@ -1,0 +1,20 @@
+{
+  "$schema": "../../schemas/devenv.schema.json",
+  "apiVersion": "devenv.gizmoth.dev/v1alpha1",
+  "kind": "Toolchain",
+  "id": "jieli-postbuild",
+  "name": "JieLi post-build tools",
+  "description": "Pinned offline firmware packaging tools with the exact GizOS pack_res name and content identity.",
+  "category": "post-build",
+  "homepage": "https://pkgman.jieliapp.com/doc/all",
+  "license": "LicenseRef-Vendor",
+  "notes": "ELF dependency closure inspected without invoking USB/download tools. Safe full firmware packaging is qualified with each SDK build.",
+  "status": "published",
+  "defaultVersion": "2026.7.28+1",
+  "releases": [
+    {
+      "version": "2026.7.28+1",
+      "manifest": "versions/2026.7.28+1.json"
+    }
+  ]
+}

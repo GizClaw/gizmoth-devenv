@@ -4,7 +4,7 @@ GizMoth's own Git registry for its **Development Environments** page. Users inst
 
 GizMoth fetches a pinned Git commit, then downloads vendor files from upstream and verifies their pinned digests and sizes. All recipes and local lifecycle rules belong to this registry format. It requires no Homebrew, GizOS `gizos` CLI or Bun.
 
-**Status: draft format `devenv.gizmoth.dev/v1alpha1`.** Bazelisk, Python, Debian Bookworm minimal guest formulae and the GizOS base host-tools environment have published metadata. Every chip, SDK and target compiler remains `planned`. A published entry means its metadata validates; native installation and firmware builds need qualification in GizMoth.
+**Status: draft format `devenv.gizmoth.dev/v1alpha1`.** Published metadata covers Bazelisk, Python, Debian Bookworm guest layers, native Arm/ESP compilers, JieLi tools with explicit x86 compatibility, Ninja, Git LFS and ESP ROM ELF data. Chip and SDK entries remain `planned`; installing these tools alone does not install a vendor SDK. All inputs are original upstream downloads described by JSON; the registry hosts no dependency payloads or repacked releases.
 
 ## Repository layout
 
@@ -35,7 +35,7 @@ Current entries:
 | Environments | `gizos`: Bazelisk 1.30.0 and Python 3.12.16 (published) |
 | Chips | `esp32s3`, `bk7258`, `ac707n` (planned) |
 | SDKs | `esp-idf`, `beken-bk7258`, `jieli-ac707n` (planned) |
-| Toolchains | `bazelisk` 1.30.0 (default), 1.29.0; `python` 3.12.16 (default), 3.11.18; Linux guest formulae 12.0.0 (published); `arm-gnu`, `xtensa-esp-elf`, `jieli` (planned) |
+| Toolchains | `bazelisk` 1.30.0 (default), 1.29.0; `python` 3.12.16 (default), 3.11.18; Linux guest formulae 12.0.0; `arm-gnu` 10.3.1; `xtensa-esp-elf` and `riscv32-esp-elf` 16.1.0+20260609; `esp32ulp-elf` 2.38.0+20240113; `jieli` 4.0.1+20250805.1; `jieli-postbuild` 2026.7.28+1; `ninja` 1.13.2; `git-lfs` 3.8.1; `esp-rom-elfs` 2026.5.28 |
 
 Both published tools cover macOS, Linux and Windows on x86_64/arm64. Bazelisk installs the launcher as both `bazelisk` and `bazel`; each project's `.bazelversion` selects Bazel, which Bazelisk downloads on first use. Python uses CPython `install_only_stripped` archives from `astral-sh/python-build-standalone` release `20261110`, with GitHub asset SHA-256 digests and byte sizes. Python recipes only unpack the archive and check its executable file; no installation commands run.
 
@@ -56,18 +56,23 @@ The initial root-bundle release is `12.0.0`; each source URL carries its exact D
 | `linux-qemu-user` | 56,490,396 | — | Complete upstream static QEMU package; ARM64 `qemu-x86_64-static` interpreter |
 | `linux-x86-runtime` and its library layers | 7,990,952 | — | amd64 glibc and exact binutils runtime closure under `/opt/gizmoth/x86_64` on an ARM64 host |
 | `linux-x86-binutils` | 2,245,848 | — | Real amd64 GNU binutils executables for translation qualification; no PATH entries |
+| `linux-cxx-runtime` | 556,608 | 612,604 | Native libstdc++ closure for vendor compilers |
+| `linux-locale` | 534,528 | 609,144 | Compiled C.utf8 locale with an actual UTF-8 charmap check |
+| `linux-text-tools` | 112,492 | 119,144 | Native mawk with an actual managed awk command check |
 
 The table gives each bundle's own source bytes, excluding dependency downloads, except for the explicitly combined x86 runtime/library row. The runtime pins glibc `2.36-9+deb12u14`, Bash `5.2.15-2+b13`, Dash `0.5.12-2`, erofs-utils `1.5-1` and e2fsprogs `1.47.0-2+b2`. Build tools include GCC `12.2.0-14+deb12u1`, Make `4.3-4.1`, CMake `3.25.1-1`, Ninja `1.11.1-2~deb12u1`, pkgconf `1.8.1-1`, ccache `4.8+really4.7.5-1` and binutils `2.40-2`. Git is `2.39.5-0+deb12u3`; static QEMU is `7.2+dfsg-7+deb12u18+b3`. Debian epoch prefixes are retained by the upstream metadata where applicable; they do not appear in `.deb` filenames.
 
 Payload file checks use `/bin/bash`, `/bin/dash`, `/sbin/mke2fs` and `/usr/bin/mkfs.erofs`. GizMoth creates `/bin/sh` and other required aliases, account files and the concatenated certificate bundle. No apt/dpkg runtime is installed. The QEMU package retains all upstream static interpreters because the registry does not repackage inputs or define extraction filters.
 
-To test unmerged metadata locally, stop GizMoth and seed its saved catalog from this working tree:
+Package paths describe the guest filesystem. Guest-root layers show `/` because they merge into the managed read-only root; their individual executables/libraries live under `/usr/bin`, `/usr/lib` and related directories. Foreign x86 library layers merge under `/opt/gizmoth/x86_64`. Normal versioned tools keep `/opt/gizmoth/packages/toolchains/<id>/<version>` prefixes. These are guest installation paths, not separate writable host directories.
+
+To test unmerged metadata, export only to a temporary directory or an isolated test instance:
 
 ```bash
-node scripts/export-snapshot.mjs '/absolute/app-data/compile/registry'
+node scripts/export-snapshot.mjs '/absolute/isolated-test-data/compile/registry'
 ```
 
-The script validates first and writes `<content-derived-development-id>.json` plus `current.json` using GizMoth's saved-snapshot format. The development identity is not an upstream Git commit. It leaves the production repository and `main` branch unchanged; a normal refresh replaces the seed. Tests can export to a temporary directory instead of application data.
+The script validates first and writes `<content-derived-development-id>.json` plus `current.json` using GizMoth's saved-snapshot format. The development identity is not an upstream Git commit. Keep it out of the formal application's data; production sync must fetch actual registry main.
 
 ## Validate
 

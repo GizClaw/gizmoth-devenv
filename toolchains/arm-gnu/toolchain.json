@@ -3,12 +3,18 @@
   "apiVersion": "devenv.gizmoth.dev/v1alpha1",
   "kind": "Toolchain",
   "id": "arm-gnu",
-  "name": "Arm GNU Toolchain",
-  "description": "Arm cross-compilers shared by Beken SDKs.",
+  "name": "GNU Arm Embedded Toolchain",
+  "description": "Native GNU Arm Embedded 10.3-2021.10 compilers, assembler and linker for Beken SDKs.",
   "category": "compiler",
   "homepage": "https://developer.arm.com/Tools%20and%20Software/GNU%20Toolchain",
   "license": "LicenseRef-Vendor-Bundle",
-  "status": "planned",
-  "notes": "Add exact vendor releases per host. Some SDK-required versions have no native Apple Silicon build.",
-  "releases": []
+  "status": "published",
+  "notes": "Native aarch64 execution and Cortex-M33 compile/link verified. The bundled legacy GDB requires additional Python 2.7/ncurses runtime and is not part of compiler qualification.",
+  "releases": [
+    {
+      "version": "10.3.1",
+      "manifest": "versions/10.3.1.json"
+    }
+  ],
+  "defaultVersion": "10.3.1"
 }

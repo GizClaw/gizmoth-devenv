@@ -1,0 +1,19 @@
+{
+  "$schema": "../../schemas/devenv.schema.json",
+  "apiVersion": "devenv.gizmoth.dev/v1alpha1",
+  "kind": "Toolchain",
+  "id": "linux-cxx-runtime",
+  "name": "Linux C++ runtime",
+  "description": "Native libstdc++ for vendor compilers; libc and libgcc come from the exact Linux runtime dependency.",
+  "category": "runtime",
+  "homepage": "https://packages.debian.org/bookworm/libstdc++6",
+  "license": "GPL-3.0-or-later WITH GCC-exception-3.1",
+  "status": "published",
+  "defaultVersion": "12.0.0",
+  "releases": [
+    {
+      "version": "12.0.0",
+      "manifest": "versions/12.0.0.json"
+    }
+  ]
+}

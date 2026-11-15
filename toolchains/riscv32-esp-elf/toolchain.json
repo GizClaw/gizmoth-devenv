@@ -1,0 +1,20 @@
+{
+  "$schema": "../../schemas/devenv.schema.json",
+  "apiVersion": "devenv.gizmoth.dev/v1alpha1",
+  "kind": "Toolchain",
+  "id": "riscv32-esp-elf",
+  "name": "RISC-V ESP Toolchain",
+  "description": "Native Linux tools selected by GizClaw ESP-IDF ddb3852ab5c7f9e6dbc268203ef9d612de391bf8.",
+  "category": "compiler",
+  "homepage": "https://github.com/espressif/crosstool-NG",
+  "license": "GPL-3.0-or-later WITH GCC-exception-3.1",
+  "notes": "Upstream tool version esp-16.1.0_20260609; both host archives are pinned by the exact SDK tools.json. SDK target-specific dynamic configuration is selected by the build.",
+  "status": "published",
+  "defaultVersion": "16.1.0+20260609",
+  "releases": [
+    {
+      "version": "16.1.0+20260609",
+      "manifest": "versions/16.1.0+20260609.json"
+    }
+  ]
+}

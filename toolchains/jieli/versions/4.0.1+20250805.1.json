@@ -1,0 +1,165 @@
+{
+  "$schema": "../../../schemas/devenv.schema.json",
+  "apiVersion": "devenv.gizmoth.dev/v1alpha1",
+  "kind": "ToolchainRelease",
+  "id": "jieli",
+  "version": "4.0.1+20250805.1",
+  "platforms": {
+    "linux-arm64": {
+      "requires": [
+        "sh"
+      ],
+      "dependencies": [
+        {
+          "toolchain": "linux-qemu-user",
+          "version": "12.0.0"
+        },
+        {
+          "toolchain": "linux-x86-runtime",
+          "version": "12.0.0"
+        }
+      ],
+      "sources": [
+        {
+          "id": "toolchain",
+          "type": "file",
+          "url": "https://jl-update.oss-cn-shenzhen.aliyuncs.com/jieli-linux-toolchains-20250805.1.tar.xz",
+          "sha256": "f686586bcfb45e0f0bb27fd2b39c7a7f313cb4f0e88a66a14da621ffa8225958",
+          "size": 26009040
+        }
+      ],
+      "install": [
+        {
+          "type": "extract",
+          "source": "toolchain",
+          "to": "toolchain",
+          "format": "tar.xz",
+          "stripComponents": 1
+        },
+        {
+          "type": "run",
+          "program": "sh",
+          "args": [
+            "-ec",
+            "printf '%s\\n' '20250805.1' > .firmware-devenv-version"
+          ],
+          "cwd": "toolchain",
+          "environment": {},
+          "timeoutSeconds": 30
+        }
+      ],
+      "environment": {
+        "prependPath": [],
+        "variables": {
+          "JIELI_TOOLCHAIN_ROOT": "${prefix}/toolchain"
+        }
+      },
+      "checks": [
+        {
+          "type": "file",
+          "path": "toolchain/pi32v2/bin/clang",
+          "executable": true
+        },
+        {
+          "type": "file",
+          "path": "toolchain/q32s/bin/clang",
+          "executable": true
+        },
+        {
+          "type": "command",
+          "program": "${prefix}/toolchain/pi32v2/bin/clang",
+          "args": [
+            "--version"
+          ],
+          "stdoutContains": "clang version 4.0.1 () ()",
+          "timeoutSeconds": 30
+        },
+        {
+          "type": "command",
+          "program": "${prefix}/toolchain/q32s/bin/clang",
+          "args": [
+            "--version"
+          ],
+          "stdoutContains": "clang version 4.0.1 () ()",
+          "timeoutSeconds": 30
+        }
+      ]
+    },
+    "linux-x86_64": {
+      "requires": [
+        "sh"
+      ],
+      "dependencies": [
+        {
+          "toolchain": "linux-cxx-runtime",
+          "version": "12.0.0"
+        }
+      ],
+      "sources": [
+        {
+          "id": "toolchain",
+          "type": "file",
+          "url": "https://jl-update.oss-cn-shenzhen.aliyuncs.com/jieli-linux-toolchains-20250805.1.tar.xz",
+          "sha256": "f686586bcfb45e0f0bb27fd2b39c7a7f313cb4f0e88a66a14da621ffa8225958",
+          "size": 26009040
+        }
+      ],
+      "install": [
+        {
+          "type": "extract",
+          "source": "toolchain",
+          "to": "toolchain",
+          "format": "tar.xz",
+          "stripComponents": 1
+        },
+        {
+          "type": "run",
+          "program": "sh",
+          "args": [
+            "-ec",
+            "printf '%s\\n' '20250805.1' > .firmware-devenv-version"
+          ],
+          "cwd": "toolchain",
+          "environment": {},
+          "timeoutSeconds": 30
+        }
+      ],
+      "environment": {
+        "prependPath": [],
+        "variables": {
+          "JIELI_TOOLCHAIN_ROOT": "${prefix}/toolchain"
+        }
+      },
+      "checks": [
+        {
+          "type": "file",
+          "path": "toolchain/pi32v2/bin/clang",
+          "executable": true
+        },
+        {
+          "type": "file",
+          "path": "toolchain/q32s/bin/clang",
+          "executable": true
+        },
+        {
+          "type": "command",
+          "program": "${prefix}/toolchain/pi32v2/bin/clang",
+          "args": [
+            "--version"
+          ],
+          "stdoutContains": "clang version 4.0.1 () ()",
+          "timeoutSeconds": 30
+        },
+        {
+          "type": "command",
+          "program": "${prefix}/toolchain/q32s/bin/clang",
+          "args": [
+            "--version"
+          ],
+          "stdoutContains": "clang version 4.0.1 () ()",
+          "timeoutSeconds": 30
+        }
+      ]
+    }
+  }
+}

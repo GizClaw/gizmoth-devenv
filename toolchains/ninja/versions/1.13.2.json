@@ -1,0 +1,107 @@
+{
+  "$schema": "../../../schemas/devenv.schema.json",
+  "apiVersion": "devenv.gizmoth.dev/v1alpha1",
+  "kind": "ToolchainRelease",
+  "id": "ninja",
+  "version": "1.13.2",
+  "platforms": {
+    "linux-arm64": {
+      "requires": [],
+      "dependencies": [
+        {
+          "toolchain": "linux-cxx-runtime",
+          "version": "12.0.0"
+        }
+      ],
+      "sources": [
+        {
+          "id": "ninja",
+          "type": "file",
+          "url": "https://github.com/ninja-build/ninja/releases/download/v1.13.2/ninja-linux-aarch64.zip",
+          "sha256": "fd2cacc8050a7f12a16a2e48f9e06fca5c14fc4c2bee2babb67b58be17a607fc",
+          "size": 126256
+        }
+      ],
+      "install": [
+        {
+          "type": "extract",
+          "source": "ninja",
+          "to": "bin",
+          "format": "zip",
+          "stripComponents": 0
+        }
+      ],
+      "environment": {
+        "prependPath": [
+          "bin"
+        ],
+        "variables": {}
+      },
+      "checks": [
+        {
+          "type": "file",
+          "path": "bin/ninja",
+          "executable": true
+        },
+        {
+          "type": "command",
+          "program": "${prefix}/bin/ninja",
+          "args": [
+            "--version"
+          ],
+          "stdoutContains": "1.13.2",
+          "timeoutSeconds": 30
+        }
+      ]
+    },
+    "linux-x86_64": {
+      "requires": [],
+      "dependencies": [
+        {
+          "toolchain": "linux-cxx-runtime",
+          "version": "12.0.0"
+        }
+      ],
+      "sources": [
+        {
+          "id": "ninja",
+          "type": "file",
+          "url": "https://github.com/ninja-build/ninja/releases/download/v1.13.2/ninja-linux.zip",
+          "sha256": "5749cbc4e668273514150a80e387a957f933c6ed3f5f11e03fb30955e2bbead6",
+          "size": 134040
+        }
+      ],
+      "install": [
+        {
+          "type": "extract",
+          "source": "ninja",
+          "to": "bin",
+          "format": "zip",
+          "stripComponents": 0
+        }
+      ],
+      "environment": {
+        "prependPath": [
+          "bin"
+        ],
+        "variables": {}
+      },
+      "checks": [
+        {
+          "type": "file",
+          "path": "bin/ninja",
+          "executable": true
+        },
+        {
+          "type": "command",
+          "program": "${prefix}/bin/ninja",
+          "args": [
+            "--version"
+          ],
+          "stdoutContains": "1.13.2",
+          "timeoutSeconds": 30
+        }
+      ]
+    }
+  }
+}
