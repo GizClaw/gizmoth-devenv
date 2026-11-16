@@ -1,0 +1,17 @@
+{
+  "$schema": "../../schemas/devenv.schema.json",
+  "apiVersion": "devenv.gizmoth.dev/v1alpha1",
+  "kind": "Chip",
+  "id": "esp32c5",
+  "name": "ESP32-C5",
+  "vendor": "Espressif",
+  "description": "Espressif ESP32-C5 embedded target supported by GizOS.",
+  "homepage": "https://www.espressif.com/",
+  "status": "published",
+  "notes": "Complete candidate download formula for the Linux ARM64 guest. Native installation and firmware-build verification are performed by GizMoth before merging this registry branch.",
+  "sdk": "esp-idf",
+  "target": "esp32c5",
+  "tools": [
+    "bazelisk"
+  ]
+}

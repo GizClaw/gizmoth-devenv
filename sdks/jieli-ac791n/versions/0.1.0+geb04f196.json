@@ -51,7 +51,7 @@
           "type": "git",
           "url": "https://github.com/GizClaw/fw-AC791N_SDK.git",
           "commit": "eb04f1966cf2b7cbb72cbb54db906bcb293b5a4a",
-          "submodules": false
+          "submodules": true
         }
       ],
       "install": [
@@ -102,17 +102,14 @@
         },
         {
           "type": "command",
-          "program": "git",
+          "program": "${toolchain:python}/python/bin/python3",
           "args": [
-            "-C",
-            "${prefix}/payload/sdk",
-            "diff",
-            "--quiet",
-            "--exit-code",
-            "--ignore-submodules=none",
-            "HEAD",
-            "--"
+            "-I",
+            "-c",
+            "import subprocess,sys\nroot=sys.argv[1]\nstatus=subprocess.check_output(['git','-C',root,'status','--porcelain=v1','--untracked-files=all','--ignore-submodules=none'],text=True)\nassert not status, 'SDK checkout is dirty: '+status\nmodules=subprocess.check_output(['git','-C',root,'submodule','status','--recursive'],text=True)\nassert all(line.startswith(' ') for line in modules.splitlines()), 'SDK submodules are missing or mismatched: '+modules\nprint('gizmoth-sdk-clean')",
+            "${prefix}/payload/sdk"
           ],
+          "stdoutContains": "gizmoth-sdk-clean",
           "timeoutSeconds": 60
         }
       ]
@@ -163,7 +160,7 @@
           "type": "git",
           "url": "https://github.com/GizClaw/fw-AC791N_SDK.git",
           "commit": "eb04f1966cf2b7cbb72cbb54db906bcb293b5a4a",
-          "submodules": false
+          "submodules": true
         }
       ],
       "install": [
@@ -214,17 +211,14 @@
         },
         {
           "type": "command",
-          "program": "git",
+          "program": "${toolchain:python}/python/bin/python3",
           "args": [
-            "-C",
-            "${prefix}/payload/sdk",
-            "diff",
-            "--quiet",
-            "--exit-code",
-            "--ignore-submodules=none",
-            "HEAD",
-            "--"
+            "-I",
+            "-c",
+            "import subprocess,sys\nroot=sys.argv[1]\nstatus=subprocess.check_output(['git','-C',root,'status','--porcelain=v1','--untracked-files=all','--ignore-submodules=none'],text=True)\nassert not status, 'SDK checkout is dirty: '+status\nmodules=subprocess.check_output(['git','-C',root,'submodule','status','--recursive'],text=True)\nassert all(line.startswith(' ') for line in modules.splitlines()), 'SDK submodules are missing or mismatched: '+modules\nprint('gizmoth-sdk-clean')",
+            "${prefix}/payload/sdk"
           ],
+          "stdoutContains": "gizmoth-sdk-clean",
           "timeoutSeconds": 60
         }
       ]

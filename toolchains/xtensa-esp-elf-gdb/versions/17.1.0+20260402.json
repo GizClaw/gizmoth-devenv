@@ -1,0 +1,84 @@
+{
+  "$schema": "../../../schemas/devenv.schema.json",
+  "apiVersion": "devenv.gizmoth.dev/v1alpha1",
+  "kind": "ToolchainRelease",
+  "id": "xtensa-esp-elf-gdb",
+  "version": "17.1.0+20260402",
+  "platforms": {
+    "linux-arm64": {
+      "requires": [],
+      "dependencies": [
+        {
+          "toolchain": "python",
+          "version": "3.12.16"
+        },
+        {
+          "toolchain": "linux-esp-debug-libs",
+          "version": "12.0.0"
+        }
+      ],
+      "sources": [
+        {
+          "id": "archive",
+          "type": "file",
+          "sha256": "00290ffe21b2916ffd343fd28ac34fc8b93e99b992a3656fa09b4f2bdc564bea",
+          "size": 41589296,
+          "url": "https://github.com/espressif/binutils-gdb/releases/download/esp-gdb-v17.1_20260402/xtensa-esp-elf-gdb-17.1_20260402-aarch64-linux-gnu.tar.gz"
+        }
+      ],
+      "install": [
+        {
+          "type": "extract",
+          "source": "archive",
+          "to": "toolchain",
+          "format": "tar.gz",
+          "stripComponents": 1
+        }
+      ],
+      "environment": {
+        "prependPath": [
+          "toolchain/bin"
+        ],
+        "variables": {}
+      },
+      "checks": [
+        {
+          "type": "file",
+          "path": "toolchain/bin/xtensa-esp-elf-gdb-no-python",
+          "executable": true
+        },
+        {
+          "type": "file",
+          "path": "toolchain/bin/xtensa-esp-elf-gdb-3.12",
+          "executable": true
+        },
+        {
+          "type": "file",
+          "path": "toolchain/bin/xtensa-esp32s3-elf-gdb",
+          "executable": true
+        },
+        {
+          "type": "command",
+          "program": "${prefix}/toolchain/bin/xtensa-esp-elf-gdb-no-python",
+          "args": [
+            "--version"
+          ],
+          "timeoutSeconds": 30,
+          "stdoutContains": "17.1_20260402"
+        },
+        {
+          "type": "command",
+          "program": "${prefix}/toolchain/bin/xtensa-esp32s3-elf-gdb",
+          "args": [
+            "--batch",
+            "--nx",
+            "-ex",
+            "python import sys; print('gizmoth-gdb-python', sys.version_info[:2])"
+          ],
+          "timeoutSeconds": 30,
+          "stdoutContains": "gizmoth-gdb-python (3, 12)"
+        }
+      ]
+    }
+  }
+}

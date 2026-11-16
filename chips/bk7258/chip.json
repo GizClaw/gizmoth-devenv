@@ -7,9 +7,11 @@
   "vendor": "Beken",
   "description": "Beken wireless SoC supported by GizOS.",
   "homepage": "https://www.bekencorp.com/",
-  "status": "planned",
-  "notes": "Publish after the BK7258 SDK and its Arm GNU toolchain have releases. Apple Silicon hosts need a Rosetta check.",
+  "status": "published",
+  "notes": "Complete candidate download formula for the Linux ARM64 guest. Native installation and firmware-build verification are performed by GizMoth before merging this registry branch.",
   "sdk": "beken-bk7258",
   "target": "bk7258",
-  "tools": ["bazelisk"]
+  "tools": [
+    "bazelisk"
+  ]
 }

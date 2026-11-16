@@ -1,0 +1,19 @@
+{
+  "$schema": "../../schemas/devenv.schema.json",
+  "apiVersion": "devenv.gizmoth.dev/v1alpha1",
+  "kind": "Sdk",
+  "id": "beken-bk7259",
+  "name": "Beken BK7259 SMP SDK",
+  "description": "Pinned BK7259 SDK4.0.1 with GNU Arm14.3.1 and an offline Python3.11 firmware-tool environment for native Linux x86_64.",
+  "homepage": "https://github.com/GizClaw/bk_avdk_smp",
+  "license": "Apache-2.0",
+  "status": "published",
+  "notes": "Candidate source 06cb0f2d9cdeab571ec5be2d54398c67e097a4cc supports native Linux x86_64 only; installation and firmware qualification remain pending. Firmware Python dependencies were audited independently, including vendored bk_py_libs, the Python OTA packager and hdrgen's openpyxl/et_xmlfile dependencies. Arm14.3.rel1/compiler14.3.1 original archives are byte-verified on both Linux hosts. ARM64 SDK support remains planned: beken_utils/scripts/libcommon.so is x86_64 and its encrypt/xts_aes ctypes APIs need a matching x86 Python and dependency environment, QEMU execution and GizOS Python locator integration before the full AES/XTS tool surface can be supported there. Default partition generation only imports those classes; its gen_code path does not call their func_enc methods. Documentation generation, the invalid legacy convert_to_cmake.py utility and missing upstream legacy packager_tools/security executables are outside this firmware-tool candidate. No SDK checkout or vendor program was run during registry validation.",
+  "releases": [
+    {
+      "version": "4.0.1+g06cb0f2d",
+      "manifest": "versions/4.0.1+g06cb0f2d.json"
+    }
+  ],
+  "defaultVersion": "4.0.1+g06cb0f2d"
+}

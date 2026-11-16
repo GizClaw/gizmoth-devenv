@@ -1,0 +1,17 @@
+{
+  "$schema": "../../schemas/devenv.schema.json",
+  "apiVersion": "devenv.gizmoth.dev/v1alpha1",
+  "kind": "Chip",
+  "id": "bk7259",
+  "name": "BK7259",
+  "vendor": "Beken",
+  "description": "Beken audio/video SDK4.0.1 target with GNU Arm14.3.rel1 for native Linux x86_64.",
+  "homepage": "https://www.bekencorp.com/",
+  "status": "published",
+  "notes": "Candidate recipe for native Linux x86_64 with source 06cb0f2d9cdeab571ec5be2d54398c67e097a4cc and compiler14.3.1. Installation and firmware qualification remain pending. ARM64 SDK support remains planned because the SDK's x86_64 libcommon.so ctypes APIs require a matching foreign Python environment plus QEMU and GizOS Python locator integration; no ARM64 SDK recipe is advertised. The firmware-tool candidate excludes upstream legacy secure-boot executables and documentation tooling.",
+  "sdk": "beken-bk7259",
+  "target": "bk7259",
+  "tools": [
+    "bazelisk"
+  ]
+}

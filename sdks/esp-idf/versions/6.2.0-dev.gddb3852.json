@@ -11,7 +11,8 @@
         "sh",
         "mkdir",
         "ln",
-        "cp"
+        "cp",
+        "git-lfs"
       ],
       "dependencies": [
         {
@@ -49,10 +50,43 @@
         {
           "toolchain": "esp-rom-elfs",
           "version": "2026.5.28"
+        },
+        {
+          "toolchain": "git-lfs",
+          "version": "3.8.1"
+        },
+        {
+          "toolchain": "xtensa-esp-elf-gdb",
+          "version": "17.1.0+20260402"
+        },
+        {
+          "toolchain": "riscv32-esp-elf-gdb",
+          "version": "17.1.0+20260402"
+        },
+        {
+          "toolchain": "openocd-esp32",
+          "version": "0.12.0-esp32-20260831"
+        },
+        {
+          "toolchain": "esp-clangd",
+          "version": "21.1.3+20260408"
+        },
+        {
+          "toolchain": "esp-idf-configdep",
+          "version": "0.2.3"
         }
       ],
       "targets": {
         "esp32s3": {
+          "dependencies": []
+        },
+        "esp32p4": {
+          "dependencies": []
+        },
+        "esp32s31": {
+          "dependencies": []
+        },
+        "esp32c5": {
           "dependencies": []
         }
       },
@@ -909,7 +943,7 @@
           "program": "sh",
           "args": [
             "-ec",
-            "mkdir -p \"${prefix}/tools/python_env\"; cp \"${prefix}/python-inputs/espidf.constraints.v6.2.txt\" \"${prefix}/tools/espidf.constraints.v6.2.txt\"; mkdir -p \"${prefix}/tools/tools/xtensa-esp-elf/esp-16.1.0_20260609\"; ln -s \"${toolchain:xtensa-esp-elf}/toolchain\" \"${prefix}/tools/tools/xtensa-esp-elf/esp-16.1.0_20260609/xtensa-esp-elf\"; mkdir -p \"${prefix}/tools/tools/riscv32-esp-elf/esp-16.1.0_20260609\"; ln -s \"${toolchain:riscv32-esp-elf}/toolchain\" \"${prefix}/tools/tools/riscv32-esp-elf/esp-16.1.0_20260609/riscv32-esp-elf\"; mkdir -p \"${prefix}/tools/tools/esp32ulp-elf/2.38_20240113\"; ln -s \"${toolchain:esp32ulp-elf}/toolchain\" \"${prefix}/tools/tools/esp32ulp-elf/2.38_20240113/esp32ulp-elf\"; mkdir -p \"${prefix}/tools/tools/ninja/1.13.2\" \"${prefix}/tools/tools/esp-rom-elfs\"; ln -s \"${toolchain:ninja}/bin/ninja\" \"${prefix}/tools/tools/ninja/1.13.2/ninja\"; ln -s \"${toolchain:esp-rom-elfs}/rom\" \"${prefix}/tools/tools/esp-rom-elfs/20260528\""
+            "mkdir -p \"${prefix}/tools/python_env\"; cp \"${prefix}/python-inputs/espidf.constraints.v6.2.txt\" \"${prefix}/tools/espidf.constraints.v6.2.txt\"; mkdir -p \"${prefix}/tools/tools/xtensa-esp-elf/esp-16.1.0_20260609\"; ln -s \"${toolchain:xtensa-esp-elf}/toolchain\" \"${prefix}/tools/tools/xtensa-esp-elf/esp-16.1.0_20260609/xtensa-esp-elf\"; mkdir -p \"${prefix}/tools/tools/riscv32-esp-elf/esp-16.1.0_20260609\"; ln -s \"${toolchain:riscv32-esp-elf}/toolchain\" \"${prefix}/tools/tools/riscv32-esp-elf/esp-16.1.0_20260609/riscv32-esp-elf\"; mkdir -p \"${prefix}/tools/tools/esp32ulp-elf/2.38_20240113\"; ln -s \"${toolchain:esp32ulp-elf}/toolchain\" \"${prefix}/tools/tools/esp32ulp-elf/2.38_20240113/esp32ulp-elf\"; mkdir -p \"${prefix}/tools/tools/ninja/1.13.2\" \"${prefix}/tools/tools/esp-rom-elfs\"; ln -s \"${toolchain:ninja}/bin/ninja\" \"${prefix}/tools/tools/ninja/1.13.2/ninja\"; ln -s \"${toolchain:esp-rom-elfs}/rom\" \"${prefix}/tools/tools/esp-rom-elfs/20260528\"; mkdir -p \"${prefix}/tools/tools/xtensa-esp-elf-gdb/17.1_20260402\"; ln -s \"${toolchain:xtensa-esp-elf-gdb}/toolchain\" \"${prefix}/tools/tools/xtensa-esp-elf-gdb/17.1_20260402/xtensa-esp-elf-gdb\"; mkdir -p \"${prefix}/tools/tools/riscv32-esp-elf-gdb/17.1_20260402\"; ln -s \"${toolchain:riscv32-esp-elf-gdb}/toolchain\" \"${prefix}/tools/tools/riscv32-esp-elf-gdb/17.1_20260402/riscv32-esp-elf-gdb\"; mkdir -p \"${prefix}/tools/tools/openocd-esp32/v0.12.0-esp32-20260831\"; ln -s \"${toolchain:openocd-esp32}/toolchain\" \"${prefix}/tools/tools/openocd-esp32/v0.12.0-esp32-20260831/openocd-esp32\"; mkdir -p \"${prefix}/tools/tools/esp-clangd/esp-21.1.3_20260408\"; ln -s \"${toolchain:esp-clangd}/toolchain\" \"${prefix}/tools/tools/esp-clangd/esp-21.1.3_20260408/esp-clangd\"; mkdir -p \"${prefix}/tools/tools/esp-idf-configdep/0.2.3\"; ln -s \"${toolchain:esp-idf-configdep}/toolchain\" \"${prefix}/tools/tools/esp-idf-configdep/0.2.3/esp-idf-configdep-0.2.3\""
           ],
           "cwd": "python-inputs",
           "environment": {},
@@ -928,6 +962,19 @@
           "cwd": "python-inputs",
           "environment": {},
           "timeoutSeconds": 300
+        },
+        {
+          "type": "run",
+          "program": "${toolchain:python}/python/bin/python3",
+          "args": [
+            "-I",
+            "-c",
+            "from pathlib import Path; import sys; Path(sys.argv[1]).write_text(\"6.2\",encoding=\"utf-8\")",
+            "${prefix}/tools/python_env/idf6.2_py3.12_env/idf_version.txt"
+          ],
+          "cwd": "python-inputs",
+          "environment": {},
+          "timeoutSeconds": 30
         },
         {
           "type": "run",
@@ -990,7 +1037,8 @@
           "IDF_TOOLS_PATH": "${prefix}/tools",
           "IDF_PYTHON_ENV_PATH": "${prefix}/tools/python_env/idf6.2_py3.12_env",
           "ESP_IDF_VERSION": "6.2",
-          "ESP_ROM_ELF_DIR": "${prefix}/tools/tools/esp-rom-elfs/20260528/"
+          "ESP_ROM_ELF_DIR": "${prefix}/tools/tools/esp-rom-elfs/20260528/",
+          "OPENOCD_SCRIPTS": "${prefix}/tools/tools/openocd-esp32/v0.12.0-esp32-20260831/openocd-esp32/share/openocd/scripts"
         }
       },
       "checks": [
@@ -1023,17 +1071,14 @@
         },
         {
           "type": "command",
-          "program": "git",
+          "program": "${toolchain:python}/python/bin/python3",
           "args": [
-            "-C",
-            "${prefix}/payload/sdk",
-            "diff",
-            "--quiet",
-            "--exit-code",
-            "--ignore-submodules=none",
-            "HEAD",
-            "--"
+            "-I",
+            "-c",
+            "import subprocess,sys\nroot=sys.argv[1]\nstatus=subprocess.check_output(['git','-C',root,'status','--porcelain=v1','--untracked-files=all','--ignore-submodules=none'],text=True)\nassert not status, 'SDK checkout is dirty: '+status\nmodules=subprocess.check_output(['git','-C',root,'submodule','status','--recursive'],text=True)\nassert all(line.startswith(' ') for line in modules.splitlines()), 'SDK submodules are missing or mismatched: '+modules\nprint('gizmoth-sdk-clean')",
+            "${prefix}/payload/sdk"
           ],
+          "stdoutContains": "gizmoth-sdk-clean",
           "timeoutSeconds": 60
         },
         {
@@ -1071,6 +1116,82 @@
           ],
           "stdoutContains": "1.13.2",
           "timeoutSeconds": 10
+        },
+        {
+          "type": "file",
+          "path": "tools/tools/xtensa-esp-elf/esp-16.1.0_20260609/xtensa-esp-elf/bin/xtensa-esp-elf-gcc",
+          "executable": true
+        },
+        {
+          "type": "file",
+          "path": "tools/tools/riscv32-esp-elf/esp-16.1.0_20260609/riscv32-esp-elf/bin/riscv32-esp-elf-gcc",
+          "executable": true
+        },
+        {
+          "type": "file",
+          "path": "tools/tools/esp32ulp-elf/2.38_20240113/esp32ulp-elf/bin/esp32ulp-elf-as",
+          "executable": true
+        },
+        {
+          "type": "file",
+          "path": "tools/tools/xtensa-esp-elf-gdb/17.1_20260402/xtensa-esp-elf-gdb/bin/xtensa-esp-elf-gdb-no-python",
+          "executable": true
+        },
+        {
+          "type": "file",
+          "path": "tools/tools/xtensa-esp-elf-gdb/17.1_20260402/xtensa-esp-elf-gdb/bin/xtensa-esp-elf-gdb-3.12",
+          "executable": true
+        },
+        {
+          "type": "file",
+          "path": "tools/tools/xtensa-esp-elf-gdb/17.1_20260402/xtensa-esp-elf-gdb/bin/xtensa-esp32s3-elf-gdb",
+          "executable": true
+        },
+        {
+          "type": "file",
+          "path": "tools/tools/riscv32-esp-elf-gdb/17.1_20260402/riscv32-esp-elf-gdb/bin/riscv32-esp-elf-gdb-no-python",
+          "executable": true
+        },
+        {
+          "type": "file",
+          "path": "tools/tools/riscv32-esp-elf-gdb/17.1_20260402/riscv32-esp-elf-gdb/bin/riscv32-esp-elf-gdb-3.12",
+          "executable": true
+        },
+        {
+          "type": "file",
+          "path": "tools/tools/riscv32-esp-elf-gdb/17.1_20260402/riscv32-esp-elf-gdb/bin/riscv32-esp-elf-gdb",
+          "executable": true
+        },
+        {
+          "type": "file",
+          "path": "tools/tools/openocd-esp32/v0.12.0-esp32-20260831/openocd-esp32/bin/openocd",
+          "executable": true
+        },
+        {
+          "type": "file",
+          "path": "tools/tools/esp-clangd/esp-21.1.3_20260408/esp-clangd/bin/clangd",
+          "executable": true
+        },
+        {
+          "type": "file",
+          "path": "tools/tools/esp-idf-configdep/0.2.3/esp-idf-configdep-0.2.3/bin/esp-idf-configdep",
+          "executable": true
+        },
+        {
+          "type": "file",
+          "path": "tools/tools/openocd-esp32/v0.12.0-esp32-20260831/openocd-esp32/share/openocd/scripts/target/esp32s3.cfg",
+          "executable": false
+        },
+        {
+          "type": "command",
+          "program": "${prefix}/tools/python_env/idf6.2_py3.12_env/bin/python3",
+          "args": [
+            "${prefix}/payload/sdk/tools/idf_tools.py",
+            "--non-interactive",
+            "check"
+          ],
+          "stdoutContains": "Checking for installed tools...",
+          "timeoutSeconds": 60
         },
         {
           "type": "command",

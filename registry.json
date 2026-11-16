@@ -7,8 +7,14 @@
   "repository": "https://github.com/GizClaw/gizmoth-devenv",
   "chips": [
     "esp32s3",
+    "esp32p4",
+    "esp32s31",
+    "esp32c5",
     "bk7258",
-    "ac707n"
+    "ac695n",
+    "ac707n",
+    "ac791n",
+    "bk7259"
   ],
   "sdks": [
     "esp-idf",
@@ -16,7 +22,8 @@
     "jieli-ac707n",
     "jieli-ac695n",
     "jieli-ac791n",
-    "beken-bk-idk"
+    "beken-bk-idk",
+    "beken-bk7259"
   ],
   "toolchains": [
     "bazelisk",
@@ -50,7 +57,13 @@
     "ninja",
     "linux-locale",
     "linux-text-tools",
-    "esp-rom-elfs"
+    "esp-rom-elfs",
+    "xtensa-esp-elf-gdb",
+    "riscv32-esp-elf-gdb",
+    "openocd-esp32",
+    "esp-clangd",
+    "esp-idf-configdep",
+    "linux-esp-debug-libs"
   ],
   "environments": [
     "gizos"

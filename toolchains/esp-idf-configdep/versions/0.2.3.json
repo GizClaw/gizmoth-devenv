@@ -1,0 +1,61 @@
+{
+  "$schema": "../../../schemas/devenv.schema.json",
+  "apiVersion": "devenv.gizmoth.dev/v1alpha1",
+  "kind": "ToolchainRelease",
+  "id": "esp-idf-configdep",
+  "version": "0.2.3",
+  "platforms": {
+    "linux-arm64": {
+      "requires": [
+        "sh"
+      ],
+      "dependencies": [
+        {
+          "toolchain": "linux-runtime",
+          "version": "12.0.0"
+        }
+      ],
+      "sources": [
+        {
+          "id": "archive",
+          "type": "file",
+          "sha256": "5a1491b2009c9ed805b90e8efb27704ba96cc036b7aaca343310db846a9183a9",
+          "size": 60457,
+          "url": "https://github.com/espressif/esp-idf-configdep/releases/download/v0.2.3/esp-idf-configdep-0.2.3-linux-arm64.tar.gz"
+        }
+      ],
+      "install": [
+        {
+          "type": "extract",
+          "source": "archive",
+          "to": "toolchain",
+          "format": "tar.gz",
+          "stripComponents": 1
+        }
+      ],
+      "environment": {
+        "prependPath": [
+          "toolchain/bin"
+        ],
+        "variables": {}
+      },
+      "checks": [
+        {
+          "type": "file",
+          "path": "toolchain/bin/esp-idf-configdep",
+          "executable": true
+        },
+        {
+          "type": "command",
+          "program": "sh",
+          "args": [
+            "-ec",
+            "exec \"${prefix}/toolchain/bin/esp-idf-configdep\" --version 2>&1"
+          ],
+          "timeoutSeconds": 30,
+          "stdoutContains": "0.2.3"
+        }
+      ]
+    }
+  }
+}
