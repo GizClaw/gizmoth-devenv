@@ -64,7 +64,7 @@ function publish(f, type, id, version, platforms) {
 }
 
 test("official registry validates offline with generic tools and minimal guest formulae", () => {
-  assert.deepEqual(validateRegistry(root), { chips: 3, environments: 1, sdks: 3, toolchains: 32, planned: 6, releases: 34, platforms: 70 });
+  assert.deepEqual(validateRegistry(root), { chips: 3, environments: 1, sdks: 3, toolchains: 32, planned: 6, releases: 36, platforms: 74 });
 });
 
 test("Linux guest roots merge deb layers, and bootstrap implies guestRoot", (t) => {

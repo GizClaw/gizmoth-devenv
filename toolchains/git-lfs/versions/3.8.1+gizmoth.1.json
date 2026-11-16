@@ -1,0 +1,107 @@
+{
+  "$schema": "../../../schemas/devenv.schema.json",
+  "apiVersion": "devenv.gizmoth.dev/v1alpha1",
+  "kind": "ToolchainRelease",
+  "id": "git-lfs",
+  "version": "3.8.1+gizmoth.1",
+  "platforms": {
+    "linux-arm64": {
+      "requires": [],
+      "dependencies": [
+        {
+          "toolchain": "linux-git",
+          "version": "12.0.1"
+        }
+      ],
+      "sources": [
+        {
+          "id": "git-lfs",
+          "type": "file",
+          "url": "https://github.com/git-lfs/git-lfs/releases/download/v3.8.1/git-lfs-linux-arm64-v3.8.1.tar.gz",
+          "sha256": "67895dd77b63329796bc5efdd47b57f218e1f7b98717ebaf936a8238dbcaec0f",
+          "size": 5350198
+        }
+      ],
+      "install": [
+        {
+          "type": "extract",
+          "source": "git-lfs",
+          "to": "bin",
+          "format": "tar.gz",
+          "stripComponents": 1
+        }
+      ],
+      "environment": {
+        "prependPath": [
+          "bin"
+        ],
+        "variables": {}
+      },
+      "checks": [
+        {
+          "type": "file",
+          "path": "bin/git-lfs",
+          "executable": true
+        },
+        {
+          "type": "command",
+          "program": "${prefix}/bin/git-lfs",
+          "args": [
+            "version"
+          ],
+          "stdoutContains": "git-lfs/3.8.1",
+          "timeoutSeconds": 10
+        }
+      ]
+    },
+    "linux-x86_64": {
+      "requires": [],
+      "dependencies": [
+        {
+          "toolchain": "linux-git",
+          "version": "12.0.1"
+        }
+      ],
+      "sources": [
+        {
+          "id": "git-lfs",
+          "type": "file",
+          "url": "https://github.com/git-lfs/git-lfs/releases/download/v3.8.1/git-lfs-linux-amd64-v3.8.1.tar.gz",
+          "sha256": "e72cf723a4a660438862282e8aecf3885fc8123e88bfcad534cf6b941a354b75",
+          "size": 5917265
+        }
+      ],
+      "install": [
+        {
+          "type": "extract",
+          "source": "git-lfs",
+          "to": "bin",
+          "format": "tar.gz",
+          "stripComponents": 1
+        }
+      ],
+      "environment": {
+        "prependPath": [
+          "bin"
+        ],
+        "variables": {}
+      },
+      "checks": [
+        {
+          "type": "file",
+          "path": "bin/git-lfs",
+          "executable": true
+        },
+        {
+          "type": "command",
+          "program": "${prefix}/bin/git-lfs",
+          "args": [
+            "version"
+          ],
+          "stdoutContains": "git-lfs/3.8.1",
+          "timeoutSeconds": 10
+        }
+      ]
+    }
+  }
+}

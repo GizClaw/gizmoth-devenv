@@ -9,8 +9,9 @@
   "homepage": "https://github.com/git-lfs/git-lfs",
   "license": "MIT",
   "status": "published",
-  "defaultVersion": "3.8.1",
+  "defaultVersion": "3.8.1+gizmoth.1",
   "releases": [
-    { "version": "3.8.1", "manifest": "versions/3.8.1.json" }
+    { "version": "3.8.1", "manifest": "versions/3.8.1.json" },
+    { "version": "3.8.1+gizmoth.1", "manifest": "versions/3.8.1+gizmoth.1.json" }
   ]
 }
