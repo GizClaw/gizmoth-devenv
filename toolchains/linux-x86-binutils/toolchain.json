@@ -3,7 +3,7 @@
   "apiVersion": "devenv.gizmoth.dev/v1alpha1",
   "kind": "Toolchain",
   "id": "linux-x86-binutils",
-  "name": "Linux x86_64 binutils proof",
+  "name": "binutils-x86-64-linux-gnu",
   "description": "Real amd64 GNU binutils 2.40 executables for ARM64 QEMU user translation qualification.",
   "category": "post-build",
   "homepage": "https://www.debian.org/releases/bookworm/",

@@ -3,7 +3,7 @@
   "apiVersion": "devenv.gizmoth.dev/v1alpha1",
   "kind": "Toolchain",
   "id": "linux-build-tools",
-  "name": "Linux native build tools",
+  "name": "linux-build-tools",
   "description": "Native GCC/G++ 12, Make, CMake, Ninja, pkg-config and ccache with exact Debian Bookworm dependencies.",
   "category": "build-tool",
   "homepage": "https://www.debian.org/releases/bookworm/",

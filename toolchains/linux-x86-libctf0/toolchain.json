@@ -3,7 +3,7 @@
   "apiVersion": "devenv.gizmoth.dev/v1alpha1",
   "kind": "Toolchain",
   "id": "linux-x86-libctf0",
-  "name": "x86 library layer: libctf0",
+  "name": "libctf0",
   "description": "Pinned amd64 Debian Bookworm payload for the opt/gizmoth/x86_64 compatibility runtime.",
   "category": "runtime",
   "homepage": "https://www.debian.org/releases/bookworm/",

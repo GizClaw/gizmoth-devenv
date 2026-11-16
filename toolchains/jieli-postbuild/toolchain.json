@@ -3,7 +3,7 @@
   "apiVersion": "devenv.gizmoth.dev/v1alpha1",
   "kind": "Toolchain",
   "id": "jieli-postbuild",
-  "name": "JieLi post-build tools",
+  "name": "jieli-linux-post-build-tools",
   "description": "Pinned offline firmware packaging tools with the exact GizOS pack_res name and content identity.",
   "category": "post-build",
   "homepage": "https://pkgman.jieliapp.com/doc/all",
