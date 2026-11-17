@@ -49,11 +49,11 @@ This repository registers upstream files and installation metadata only. GizMoth
 
 The initial root-bundle release is `12.0.0`; each source URL carries its exact Debian package version. These sources come from Debian Bookworm `main`, release 12.15 dated 2026-07-11. The ARM64 and amd64 `Packages.xz` files were checked against the SHA-256 values in the official `https://deb.debian.org/debian/dists/bookworm/Release`: `2ddb1737692e8c45c53e8d57c0ce4cd21c78c5703b830c3226b1423566a06c00` and `9e0b5aabb2465b3d2e7a7fe27f9913846277833f7a2826e7767acccff5b588c5`, respectively. All 280 unique source files were downloaded, their sizes and SHA-256 digests verified, and their data-tar file inventories inspected without executing payloads or maintainer scripts. Mirrors may be used to retrieve identical bytes during maintenance; published URLs remain canonical `https://deb.debian.org/debian/` URLs.
 
-| Formula at 12.0.0 | ARM64 raw download bytes | x86_64 raw download bytes | Contents |
+| Formula (12.0.0 unless noted) | ARM64 raw download bytes | x86_64 raw download bytes | Contents |
 | --- | ---: | ---: | --- |
 | `linux-runtime` | 17,454,432 | 18,592,628 | 39 sources: Bash/Dash, basic utilities, glibc/loader, certs, erofs-utils and e2fsprogs with runtime dependencies |
 | `linux-network-libs` | 5,495,184 | 5,810,420 | Shared Git/CMake library closure; depends on runtime |
-| `linux-git` | 18,255,228 | 18,710,928 | Git/Perl helpers; depends on runtime and network libraries |
+| `linux-git` 12.0.1 | 18,255,228 | 18,710,928 | Versioned Git/Perl helpers; depends on runtime and network libraries |
 | `linux-build-tools` | 79,671,840 | 89,422,984 | Native GCC/G++, Make, CMake, Ninja, pkg-config, ccache, patch, file and unzip; depends on runtime and network libraries |
 | `linux-qemu-user` | 56,490,396 | — | Complete upstream static QEMU package; ARM64 `qemu-x86_64-static` interpreter |
 | `linux-x86-runtime` and its library layers | 7,990,952 | — | amd64 glibc and exact binutils runtime closure under `/opt/gizmoth/x86_64` on an ARM64 host |
@@ -68,6 +68,12 @@ The table gives each bundle's own source bytes, excluding dependency downloads, 
 Payload file checks use `/bin/bash`, `/bin/dash`, `/sbin/mke2fs` and `/usr/bin/mkfs.erofs`. GizMoth creates `/bin/sh` and other required aliases, account files and the concatenated certificate bundle. No apt/dpkg runtime is installed. The QEMU package retains all upstream static interpreters because the registry does not repackage inputs or define extraction filters.
 
 Package paths describe the guest filesystem. Guest-root layers show `/` because they merge into the managed read-only root; their individual executables/libraries live under `/usr/bin`, `/usr/lib` and related directories. Foreign x86 library layers merge under `/opt/gizmoth/x86_64`. Normal versioned tools keep `/opt/gizmoth/packages/toolchains/<id>/<version>` prefixes. These are guest installation paths, not separate writable host directories.
+
+Git's default formula is `linux-git` 12.0.1, installed at `/opt/gizmoth/packages/toolchains/linux-git/12.0.1`. It preserves the 12.0.0 upstream source pins. Separate Debian payload staging directories are merged inside this prefix; a declared runtime Bash step adjusts the installed Perl script shebangs, including the sample template hook. No upstream archive is repacked. Only `usr/bin` is exported to GizMoth's existing `/opt/gizmoth/bin` activation. Git helpers stay private in `usr/lib/git-core`.
+
+The selected Git formula exports `GIT_EXEC_PATH`, `GIT_TEMPLATE_DIR`, `GITPERLLIB`, `GIT_TEXTDOMAINDIR`, `LD_LIBRARY_PATH` and `PERL5LIB`, all rooted in its own prefix. Private libraries use `usr/lib/aarch64-linux-gnu` or `usr/lib/x86_64-linux-gnu`; Perl includes that architecture's `perl-base` and `perl/5.36.0` plus `usr/share/perl/5.36.0` and `usr/share/perl5`. These process variables are required alongside command activation. The exact `linux-runtime` and `linux-network-libs` 12.0.0 dependencies remain at standard Linux paths. Command checks qualify the Git version and exec path, template copying, a local commit/clone, the Perl interactive helper and modules (including XS), and HTTPS helper capabilities without a network request.
+
+The published root-layer Git 12.0.0 recipe remains immutable. Clients must exclude this inactive root version from new packs when selecting the managed default. Git LFS now defaults to registry release `3.8.1+gizmoth.1`, with unchanged upstream Git LFS 3.8.1 bytes and an exact dependency on managed Git 12.0.1; its published 3.8.1 recipe still pins legacy Git 12.0.0.
 
 To test unmerged metadata, export only to a temporary directory or an isolated test instance:
 

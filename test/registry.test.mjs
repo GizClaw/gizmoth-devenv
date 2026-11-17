@@ -68,7 +68,7 @@ function publish(f, type, id, version, platforms) {
 }
 
 test("official registry validates offline with generic tools and minimal guest formulae", () => {
-  assert.deepEqual(validateRegistry(root), { chips: 9, environments: 1, sdks: 7, toolchains: 67, planned: 0, releases: 79, platforms: 123 });
+  assert.deepEqual(validateRegistry(root), { chips: 9, environments: 1, sdks: 7, toolchains: 67, planned: 0, releases: 81, platforms: 127 });
 });
 
 test("SDK formulae reference upstream Git and package files without repacked releases", () => {
