@@ -68,7 +68,7 @@ function publish(f, type, id, version, platforms) {
 }
 
 test("official registry validates offline with generic tools and minimal guest formulae", () => {
-  assert.deepEqual(validateRegistry(root), { chips: 9, environments: 1, sdks: 7, toolchains: 66, planned: 0, releases: 77, platforms: 119 });
+  assert.deepEqual(validateRegistry(root), { chips: 9, environments: 1, sdks: 7, toolchains: 67, planned: 0, releases: 79, platforms: 123 });
 });
 
 test("SDK formulae reference upstream Git and package files without repacked releases", () => {
@@ -88,7 +88,12 @@ test("SDK formulae reference upstream Git and package files without repacked rel
         assert.ok(!recipe.install.some((step) => step.type === "run" && step.args.includes("fetch")));
         assert.ok(recipe.install.some((step) => step.type === "checkout" && step.source === "sdk" && step.to === "payload/sdk"));
         for (const file of recipe.sources.filter((source) => source.type === "file")) {
-          assert.ok(["files.pythonhosted.org", "dl.espressif.com"].includes(new URL(file.url).hostname), file.url);
+          if (id === "beken-bk7259" && file.id === "python-x86") {
+            const python = JSON.parse(readFileSync(join(root, "toolchains/python/versions/3.11.18.json"), "utf8")).platforms["linux-x86_64"].sources[0];
+            assert.deepEqual(file, { ...python, id: "python-x86" });
+          } else {
+            assert.ok(["files.pythonhosted.org", "dl.espressif.com"].includes(new URL(file.url).hostname), file.url);
+          }
           assert.ok(!file.url.includes("gizmoth-sdk-source-"));
         }
         if (id === "jieli-ac791n") assert.ok(recipe.requires.includes("git-lfs"));
@@ -224,14 +229,14 @@ test("every GizOS embedded target resolves to a complete candidate SDK", () => {
   }
   const native = JSON.parse(readFileSync(join(root, "sdks/beken-bk7259/sdk.json"), "utf8"));
   assert.equal(native.status, "published");
-  assert.equal(native.defaultVersion, "4.0.1+g06cb0f2d");
+  assert.equal(native.defaultVersion, "4.0.1+g06cb0f2d.1");
   const chip = JSON.parse(readFileSync(join(root, "chips/bk7259/chip.json"), "utf8"));
   assert.equal(chip.status, "published");
   assert.equal(chip.sdk, native.id);
   const release = JSON.parse(readFileSync(join(root, `sdks/${native.id}/versions/${native.defaultVersion}.json`), "utf8"));
-  assert.deepEqual(Object.keys(release.platforms), ["linux-x86_64"]);
-  assert.ok(release.platforms["linux-x86_64"].targets[chip.target]);
-  assert.match(native.notes, /ARM64 SDK support remains planned/);
+  assert.deepEqual(Object.keys(release.platforms).sort(), ["linux-arm64", "linux-x86_64"]);
+  for (const recipe of Object.values(release.platforms)) assert.ok(recipe.targets[chip.target]);
+  assert.match(native.notes, /Firmware packaging and AES\/XTS operations remain unqualified/);
 });
 
 test("Beken Python 3.11 locks match exact native requirements and compatible original wheels", () => {
@@ -244,10 +249,11 @@ test("Beken Python 3.11 locks match exact native requirements and compatible ori
       const generator = recipe.install.find((step) => step.type === "run" && step.args[0] === "-I" && step.args[1] === "-c");
       const lock = JSON.parse(generator.args.at(-1))["requirements.lock"];
       for (const [name, version] of Object.entries(required)) assert.ok(lock.includes(`${name}==${version} --hash=sha256:`));
-      for (const file of recipe.sources.filter((source) => source.type === "file")) {
+      for (const file of recipe.sources.filter((source) => source.type === "file" && source.id !== "python-x86")) {
         const filename = new URL(file.url).pathname.split("/").at(-1);
         assert.match(filename, /-(?:py\d(?:\.py\d)*-none-any|cp311-cp311-manylinux[^/]+|cp(?:37|311)-abi3-manylinux[^/]+)\.whl$/);
-        if (!filename.includes("none-any")) assert.ok(filename.includes(host === "linux-arm64" ? "aarch64" : "x86_64"));
+        const foreignPython = recipe.sources.some((source) => source.id === "python-x86");
+        if (!filename.includes("none-any")) assert.ok(filename.includes(host === "linux-arm64" && !foreignPython ? "aarch64" : "x86_64"));
         assert.ok(lock.includes(`--hash=sha256:${file.sha256}`));
         assert.ok(recipe.install.some((step) => step.type === "copy" && step.source === file.id && step.to === `wheelhouse/${filename}`));
       }
@@ -276,6 +282,34 @@ test("BK7259 keeps native Python and compiler selection consistent while ARM64 i
   assert.ok(crypto.args.includes("${prefix}/payload/sdk/tools/env_tools/beken_utils"));
   assert.ok(crypto.args[2].includes("os.chdir(sys.argv[1])"));
   assert.ok(crypto.args[2].includes("ctypes.CDLL('./scripts/libcommon.so')"));
+});
+
+test("BK7259 ARM64 uses embedded x86 Python for its foreign wheels and ctypes library", () => {
+  const read = (path) => JSON.parse(readFileSync(join(root, path), "utf8"));
+  const old = read("sdks/beken-bk7259/versions/4.0.1+g06cb0f2d.json");
+  const release = read("sdks/beken-bk7259/versions/4.0.1+g06cb0f2d.1.json");
+  assert.deepEqual(release.platforms["linux-x86_64"], old.platforms["linux-x86_64"]);
+  const recipe = release.platforms["linux-arm64"];
+  const python = read("toolchains/python/versions/3.11.18.json").platforms["linux-x86_64"].sources[0];
+  assert.deepEqual(recipe.sources.find((source) => source.id === "python-x86"), { ...python, id: "python-x86" });
+  assert.deepEqual(recipe.sources.filter((source) => source.id !== "python-x86"), old.platforms["linux-x86_64"].sources);
+  for (const toolchain of ["linux-qemu-user", "linux-x86-runtime"]) {
+    assert.ok(recipe.dependencies.some((dependency) => dependency.toolchain === toolchain && dependency.version === "12.0.0"));
+  }
+  assert.ok(recipe.install.some((step) => step.type === "extract" && step.source === "python-x86" && step.to === "python-x86" && step.stripComponents === 1));
+  const venv = recipe.install.find((step) => step.args?.includes("venv"));
+  assert.equal(venv.program, "${prefix}/python-x86/bin/python3");
+  assert.ok(venv.timeoutSeconds >= 600);
+  const pip = recipe.install.find((step) => step.args?.includes("pip"));
+  assert.equal(pip.program, "${prefix}/python-env/bin/python3");
+  assert.ok(pip.timeoutSeconds >= 600);
+  assert.ok(pip.args.includes("--no-index") && pip.args.includes("--require-hashes"));
+  const crypto = recipe.checks.find((check) => check.stdoutContains === "gizmoth-bk7259-native-crypto-ok");
+  assert.equal(crypto.program, "${prefix}/python-env/bin/python3");
+  assert.ok(crypto.args[2].includes("ctypes.CDLL('./scripts/libcommon.so')"));
+  const imports = recipe.checks.find((check) => check.stdoutContains === "gizmoth-beken-python-ok");
+  assert.equal(imports.program, "${prefix}/python-env/bin/python3");
+  assert.ok(imports.args[2].includes('sysconfig.get_config_var("HOST_GNU_TYPE").startswith("x86_64")'));
 });
 
 test("Arm14.3 uses verified upstream archives and preserves the published Arm10.3 manifest", () => {

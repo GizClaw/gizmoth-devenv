@@ -29,6 +29,7 @@
     "bazelisk",
     "python",
     "git-lfs",
+    "beken-loader",
     "arm-gnu",
     "xtensa-esp-elf",
     "jieli",

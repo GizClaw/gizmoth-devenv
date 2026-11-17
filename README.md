@@ -33,13 +33,15 @@ Current entries:
 | Kind | Entries |
 | --- | --- |
 | Environments | `gizos`: Bazelisk 1.30.0 and Python 3.12.16 (published) |
-| Chip candidates | `esp32s3`, `esp32p4`, `esp32s31`, `esp32c5`, `bk7258`, `ac695n`, `ac707n`, `ac791n`, `bk7259` (native Linux x86_64 only) |
-| SDK candidates | `esp-idf` 6.2.0-dev.gddb3852; `beken-bk7258` 3.1.1+g6bbf6274; `beken-bk-idk` 2.0.1+g650e754e; `beken-bk7259` 4.0.1+g06cb0f2d; `jieli-ac707n` 2.0.0+gd0167685; `jieli-ac695n` 0.1.0+g76b95777; `jieli-ac791n` 0.1.0+geb04f196 |
+| Chip candidates | `esp32s3`, `esp32p4`, `esp32s31`, `esp32c5`, `bk7258`, `ac695n`, `ac707n`, `ac791n`, `bk7259` (Linux x86_64 and ARM64 guests) |
+| SDK candidates | `esp-idf` 6.2.0-dev.gddb3852; `beken-bk7258` 3.1.1+g6bbf6274; `beken-bk-idk` 2.0.1+g650e754e; `beken-bk7259` 4.0.1+g06cb0f2d.1; `jieli-ac707n` 2.0.0+gd0167685; `jieli-ac695n` 0.1.0+g76b95777; `jieli-ac791n` 0.1.0+geb04f196 |
 | Toolchains | `bazelisk` 1.30.0 (default), 1.29.0; `python` 3.12.16 (default), 3.11.18; Linux guest formulae 12.0.0; `arm-gnu` 10.3.1 (default), 14.3.1; `xtensa-esp-elf` and `riscv32-esp-elf` 16.1.0+20260609; `esp32ulp-elf` 2.38.0+20240113; `jieli` 4.0.1+20250805.1; `jieli-postbuild` 2026.7.28+2 (default), 2026.7.28+1; `git-lfs` 3.8.1; `ninja` 1.13.2; `esp-rom-elfs` 2026.5.28 (upstream 20260528) |
 
 Bazelisk and Python cover macOS, Linux and Windows on x86_64/arm64. Bazelisk installs the launcher as both `bazelisk` and `bazel`; each project's `.bazelversion` selects Bazel, which Bazelisk downloads on first use. Python uses CPython `install_only_stripped` archives from `astral-sh/python-build-standalone` release `20261110`, with GitHub asset SHA-256 digests and byte sizes. Python recipes only unpack the archive and check its executable file; no installation commands run.
 
 GizOS provides base host tools. It does not include a vendor SDK or target compiler and does not by itself constitute a complete firmware build environment. Exact toolchain versions coexist, including within one dependency graph. Process activation explicitly selects installed versions and never replaces the user's global `PATH`.
+
+BK Loader 4.1.7 is a separate utility (`beken-loader`) using the existing original Linux ARM64/x86_64 archives from `GizClaw/bk_loader` tag `v4.1.7`, source commit `b2f968121bded732df52bd7c44dd0eb0cc7c0afb`. Both archives were downloaded into separate empty directories and checked against GitHub's release SHA-256 and byte sizes; their `bin/bk_loader`, license, notices and source metadata are retained. The standalone executable needs no Python installation. Its Linux checks run only `--version` and `tools selftest` (resources, AES and P-256), without opening devices. The recipe exports `BK_LOADER_BIN` and the executable directory for Linux worker commands. Physical UART access from macOS and flashing/provisioning behavior are separate integration requirements; the formula does not provide serial forwarding. A separate GizMoth ARM64 Linux VM installation passed the read-only version and selftest checks (`crypto: ok`, `signing: ok`, 86 flash entries); native x86_64 execution and physical flashing remain unqualified. Offline registry validation itself never executes downloaded payloads.
 
 ## Minimal Linux guest formulae
 

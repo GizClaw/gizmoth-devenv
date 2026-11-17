@@ -5,10 +5,10 @@
   "id": "bk7259",
   "name": "BK7259",
   "vendor": "Beken",
-  "description": "Beken audio/video SDK4.0.1 target with GNU Arm14.3.rel1 for native Linux x86_64.",
+  "description": "Beken audio/video SDK4.0.1 target with GNU Arm14.3.rel1 for Linux x86_64 and ARM64 guests.",
   "homepage": "https://www.bekencorp.com/",
   "status": "published",
-  "notes": "Candidate recipe for native Linux x86_64 with source 06cb0f2d9cdeab571ec5be2d54398c67e097a4cc and compiler14.3.1. Installation and firmware qualification remain pending. ARM64 SDK support remains planned because the SDK's x86_64 libcommon.so ctypes APIs require a matching foreign Python environment plus QEMU and GizOS Python locator integration; no ARM64 SDK recipe is advertised. The firmware-tool candidate excludes upstream legacy secure-boot executables and documentation tooling.",
+  "notes": "Candidate source 06cb0f2d9cdeab571ec5be2d54398c67e097a4cc with compiler14.3.1. The default SDK release adds explicit ARM64 guest support through embedded x86 Python3.11.18, pinned x86 wheels and existing QEMU/foreign runtime layers for vendor libcommon.so; GizMoth supplies binfmt and QEMU_LD_PREFIX. Installation and read-only Python/dependency/libcommon.so symbol checks passed in GizMoth's ARM64 Linux worker; firmware packaging and AES/XTS operations remain unqualified. Legacy secure-boot executables and documentation tooling remain outside this firmware-tool candidate.",
   "sdk": "beken-bk7259",
   "target": "bk7259",
   "tools": [
