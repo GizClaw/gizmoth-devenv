@@ -1,0 +1,58 @@
+{
+  "$schema": "../../../schemas/devenv.schema.json",
+  "apiVersion": "devenv.gizmoth.dev/v1alpha1",
+  "kind": "ToolchainRelease",
+  "id": "esp-clangd",
+  "version": "21.1.3+20260408",
+  "platforms": {
+    "linux-arm64": {
+      "requires": [],
+      "dependencies": [
+        {
+          "toolchain": "linux-cxx-runtime",
+          "version": "12.0.0"
+        }
+      ],
+      "sources": [
+        {
+          "id": "archive",
+          "type": "file",
+          "sha256": "468e6fa03def6bcf0c0469d25b8d8b86212e5a94716d0b3db149f21b77791c54",
+          "size": 14706612,
+          "url": "https://github.com/espressif/llvm-project/releases/download/esp-21.1.3_20260408/clangd-esp-21.1.3_20260408-aarch64-linux-gnu.tar.xz"
+        }
+      ],
+      "install": [
+        {
+          "type": "extract",
+          "source": "archive",
+          "to": "toolchain",
+          "format": "tar.xz",
+          "stripComponents": 1
+        }
+      ],
+      "environment": {
+        "prependPath": [
+          "toolchain/bin"
+        ],
+        "variables": {}
+      },
+      "checks": [
+        {
+          "type": "file",
+          "path": "toolchain/bin/clangd",
+          "executable": true
+        },
+        {
+          "type": "command",
+          "program": "${prefix}/toolchain/bin/clangd",
+          "args": [
+            "--version"
+          ],
+          "timeoutSeconds": 30,
+          "stdoutContains": "esp-21.1.3_20260408"
+        }
+      ]
+    }
+  }
+}

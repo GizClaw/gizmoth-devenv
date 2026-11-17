@@ -1,0 +1,20 @@
+{
+  "$schema": "../../schemas/devenv.schema.json",
+  "apiVersion": "devenv.gizmoth.dev/v1alpha1",
+  "kind": "Toolchain",
+  "id": "linux-jieli-libs",
+  "name": "JieLi offline packaging libraries",
+  "description": "Pinned original Debian Bookworm amd64 runtime input for JieLi offline firmware packaging.",
+  "category": "runtime",
+  "homepage": "https://www.debian.org/releases/bookworm/",
+  "license": "Upstream licenses included in usr/share/doc/*/copyright",
+  "status": "published",
+  "defaultVersion": "12.0.0",
+  "releases": [
+    {
+      "version": "12.0.0",
+      "manifest": "versions/12.0.0.json"
+    }
+  ],
+  "notes": "ELF/data closure observed from isd_download loader tracing in a real GizMoth guest. ARM64 uses foreign amd64 layers; native x86 uses its native root. Headless firmware packaging only; no graphical desktop, graphics drivers or device access is installed or qualified."
+}

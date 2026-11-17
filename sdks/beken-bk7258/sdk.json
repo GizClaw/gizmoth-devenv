@@ -3,11 +3,17 @@
   "apiVersion": "devenv.gizmoth.dev/v1alpha1",
   "kind": "Sdk",
   "id": "beken-bk7258",
-  "name": "Beken BK7258 SDK",
-  "description": "The vendor SDK for BK7258 firmware development.",
-  "homepage": "https://github.com/bekencorp/bk_avdk",
-  "license": "LicenseRef-Vendor",
-  "status": "planned",
-  "notes": "Confirm the vendor source and redistribution terms, then depend on the exact Arm GNU 10.3 toolchain release.",
-  "releases": []
+  "name": "Beken BK7258 SMP SDK",
+  "description": "Pinned public upstream SDK with declarative Git checkout and exact compiler/Python dependencies.",
+  "homepage": "https://github.com/GizClaw/bk_avdk_smp",
+  "license": "Apache-2.0",
+  "status": "published",
+  "notes": "Source commit 6bbf62746a5e904a508dee056cac6b17675637f5. GizMoth fetches the original repository and upstream package files; this registry distributes no SDK source snapshots, LFS objects or rebuilt packages.",
+  "releases": [
+    {
+      "version": "3.1.1+g6bbf6274",
+      "manifest": "versions/3.1.1+g6bbf6274.json"
+    }
+  ],
+  "defaultVersion": "3.1.1+g6bbf6274"
 }

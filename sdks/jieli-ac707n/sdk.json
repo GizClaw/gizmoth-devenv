@@ -4,10 +4,16 @@
   "kind": "Sdk",
   "id": "jieli-ac707n",
   "name": "JieLi AC707N SDK",
-  "description": "The vendor SDK for AC707N firmware development.",
-  "homepage": "https://www.zh-jieli.com/",
-  "license": "LicenseRef-Vendor",
-  "status": "planned",
-  "notes": "Add a pinned checkout and the exact JieLi toolchain dependency. Downloadable sources do not imply that the host can build.",
-  "releases": []
+  "description": "Pinned public upstream SDK with declarative Git checkout and exact compiler/Python dependencies.",
+  "homepage": "https://github.com/GizClaw/e_badge_707_sdk_200",
+  "license": "LicenseRef-JieLi-SDK",
+  "status": "published",
+  "notes": "Source commit d0167685d032d745d88fe50233302edd46941622. GizMoth fetches the original repository and upstream package files; this registry distributes no SDK source snapshots, LFS objects or rebuilt packages.",
+  "defaultVersion": "2.0.0+gd0167685",
+  "releases": [
+    {
+      "version": "2.0.0+gd0167685",
+      "manifest": "versions/2.0.0+gd0167685.json"
+    }
+  ]
 }

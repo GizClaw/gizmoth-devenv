@@ -1,0 +1,19 @@
+{
+  "$schema": "../../schemas/devenv.schema.json",
+  "apiVersion": "devenv.gizmoth.dev/v1alpha1",
+  "kind": "Sdk",
+  "id": "jieli-ac695n",
+  "name": "JieLi AC695N SDK",
+  "description": "Pinned public upstream SDK with declarative Git checkout and exact compiler/Python dependencies.",
+  "homepage": "https://github.com/GizClaw/AC695N_Soundbox_SDK",
+  "license": "LicenseRef-JieLi-SDK",
+  "status": "published",
+  "notes": "Source commit 76b95777a083818dd9a3a492d9c70ad81baa6b8a. GizMoth fetches the original repository and upstream package files; this registry distributes no SDK source snapshots, LFS objects or rebuilt packages.",
+  "defaultVersion": "0.1.0+g76b95777",
+  "releases": [
+    {
+      "version": "0.1.0+g76b95777",
+      "manifest": "versions/0.1.0+g76b95777.json"
+    }
+  ]
+}

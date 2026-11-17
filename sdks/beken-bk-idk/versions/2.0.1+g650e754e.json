@@ -1,0 +1,378 @@
+{
+  "$schema": "../../../schemas/devenv.schema.json",
+  "apiVersion": "devenv.gizmoth.dev/v1alpha1",
+  "kind": "SdkRelease",
+  "id": "beken-bk-idk",
+  "version": "2.0.1+g650e754e",
+  "platforms": {
+    "linux-arm64": {
+      "requires": [
+        "git",
+        "git-lfs"
+      ],
+      "dependencies": [
+        {
+          "toolchain": "python",
+          "version": "3.11.18"
+        },
+        {
+          "toolchain": "linux-git",
+          "version": "12.0.0"
+        },
+        {
+          "toolchain": "linux-build-tools",
+          "version": "12.0.0"
+        },
+        {
+          "toolchain": "linux-locale",
+          "version": "12.0.0"
+        },
+        {
+          "toolchain": "arm-gnu",
+          "version": "10.3.1"
+        },
+        {
+          "toolchain": "linux-qemu-user",
+          "version": "12.0.0"
+        },
+        {
+          "toolchain": "linux-x86-runtime",
+          "version": "12.0.0"
+        },
+        {
+          "toolchain": "git-lfs",
+          "version": "3.8.1"
+        }
+      ],
+      "targets": {
+        "bk7258": {
+          "dependencies": []
+        },
+        "bk7236": {
+          "dependencies": []
+        }
+      },
+      "sources": [
+        {
+          "id": "sdk",
+          "type": "git",
+          "url": "https://github.com/GizClaw/bk_idk.git",
+          "commit": "650e754e12fe1e43c37ce2316a973668b033fd48",
+          "submodules": true
+        },
+        {
+          "id": "wheel-0",
+          "type": "file",
+          "url": "https://files.pythonhosted.org/packages/30/c1/937ab39ca1ed18d71ecb3d857a2db771ea654f3186b52afae3fd8e5a5c24/cbor2-6.3.0-cp311-cp311-manylinux_2_28_aarch64.whl",
+          "sha256": "9253098c278540523cc27b9bedaf7d1d1655d2961b2ae1e6e43fc6592240016b",
+          "size": 470340
+        },
+        {
+          "id": "wheel-1",
+          "type": "file",
+          "url": "https://files.pythonhosted.org/packages/ad/66/c19feabb28485b6e0bbaaafa90837a1ef5d302e90f2178bd33f17a49879b/cffi-2.1.1-cp311-cp311-manylinux2014_aarch64.manylinux_2_17_aarch64.whl",
+          "sha256": "3311ed60d36f83378794e1009ac6258bafbf81f7888b4caa7b35a521e3f95813",
+          "size": 218716
+        },
+        {
+          "id": "wheel-2",
+          "type": "file",
+          "url": "https://files.pythonhosted.org/packages/fb/e2/79c688af8b210d232694e31e59da9f6ec747bae31c3f5946e4e9b98860d5/click-8.4.2-py3-none-any.whl",
+          "sha256": "e6f9f66136c816745b9d65817da91d61d957fb16e02e4dcd0552553c5a197b76",
+          "size": 119243
+        },
+        {
+          "id": "wheel-3",
+          "type": "file",
+          "url": "https://files.pythonhosted.org/packages/75/45/54bb2d8d4138964a94bef6e9afe48b0be4705ba66ac442ae7d8a8dc4ffef/click_option_group-0.5.9-py3-none-any.whl",
+          "sha256": "ad2599248bd373e2e19bec5407967c3eec1d0d4fc4a5e77b08a0481e75991080",
+          "size": 11553
+        },
+        {
+          "id": "wheel-4",
+          "type": "file",
+          "url": "https://files.pythonhosted.org/packages/57/ef/8f2df13c7216bcad3e1c74e07f6e193d93e998e114f524a53877c9af27ad/cryptography-50.0.0-cp311-abi3-manylinux2014_aarch64.manylinux_2_17_aarch64.whl",
+          "sha256": "fd9192b7b70c573d7f214eb1ae35e00d359f6f5e4b27c7e21e30de1fc6204645",
+          "size": 4719554
+        },
+        {
+          "id": "wheel-5",
+          "type": "file",
+          "url": "https://files.pythonhosted.org/packages/da/71/ae30dadffc90b9006d77af76b393cb9dfbfc9629f339fc1574a1c52e6806/future-1.0.0-py3-none-any.whl",
+          "sha256": "929292d34f5872e70396626ef385ec22355a1fae8ad29e1a734c3e43f9fbc216",
+          "size": 491326
+        },
+        {
+          "id": "wheel-6",
+          "type": "file",
+          "url": "https://files.pythonhosted.org/packages/97/78/79461288da2b13ed0a13deb65c4ad1428acb674b95278fa9abf1cefe62a2/intelhex-2.3.0-py2.py3-none-any.whl",
+          "sha256": "87cc5225657524ec6361354be928adfd56bcf2a3dcc646c40f8f094c39c07db4",
+          "size": 50914
+        },
+        {
+          "id": "wheel-7",
+          "type": "file",
+          "url": "https://files.pythonhosted.org/packages/62/a1/3d680cbfd5f4b8f15abc1d571870c5fc3e594bb582bc3b64ea099db13e56/jinja2-3.1.6-py3-none-any.whl",
+          "sha256": "85ece4451f492d0c13c5dd7c13a64681a86afae63a5f347908daf103ce6d2f67",
+          "size": 134899
+        },
+        {
+          "id": "wheel-8",
+          "type": "file",
+          "url": "https://files.pythonhosted.org/packages/ca/3a/63ba10b6c1463216b3e4df669a9f0e5a3b0c3071557d2e8229e3968c79fb/markupsafe-3.0.4-cp311-cp311-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl",
+          "sha256": "849dd2bb0e5e4ab2b71c7191726a4a8d5aa8a610daa584728cbee0b710ddc4ef",
+          "size": 24321
+        },
+        {
+          "id": "wheel-9",
+          "type": "file",
+          "url": "https://files.pythonhosted.org/packages/0c/c3/44f3fbbfa403ea2a7c779186dc20772604442dde72947e7d01069cbe98e3/pycparser-3.0-py3-none-any.whl",
+          "sha256": "b727414169a36b7d524c1c3e31839a521725078d7b2ff038656844266160a992",
+          "size": 48172
+        },
+        {
+          "id": "wheel-10",
+          "type": "file",
+          "url": "https://files.pythonhosted.org/packages/50/52/adaf4c8c100a8c49d2bd058e5b551f73dfd8cb89eb4911e25a0c469b6b4e/pycryptodome-3.23.0-cp37-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl",
+          "sha256": "67bd81fcbe34f43ad9422ee8fd4843c8e7198dd88dd3d40e6de42ee65fbe1490",
+          "size": 2182625
+        },
+        {
+          "id": "wheel-11",
+          "type": "file",
+          "url": "https://files.pythonhosted.org/packages/0c/62/d2eb46264d4b157dae1275b573017abec435397aa59cbcdab6fc978a8af4/pyyaml-6.0.3-cp311-cp311-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl",
+          "sha256": "10892704fc220243f5305762e276552a0395f7beb4dbf9b14ec8fd43b57f126c",
+          "size": 775556
+        },
+        {
+          "id": "wheel-12",
+          "type": "file",
+          "url": "https://files.pythonhosted.org/packages/94/b8/f1f62a5e3c0ad2ff1d189590bfa4c46b4f3b6e49cef6f26c6ee4e575394d/setuptools-80.10.2-py3-none-any.whl",
+          "sha256": "95b30ddfb717250edb492926c92b5221f7ef3fbcc2b07579bcd4a27da21d0173",
+          "size": 1064234
+        }
+      ],
+      "install": [
+        {
+          "type": "checkout",
+          "source": "sdk",
+          "to": "payload/sdk"
+        },
+        {
+          "type": "copy",
+          "source": "wheel-0",
+          "to": "wheelhouse/cbor2-6.3.0-cp311-cp311-manylinux_2_28_aarch64.whl",
+          "executable": false
+        },
+        {
+          "type": "copy",
+          "source": "wheel-1",
+          "to": "wheelhouse/cffi-2.1.1-cp311-cp311-manylinux2014_aarch64.manylinux_2_17_aarch64.whl",
+          "executable": false
+        },
+        {
+          "type": "copy",
+          "source": "wheel-2",
+          "to": "wheelhouse/click-8.4.2-py3-none-any.whl",
+          "executable": false
+        },
+        {
+          "type": "copy",
+          "source": "wheel-3",
+          "to": "wheelhouse/click_option_group-0.5.9-py3-none-any.whl",
+          "executable": false
+        },
+        {
+          "type": "copy",
+          "source": "wheel-4",
+          "to": "wheelhouse/cryptography-50.0.0-cp311-abi3-manylinux2014_aarch64.manylinux_2_17_aarch64.whl",
+          "executable": false
+        },
+        {
+          "type": "copy",
+          "source": "wheel-5",
+          "to": "wheelhouse/future-1.0.0-py3-none-any.whl",
+          "executable": false
+        },
+        {
+          "type": "copy",
+          "source": "wheel-6",
+          "to": "wheelhouse/intelhex-2.3.0-py2.py3-none-any.whl",
+          "executable": false
+        },
+        {
+          "type": "copy",
+          "source": "wheel-7",
+          "to": "wheelhouse/jinja2-3.1.6-py3-none-any.whl",
+          "executable": false
+        },
+        {
+          "type": "copy",
+          "source": "wheel-8",
+          "to": "wheelhouse/markupsafe-3.0.4-cp311-cp311-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl",
+          "executable": false
+        },
+        {
+          "type": "copy",
+          "source": "wheel-9",
+          "to": "wheelhouse/pycparser-3.0-py3-none-any.whl",
+          "executable": false
+        },
+        {
+          "type": "copy",
+          "source": "wheel-10",
+          "to": "wheelhouse/pycryptodome-3.23.0-cp37-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl",
+          "executable": false
+        },
+        {
+          "type": "copy",
+          "source": "wheel-11",
+          "to": "wheelhouse/pyyaml-6.0.3-cp311-cp311-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl",
+          "executable": false
+        },
+        {
+          "type": "copy",
+          "source": "wheel-12",
+          "to": "wheelhouse/setuptools-80.10.2-py3-none-any.whl",
+          "executable": false
+        },
+        {
+          "type": "run",
+          "program": "${toolchain:python}/python/bin/python3",
+          "args": [
+            "-I",
+            "-c",
+            "from pathlib import Path; import json,sys\nroot=Path(sys.argv[1]); root.mkdir(parents=True,exist_ok=True)\nfor name,text in json.loads(sys.argv[2]).items(): (root/name).write_text(text,encoding=\"utf-8\")",
+            "${prefix}/python-inputs",
+            "{\"requirements.lock\":\"cbor2==6.3.0 --hash=sha256:9253098c278540523cc27b9bedaf7d1d1655d2961b2ae1e6e43fc6592240016b\\ncffi==2.1.1 --hash=sha256:3311ed60d36f83378794e1009ac6258bafbf81f7888b4caa7b35a521e3f95813\\nclick==8.4.2 --hash=sha256:e6f9f66136c816745b9d65817da91d61d957fb16e02e4dcd0552553c5a197b76\\nclick-option-group==0.5.9 --hash=sha256:ad2599248bd373e2e19bec5407967c3eec1d0d4fc4a5e77b08a0481e75991080\\ncryptography==50.0.0 --hash=sha256:fd9192b7b70c573d7f214eb1ae35e00d359f6f5e4b27c7e21e30de1fc6204645\\nfuture==1.0.0 --hash=sha256:929292d34f5872e70396626ef385ec22355a1fae8ad29e1a734c3e43f9fbc216\\nintelhex==2.3.0 --hash=sha256:87cc5225657524ec6361354be928adfd56bcf2a3dcc646c40f8f094c39c07db4\\njinja2==3.1.6 --hash=sha256:85ece4451f492d0c13c5dd7c13a64681a86afae63a5f347908daf103ce6d2f67\\nmarkupsafe==3.0.4 --hash=sha256:849dd2bb0e5e4ab2b71c7191726a4a8d5aa8a610daa584728cbee0b710ddc4ef\\npycparser==3.0 --hash=sha256:b727414169a36b7d524c1c3e31839a521725078d7b2ff038656844266160a992\\npycryptodome==3.23.0 --hash=sha256:67bd81fcbe34f43ad9422ee8fd4843c8e7198dd88dd3d40e6de42ee65fbe1490\\npyyaml==6.0.3 --hash=sha256:10892704fc220243f5305762e276552a0395f7beb4dbf9b14ec8fd43b57f126c\\nsetuptools==80.10.2 --hash=sha256:95b30ddfb717250edb492926c92b5221f7ef3fbcc2b07579bcd4a27da21d0173\\n\"}"
+          ],
+          "cwd": "payload/sdk",
+          "environment": {},
+          "timeoutSeconds": 30
+        },
+        {
+          "type": "run",
+          "program": "${toolchain:python}/python/bin/python3",
+          "args": [
+            "-I",
+            "-m",
+            "venv",
+            "--copies",
+            "${prefix}/python-env"
+          ],
+          "cwd": "python-inputs",
+          "environment": {},
+          "timeoutSeconds": 300
+        },
+        {
+          "type": "run",
+          "program": "${prefix}/python-env/bin/python3",
+          "args": [
+            "-I",
+            "-m",
+            "pip",
+            "install",
+            "--no-index",
+            "--no-deps",
+            "--no-compile",
+            "--no-cache-dir",
+            "--find-links",
+            "${prefix}/wheelhouse",
+            "--require-hashes",
+            "-r",
+            "${prefix}/python-inputs/requirements.lock"
+          ],
+          "cwd": "python-inputs",
+          "environment": {
+            "PIP_NO_INDEX": "1",
+            "PIP_DISABLE_PIP_VERSION_CHECK": "1"
+          },
+          "timeoutSeconds": 300
+        }
+      ],
+      "environment": {
+        "prependPath": [
+          "python-env/bin"
+        ],
+        "variables": {
+          "BK_IDK_PATH": "${prefix}/payload/sdk",
+          "BK_IDK_PYTHON_ENV_PATH": "${prefix}/python-env"
+        }
+      },
+      "checks": [
+        {
+          "type": "file",
+          "path": "payload/sdk/.git/HEAD",
+          "executable": false
+        },
+        {
+          "type": "file",
+          "path": "payload/sdk/Makefile",
+          "executable": false
+        },
+        {
+          "type": "file",
+          "path": "payload/sdk/CMakeLists.txt",
+          "executable": false
+        },
+        {
+          "type": "file",
+          "path": "payload/sdk/middleware/soc/bk7258/toolchain-bk7258.cmake",
+          "executable": false
+        },
+        {
+          "type": "file",
+          "path": "payload/sdk/middleware/soc/bk7236/toolchain-bk7236.cmake",
+          "executable": false
+        },
+        {
+          "type": "command",
+          "program": "git",
+          "args": [
+            "-C",
+            "${prefix}/payload/sdk",
+            "rev-parse",
+            "HEAD"
+          ],
+          "stdoutContains": "650e754e12fe1e43c37ce2316a973668b033fd48",
+          "timeoutSeconds": 30
+        },
+        {
+          "type": "command",
+          "program": "${toolchain:python}/python/bin/python3",
+          "args": [
+            "-I",
+            "-c",
+            "import subprocess,sys\nroot=sys.argv[1]\nstatus=subprocess.check_output(['git','-C',root,'status','--porcelain=v1','--untracked-files=all','--ignore-submodules=none'],text=True)\nassert not status, 'SDK checkout is dirty: '+status\nmodules=subprocess.check_output(['git','-C',root,'submodule','status','--recursive'],text=True)\nassert all(line.startswith(' ') for line in modules.splitlines()), 'SDK submodules are missing or mismatched: '+modules\nprint('gizmoth-sdk-clean')",
+            "${prefix}/payload/sdk"
+          ],
+          "stdoutContains": "gizmoth-sdk-clean",
+          "timeoutSeconds": 60
+        },
+        {
+          "type": "command",
+          "program": "${prefix}/python-env/bin/python3",
+          "args": [
+            "-I",
+            "-m",
+            "pip",
+            "check"
+          ],
+          "stdoutContains": "No broken requirements found",
+          "timeoutSeconds": 60
+        },
+        {
+          "type": "command",
+          "program": "${prefix}/python-env/bin/python3",
+          "args": [
+            "-I",
+            "-c",
+            "import sys; assert sys.version_info[:2] == (3,11); import distutils,distutils.util,Crypto,click,future,click_option_group,cryptography,jinja2,yaml,cbor2,intelhex; print('gizmoth-beken-python-ok')"
+          ],
+          "stdoutContains": "gizmoth-beken-python-ok",
+          "timeoutSeconds": 60
+        }
+      ]
+    }
+  }
+}

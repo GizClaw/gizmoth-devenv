@@ -1,0 +1,17 @@
+{
+  "$schema": "../../schemas/devenv.schema.json",
+  "apiVersion": "devenv.gizmoth.dev/v1alpha1",
+  "kind": "Chip",
+  "id": "esp32p4",
+  "name": "ESP32-P4",
+  "vendor": "Espressif",
+  "description": "Espressif ESP32-P4 embedded target supported by GizOS.",
+  "homepage": "https://www.espressif.com/",
+  "status": "published",
+  "notes": "Complete candidate download formula for the Linux ARM64 guest. Native installation and firmware-build verification are performed by GizMoth before merging this registry branch.",
+  "sdk": "esp-idf",
+  "target": "esp32p4",
+  "tools": [
+    "bazelisk"
+  ]
+}

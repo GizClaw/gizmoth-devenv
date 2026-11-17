@@ -1,0 +1,640 @@
+{
+  "$schema": "../../../schemas/devenv.schema.json",
+  "apiVersion": "devenv.gizmoth.dev/v1alpha1",
+  "kind": "ToolchainRelease",
+  "id": "linux-jieli-libs",
+  "version": "12.0.0",
+  "platforms": {
+    "linux-arm64": {
+      "guestRoot": true,
+      "requires": [],
+      "dependencies": [
+        {
+          "toolchain": "linux-x86-runtime",
+          "version": "12.0.0"
+        },
+        {
+          "toolchain": "linux-x86-fontconfig-config",
+          "version": "12.0.0"
+        },
+        {
+          "toolchain": "linux-x86-fonts-dejavu-core",
+          "version": "12.0.0"
+        },
+        {
+          "toolchain": "linux-x86-libbrotli1",
+          "version": "12.0.0"
+        },
+        {
+          "toolchain": "linux-x86-libbsd0",
+          "version": "12.0.0"
+        },
+        {
+          "toolchain": "linux-x86-libdrm-common",
+          "version": "12.0.0"
+        },
+        {
+          "toolchain": "linux-x86-libdrm2",
+          "version": "12.0.0"
+        },
+        {
+          "toolchain": "linux-x86-libegl1",
+          "version": "12.0.0"
+        },
+        {
+          "toolchain": "linux-x86-libexpat1",
+          "version": "12.0.0"
+        },
+        {
+          "toolchain": "linux-x86-libffi8",
+          "version": "12.0.0"
+        },
+        {
+          "toolchain": "linux-x86-libfontconfig1",
+          "version": "12.0.0"
+        },
+        {
+          "toolchain": "linux-x86-libfreetype6",
+          "version": "12.0.0"
+        },
+        {
+          "toolchain": "linux-x86-libgbm1",
+          "version": "12.0.0"
+        },
+        {
+          "toolchain": "linux-x86-libgl1",
+          "version": "12.0.0"
+        },
+        {
+          "toolchain": "linux-x86-libglvnd0",
+          "version": "12.0.0"
+        },
+        {
+          "toolchain": "linux-x86-libglx0",
+          "version": "12.0.0"
+        },
+        {
+          "toolchain": "linux-x86-libice6",
+          "version": "12.0.0"
+        },
+        {
+          "toolchain": "linux-x86-libmd0",
+          "version": "12.0.0"
+        },
+        {
+          "toolchain": "linux-x86-libpng16-16",
+          "version": "12.0.0"
+        },
+        {
+          "toolchain": "linux-x86-libuuid1",
+          "version": "12.0.0"
+        },
+        {
+          "toolchain": "linux-x86-libwayland-server0",
+          "version": "12.0.0"
+        },
+        {
+          "toolchain": "linux-x86-libx11-6",
+          "version": "12.0.0"
+        },
+        {
+          "toolchain": "linux-x86-libx11-data",
+          "version": "12.0.0"
+        },
+        {
+          "toolchain": "linux-x86-libxau6",
+          "version": "12.0.0"
+        },
+        {
+          "toolchain": "linux-x86-libxcb1",
+          "version": "12.0.0"
+        },
+        {
+          "toolchain": "linux-x86-libxdmcp6",
+          "version": "12.0.0"
+        },
+        {
+          "toolchain": "linux-x86-libxkbcommon0",
+          "version": "12.0.0"
+        },
+        {
+          "toolchain": "linux-x86-xkb-data",
+          "version": "12.0.0"
+        }
+      ],
+      "sources": [
+        {
+          "id": "libsm6",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/libs/libsm/libsm6_1.2.3-1_amd64.deb",
+          "sha256": "22a420890489023346f30fecef14ea900a0788e7bf959ef826aabb83944fccfb",
+          "size": 35108
+        }
+      ],
+      "install": [
+        {
+          "type": "extract",
+          "source": "libsm6",
+          "to": "opt/gizmoth/x86_64",
+          "format": "deb",
+          "stripComponents": 0
+        }
+      ],
+      "environment": {
+        "prependPath": [],
+        "variables": {}
+      },
+      "checks": [
+        {
+          "type": "file",
+          "path": "opt/gizmoth/x86_64/usr/lib/x86_64-linux-gnu/libSM.so.6.0.1",
+          "executable": false
+        }
+      ]
+    },
+    "linux-x86_64": {
+      "guestRoot": true,
+      "requires": [],
+      "dependencies": [
+        {
+          "toolchain": "linux-runtime",
+          "version": "12.0.0"
+        },
+        {
+          "toolchain": "linux-network-libs",
+          "version": "12.0.0"
+        },
+        {
+          "toolchain": "linux-cxx-runtime",
+          "version": "12.0.0"
+        }
+      ],
+      "sources": [
+        {
+          "id": "fontconfig-config",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/f/fontconfig/fontconfig-config_2.14.1-4_amd64.deb",
+          "sha256": "281c66e46b95f045a0282a6c7a03b33de0e9a08d016897a759aaf4a04adfddbe",
+          "size": 314864
+        },
+        {
+          "id": "fonts-dejavu-core",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/f/fonts-dejavu/fonts-dejavu-core_2.37-6_all.deb",
+          "sha256": "8892669e51aab4dc56682c8e39d8ddb7d70fad83c369344e1e240bf3ca22bb76",
+          "size": 1067728
+        },
+        {
+          "id": "libbsd0",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/libb/libbsd/libbsd0_0.11.7-2_amd64.deb",
+          "sha256": "bb31cc8b40f962a85b2cec970f7f79cc704a1ae4bad24257a822055404b2c60b",
+          "size": 117416
+        },
+        {
+          "id": "libdrm-common",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/libd/libdrm/libdrm-common_2.4.114-1_all.deb",
+          "sha256": "32f9664138b38b224383c6986457d5ad2ec8efd559b1a0ce7749405f7a451aad",
+          "size": 7112
+        },
+        {
+          "id": "libdrm2",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/libd/libdrm/libdrm2_2.4.114-1+b1_amd64.deb",
+          "sha256": "be18fb670797ba32da9628cf3e8acd83160d8db8c8dd842501dd8e401c3b5371",
+          "size": 37472
+        },
+        {
+          "id": "libegl1",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/libg/libglvnd/libegl1_1.6.0-1_amd64.deb",
+          "sha256": "fe4d8b39f6e6fe1a32ab1efd85893553eaa9cf3866aa668ccf355f585b37d523",
+          "size": 33652
+        },
+        {
+          "id": "libfontconfig1",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/f/fontconfig/libfontconfig1_2.14.1-4_amd64.deb",
+          "sha256": "16ee38d374e064f534116dc442b086ef26f9831f1c0af7e5fb4fe4512e700649",
+          "size": 385664
+        },
+        {
+          "id": "libfreetype6",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/f/freetype/libfreetype6_2.12.1+dfsg-5+deb12u4_amd64.deb",
+          "sha256": "8043e479f73f29992d652e3f9dfe8b17f9780c7ea6330afe379ec5f9f188ac44",
+          "size": 397736
+        },
+        {
+          "id": "libgbm1",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/m/mesa/libgbm1_22.3.6-1+deb12u2_amd64.deb",
+          "sha256": "4323840f2b7b3e108990848529125d99c0956ae5a854c1e0568ed08c8faeaa2e",
+          "size": 38132
+        },
+        {
+          "id": "libgl1",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/libg/libglvnd/libgl1_1.6.0-1_amd64.deb",
+          "sha256": "6f89b1702c48e9a2437bb3c1ffac8e1ab2d828fc28b3d14b2eecd4cc19b2c790",
+          "size": 88448
+        },
+        {
+          "id": "libglvnd0",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/libg/libglvnd/libglvnd0_1.6.0-1_amd64.deb",
+          "sha256": "b6da5b153dd62d8b5e5fbe25242db1fc05c068707c365db49abda8c2427c75f8",
+          "size": 51820
+        },
+        {
+          "id": "libglx0",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/libg/libglvnd/libglx0_1.6.0-1_amd64.deb",
+          "sha256": "95f568df73dedf43ae66834a75502112e0d4f3ad7124f3dbfa790b739383b896",
+          "size": 34384
+        },
+        {
+          "id": "libice6",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/libi/libice/libice6_1.0.10-1_amd64.deb",
+          "sha256": "452796e565c9d42386bd59990000ae9c37d85e142e00ee2b14df0787e2bbf970",
+          "size": 58540
+        },
+        {
+          "id": "libmd0",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/libm/libmd/libmd0_1.0.4-2_amd64.deb",
+          "sha256": "03539fd30c509e27101d13a56e52eda9062bdf1aefe337c07ab56def25a13eab",
+          "size": 29456
+        },
+        {
+          "id": "libpng16-16",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/libp/libpng1.6/libpng16-16_1.6.39-2+deb12u5_amd64.deb",
+          "sha256": "a56d64bfaa9da12aafb83347909e62e6fd5fd251e6b34c194065911a30359978",
+          "size": 276660
+        },
+        {
+          "id": "libsm6",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/libs/libsm/libsm6_1.2.3-1_amd64.deb",
+          "sha256": "22a420890489023346f30fecef14ea900a0788e7bf959ef826aabb83944fccfb",
+          "size": 35108
+        },
+        {
+          "id": "libwayland-server0",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/w/wayland/libwayland-server0_1.21.0-1_amd64.deb",
+          "sha256": "df0396221d7b794496a687ec61fae82b6465648bc0ab6501ba0a5ed7f56eb8d6",
+          "size": 35876
+        },
+        {
+          "id": "libx11-6",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/libx/libx11/libx11-6_1.8.4-2+deb12u2_amd64.deb",
+          "sha256": "d88c973e79fd9b65838d77624142952757e47a6eb1a58602acf0911cf35989f4",
+          "size": 759544
+        },
+        {
+          "id": "libx11-data",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/libx/libx11/libx11-data_1.8.4-2+deb12u2_all.deb",
+          "sha256": "987a848aeb1c358e4186368871b0526f10bb14c6b53214ab3bf8b69abb830191",
+          "size": 291884
+        },
+        {
+          "id": "libxau6",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/libx/libxau/libxau6_1.0.9-1_amd64.deb",
+          "sha256": "679db1c4579ec7c61079adeaae8528adeb2e4bf5465baa6c56233b995d714750",
+          "size": 19720
+        },
+        {
+          "id": "libxcb1",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/libx/libxcb/libxcb1_1.15-1_amd64.deb",
+          "sha256": "fdc61332a3892168f3cc9cfa1fe9cf11a91dc3e0acacbc47cbc50ebaa234cc71",
+          "size": 144052
+        },
+        {
+          "id": "libxdmcp6",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/libx/libxdmcp/libxdmcp6_1.1.2-3_amd64.deb",
+          "sha256": "ecb8536f5fb34543b55bb9dc5f5b14c9dbb4150a7bddb3f2287b7cab6e9d25ef",
+          "size": 26344
+        },
+        {
+          "id": "libxkbcommon0",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/libx/libxkbcommon/libxkbcommon0_1.5.0-1_amd64.deb",
+          "sha256": "e3fe045b9a33a101de1c5a912a4a10928db055c3f68930f47eccbb44d7c7d54e",
+          "size": 106108
+        },
+        {
+          "id": "xkb-data",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/x/xkeyboard-config/xkb-data_2.35.1-1_all.deb",
+          "sha256": "28a79c61b785f403da93af58c39aed13c022032935e3e54362c6707169cfe982",
+          "size": 763516
+        }
+      ],
+      "install": [
+        {
+          "type": "extract",
+          "source": "fontconfig-config",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "fonts-dejavu-core",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libbsd0",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libdrm-common",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libdrm2",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libegl1",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libfontconfig1",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libfreetype6",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libgbm1",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libgl1",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libglvnd0",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libglx0",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libice6",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libmd0",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libpng16-16",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libsm6",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libwayland-server0",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libx11-6",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libx11-data",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libxau6",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libxcb1",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libxdmcp6",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libxkbcommon0",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "xkb-data",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        }
+      ],
+      "environment": {
+        "prependPath": [],
+        "variables": {}
+      },
+      "checks": [
+        {
+          "type": "file",
+          "path": "etc/fonts/conf.d/README",
+          "executable": false
+        },
+        {
+          "type": "file",
+          "path": "etc/fonts/conf.avail/20-unhint-small-dejavu-lgc-sans-mono.conf",
+          "executable": false
+        },
+        {
+          "type": "file",
+          "path": "usr/lib/x86_64-linux-gnu/libbsd.so.0.11.7",
+          "executable": false
+        },
+        {
+          "type": "file",
+          "path": "usr/share/libdrm/amdgpu.ids",
+          "executable": false
+        },
+        {
+          "type": "file",
+          "path": "usr/lib/x86_64-linux-gnu/libdrm.so.2.4.0",
+          "executable": false
+        },
+        {
+          "type": "file",
+          "path": "usr/lib/x86_64-linux-gnu/libEGL.so.1.1.0",
+          "executable": false
+        },
+        {
+          "type": "file",
+          "path": "usr/lib/x86_64-linux-gnu/libfontconfig.so.1.12.0",
+          "executable": false
+        },
+        {
+          "type": "file",
+          "path": "usr/lib/x86_64-linux-gnu/libfreetype.so.6.18.3",
+          "executable": false
+        },
+        {
+          "type": "file",
+          "path": "usr/lib/x86_64-linux-gnu/libgbm.so.1.0.0",
+          "executable": false
+        },
+        {
+          "type": "file",
+          "path": "usr/lib/x86_64-linux-gnu/libGL.so.1.7.0",
+          "executable": false
+        },
+        {
+          "type": "file",
+          "path": "usr/lib/x86_64-linux-gnu/libGLdispatch.so.0.0.0",
+          "executable": false
+        },
+        {
+          "type": "file",
+          "path": "usr/lib/x86_64-linux-gnu/libGLX.so.0.0.0",
+          "executable": false
+        },
+        {
+          "type": "file",
+          "path": "usr/lib/x86_64-linux-gnu/libICE.so.6.3.0",
+          "executable": false
+        },
+        {
+          "type": "file",
+          "path": "usr/lib/x86_64-linux-gnu/libmd.so.0.0.5",
+          "executable": false
+        },
+        {
+          "type": "file",
+          "path": "usr/lib/x86_64-linux-gnu/libpng16.so.16.39.0",
+          "executable": false
+        },
+        {
+          "type": "file",
+          "path": "usr/lib/x86_64-linux-gnu/libSM.so.6.0.1",
+          "executable": false
+        },
+        {
+          "type": "file",
+          "path": "usr/lib/x86_64-linux-gnu/libwayland-server.so.0.21.0",
+          "executable": false
+        },
+        {
+          "type": "file",
+          "path": "usr/lib/x86_64-linux-gnu/libX11.so.6.4.0",
+          "executable": false
+        },
+        {
+          "type": "file",
+          "path": "usr/share/X11/XErrorDB",
+          "executable": false
+        },
+        {
+          "type": "file",
+          "path": "usr/lib/x86_64-linux-gnu/libXau.so.6.0.0",
+          "executable": false
+        },
+        {
+          "type": "file",
+          "path": "usr/lib/x86_64-linux-gnu/libxcb.so.1.1.0",
+          "executable": false
+        },
+        {
+          "type": "file",
+          "path": "usr/lib/x86_64-linux-gnu/libXdmcp.so.6.0.0",
+          "executable": false
+        },
+        {
+          "type": "file",
+          "path": "usr/lib/x86_64-linux-gnu/libxkbcommon.so.0.0.0",
+          "executable": false
+        },
+        {
+          "type": "file",
+          "path": "usr/share/X11/xkb/compat/README",
+          "executable": false
+        }
+      ]
+    }
+  }
+}

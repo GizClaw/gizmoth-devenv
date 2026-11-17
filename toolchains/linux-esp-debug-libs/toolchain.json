@@ -1,0 +1,20 @@
+{
+  "$schema": "../../schemas/devenv.schema.json",
+  "apiVersion": "devenv.gizmoth.dev/v1alpha1",
+  "kind": "Toolchain",
+  "id": "linux-esp-debug-libs",
+  "name": "Linux ESP Debug Libraries",
+  "description": "Native ARM64 libatomic, libusb-1.0 and libudev for the pinned ESP GDB and OpenOCD tools.",
+  "category": "runtime",
+  "homepage": "https://www.debian.org/",
+  "license": "GPL-3.0-or-later WITH GCC-exception-3.1 AND LGPL-2.1-or-later",
+  "notes": "Original Debian Bookworm ARM64 packages: libatomic1 12.2.0-14+deb12u1, libusb-1.0-0 2:1.0.26-1 and libudev1 252.39-1~deb12u2. Pins verified against Packages.xz SHA-256 2ddb1737692e8c45c53e8d57c0ce4cd21c78c5703b830c3226b1423566a06c00 in the official Bookworm Release. All three payloads were byte-verified and their ELF dependencies inspected without execution. libusb needs libudev; the remaining loader, libc, pthread and gcc-base requirements come from linux-runtime. libatomic is also present in linux-build-tools with identical bytes. No udev daemon, device rules or hardware passthrough is configured.",
+  "status": "published",
+  "defaultVersion": "12.0.0",
+  "releases": [
+    {
+      "version": "12.0.0",
+      "manifest": "versions/12.0.0.json"
+    }
+  ]
+}

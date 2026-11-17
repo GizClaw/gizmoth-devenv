@@ -1,0 +1,868 @@
+{
+  "$schema": "../../../schemas/devenv.schema.json",
+  "apiVersion": "devenv.gizmoth.dev/v1alpha1",
+  "kind": "SdkRelease",
+  "id": "beken-bk7259",
+  "version": "4.0.1+g06cb0f2d.1",
+  "platforms": {
+    "linux-x86_64": {
+      "requires": [
+        "git",
+        "git-lfs"
+      ],
+      "dependencies": [
+        {
+          "toolchain": "python",
+          "version": "3.11.18"
+        },
+        {
+          "toolchain": "linux-git",
+          "version": "12.0.0"
+        },
+        {
+          "toolchain": "linux-build-tools",
+          "version": "12.0.0"
+        },
+        {
+          "toolchain": "linux-locale",
+          "version": "12.0.0"
+        },
+        {
+          "toolchain": "arm-gnu",
+          "version": "14.3.1"
+        },
+        {
+          "toolchain": "git-lfs",
+          "version": "3.8.1"
+        }
+      ],
+      "targets": {
+        "bk7259": {
+          "dependencies": []
+        }
+      },
+      "sources": [
+        {
+          "id": "sdk",
+          "type": "git",
+          "url": "https://github.com/GizClaw/bk_avdk_smp.git",
+          "commit": "06cb0f2d9cdeab571ec5be2d54398c67e097a4cc",
+          "submodules": true
+        },
+        {
+          "id": "wheel-0",
+          "type": "file",
+          "url": "https://files.pythonhosted.org/packages/3e/aa/fde8c2765fc91ef632b2c44a255de8f4cd7c4af6267060068f6207ff6bed/cbor2-6.3.0-cp311-cp311-manylinux_2_28_x86_64.whl",
+          "sha256": "ebe634e9fe6ae36b3fe1c42d280c4ecb368397efbcd497f8d5826d48e9093f1b",
+          "size": 480102
+        },
+        {
+          "id": "wheel-1",
+          "type": "file",
+          "url": "https://files.pythonhosted.org/packages/f7/a4/4399daaf8f7dfee9d7c3327fdb0426ee041cc63edc358b93911ceb2bfc7a/cffi-2.1.1-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl",
+          "sha256": "34e261f78cb6ceaaa36f42f2613f4380d94d9c759a9c73c769ee6e0247364632",
+          "size": 217807
+        },
+        {
+          "id": "wheel-2",
+          "type": "file",
+          "url": "https://files.pythonhosted.org/packages/fb/e2/79c688af8b210d232694e31e59da9f6ec747bae31c3f5946e4e9b98860d5/click-8.4.2-py3-none-any.whl",
+          "sha256": "e6f9f66136c816745b9d65817da91d61d957fb16e02e4dcd0552553c5a197b76",
+          "size": 119243
+        },
+        {
+          "id": "wheel-3",
+          "type": "file",
+          "url": "https://files.pythonhosted.org/packages/75/45/54bb2d8d4138964a94bef6e9afe48b0be4705ba66ac442ae7d8a8dc4ffef/click_option_group-0.5.9-py3-none-any.whl",
+          "sha256": "ad2599248bd373e2e19bec5407967c3eec1d0d4fc4a5e77b08a0481e75991080",
+          "size": 11553
+        },
+        {
+          "id": "wheel-4",
+          "type": "file",
+          "url": "https://files.pythonhosted.org/packages/6b/72/a1116d683a6d7ece94590013882515de087edf9ef0e6292aae615a44df73/cryptography-50.0.0-cp311-abi3-manylinux_2_28_x86_64.whl",
+          "sha256": "b42a28c1844fd9de8f3f7d540e36b66f3a9c83fceac7170ebc7a6a19edd9dcae",
+          "size": 4734609
+        },
+        {
+          "id": "wheel-5",
+          "type": "file",
+          "url": "https://files.pythonhosted.org/packages/da/71/ae30dadffc90b9006d77af76b393cb9dfbfc9629f339fc1574a1c52e6806/future-1.0.0-py3-none-any.whl",
+          "sha256": "929292d34f5872e70396626ef385ec22355a1fae8ad29e1a734c3e43f9fbc216",
+          "size": 491326
+        },
+        {
+          "id": "wheel-6",
+          "type": "file",
+          "url": "https://files.pythonhosted.org/packages/97/78/79461288da2b13ed0a13deb65c4ad1428acb674b95278fa9abf1cefe62a2/intelhex-2.3.0-py2.py3-none-any.whl",
+          "sha256": "87cc5225657524ec6361354be928adfd56bcf2a3dcc646c40f8f094c39c07db4",
+          "size": 50914
+        },
+        {
+          "id": "wheel-7",
+          "type": "file",
+          "url": "https://files.pythonhosted.org/packages/62/a1/3d680cbfd5f4b8f15abc1d571870c5fc3e594bb582bc3b64ea099db13e56/jinja2-3.1.6-py3-none-any.whl",
+          "sha256": "85ece4451f492d0c13c5dd7c13a64681a86afae63a5f347908daf103ce6d2f67",
+          "size": 134899
+        },
+        {
+          "id": "wheel-8",
+          "type": "file",
+          "url": "https://files.pythonhosted.org/packages/81/a5/a513b76c139a3915b43404324e55c0b7979ae4f0d39eb6f075b0282e90a8/markupsafe-3.0.4-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl",
+          "sha256": "6da83a088f8ef93b2d483a8232a4dbf4d69d3d8496b568a03c56becac43e1808",
+          "size": 22961
+        },
+        {
+          "id": "wheel-9",
+          "type": "file",
+          "url": "https://files.pythonhosted.org/packages/0c/c3/44f3fbbfa403ea2a7c779186dc20772604442dde72947e7d01069cbe98e3/pycparser-3.0-py3-none-any.whl",
+          "sha256": "b727414169a36b7d524c1c3e31839a521725078d7b2ff038656844266160a992",
+          "size": 48172
+        },
+        {
+          "id": "wheel-10",
+          "type": "file",
+          "url": "https://files.pythonhosted.org/packages/5f/e9/a09476d436d0ff1402ac3867d933c61805ec2326c6ea557aeeac3825604e/pycryptodome-3.23.0-cp37-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+          "sha256": "c8987bd3307a39bc03df5c8e0e3d8be0c4c3518b7f044b0f4c15d1aa78f52575",
+          "size": 2268954
+        },
+        {
+          "id": "wheel-11",
+          "type": "file",
+          "url": "https://files.pythonhosted.org/packages/71/60/917329f640924b18ff085ab889a11c763e0b573da888e8404ff486657602/pyyaml-6.0.3-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl",
+          "sha256": "b8bb0864c5a28024fac8a632c443c87c5aa6f215c0b126c449ae1a150412f31d",
+          "size": 806638
+        },
+        {
+          "id": "wheel-12",
+          "type": "file",
+          "url": "https://files.pythonhosted.org/packages/94/b8/f1f62a5e3c0ad2ff1d189590bfa4c46b4f3b6e49cef6f26c6ee4e575394d/setuptools-80.10.2-py3-none-any.whl",
+          "sha256": "95b30ddfb717250edb492926c92b5221f7ef3fbcc2b07579bcd4a27da21d0173",
+          "size": 1064234
+        },
+        {
+          "id": "wheel-13",
+          "type": "file",
+          "url": "https://files.pythonhosted.org/packages/c0/da/977ded879c29cbd04de313843e76868e6e13408a94ed6b987245dc7c8506/openpyxl-3.1.5-py2.py3-none-any.whl",
+          "sha256": "5282c12b107bffeef825f4617dc029afaf41d0ea60823bbb665ef3079dc79de2",
+          "size": 250910
+        },
+        {
+          "id": "wheel-14",
+          "type": "file",
+          "url": "https://files.pythonhosted.org/packages/c1/8b/5fe2cc11fee489817272089c4203e679c63b570a5aaeb18d852ae3cbba6a/et_xmlfile-2.0.0-py3-none-any.whl",
+          "sha256": "7a91720bc756843502c3b7504c77b8fe44217c85c537d85037f0f536151b2caa",
+          "size": 18059
+        }
+      ],
+      "install": [
+        {
+          "type": "checkout",
+          "source": "sdk",
+          "to": "payload/sdk"
+        },
+        {
+          "type": "copy",
+          "source": "wheel-0",
+          "to": "wheelhouse/cbor2-6.3.0-cp311-cp311-manylinux_2_28_x86_64.whl",
+          "executable": false
+        },
+        {
+          "type": "copy",
+          "source": "wheel-1",
+          "to": "wheelhouse/cffi-2.1.1-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl",
+          "executable": false
+        },
+        {
+          "type": "copy",
+          "source": "wheel-2",
+          "to": "wheelhouse/click-8.4.2-py3-none-any.whl",
+          "executable": false
+        },
+        {
+          "type": "copy",
+          "source": "wheel-3",
+          "to": "wheelhouse/click_option_group-0.5.9-py3-none-any.whl",
+          "executable": false
+        },
+        {
+          "type": "copy",
+          "source": "wheel-4",
+          "to": "wheelhouse/cryptography-50.0.0-cp311-abi3-manylinux_2_28_x86_64.whl",
+          "executable": false
+        },
+        {
+          "type": "copy",
+          "source": "wheel-5",
+          "to": "wheelhouse/future-1.0.0-py3-none-any.whl",
+          "executable": false
+        },
+        {
+          "type": "copy",
+          "source": "wheel-6",
+          "to": "wheelhouse/intelhex-2.3.0-py2.py3-none-any.whl",
+          "executable": false
+        },
+        {
+          "type": "copy",
+          "source": "wheel-7",
+          "to": "wheelhouse/jinja2-3.1.6-py3-none-any.whl",
+          "executable": false
+        },
+        {
+          "type": "copy",
+          "source": "wheel-8",
+          "to": "wheelhouse/markupsafe-3.0.4-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl",
+          "executable": false
+        },
+        {
+          "type": "copy",
+          "source": "wheel-9",
+          "to": "wheelhouse/pycparser-3.0-py3-none-any.whl",
+          "executable": false
+        },
+        {
+          "type": "copy",
+          "source": "wheel-10",
+          "to": "wheelhouse/pycryptodome-3.23.0-cp37-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+          "executable": false
+        },
+        {
+          "type": "copy",
+          "source": "wheel-11",
+          "to": "wheelhouse/pyyaml-6.0.3-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl",
+          "executable": false
+        },
+        {
+          "type": "copy",
+          "source": "wheel-12",
+          "to": "wheelhouse/setuptools-80.10.2-py3-none-any.whl",
+          "executable": false
+        },
+        {
+          "type": "copy",
+          "source": "wheel-13",
+          "to": "wheelhouse/openpyxl-3.1.5-py2.py3-none-any.whl",
+          "executable": false
+        },
+        {
+          "type": "copy",
+          "source": "wheel-14",
+          "to": "wheelhouse/et_xmlfile-2.0.0-py3-none-any.whl",
+          "executable": false
+        },
+        {
+          "type": "run",
+          "program": "${toolchain:python}/python/bin/python3",
+          "args": [
+            "-I",
+            "-c",
+            "from pathlib import Path; import json,sys\nroot=Path(sys.argv[1]); root.mkdir(parents=True,exist_ok=True)\nfor name,text in json.loads(sys.argv[2]).items(): (root/name).write_text(text,encoding=\"utf-8\")",
+            "${prefix}/python-inputs",
+            "{\"requirements.lock\":\"cbor2==6.3.0 --hash=sha256:ebe634e9fe6ae36b3fe1c42d280c4ecb368397efbcd497f8d5826d48e9093f1b\\ncffi==2.1.1 --hash=sha256:34e261f78cb6ceaaa36f42f2613f4380d94d9c759a9c73c769ee6e0247364632\\nclick==8.4.2 --hash=sha256:e6f9f66136c816745b9d65817da91d61d957fb16e02e4dcd0552553c5a197b76\\nclick-option-group==0.5.9 --hash=sha256:ad2599248bd373e2e19bec5407967c3eec1d0d4fc4a5e77b08a0481e75991080\\ncryptography==50.0.0 --hash=sha256:b42a28c1844fd9de8f3f7d540e36b66f3a9c83fceac7170ebc7a6a19edd9dcae\\nfuture==1.0.0 --hash=sha256:929292d34f5872e70396626ef385ec22355a1fae8ad29e1a734c3e43f9fbc216\\nintelhex==2.3.0 --hash=sha256:87cc5225657524ec6361354be928adfd56bcf2a3dcc646c40f8f094c39c07db4\\njinja2==3.1.6 --hash=sha256:85ece4451f492d0c13c5dd7c13a64681a86afae63a5f347908daf103ce6d2f67\\nmarkupsafe==3.0.4 --hash=sha256:6da83a088f8ef93b2d483a8232a4dbf4d69d3d8496b568a03c56becac43e1808\\npycparser==3.0 --hash=sha256:b727414169a36b7d524c1c3e31839a521725078d7b2ff038656844266160a992\\npycryptodome==3.23.0 --hash=sha256:c8987bd3307a39bc03df5c8e0e3d8be0c4c3518b7f044b0f4c15d1aa78f52575\\npyyaml==6.0.3 --hash=sha256:b8bb0864c5a28024fac8a632c443c87c5aa6f215c0b126c449ae1a150412f31d\\nsetuptools==80.10.2 --hash=sha256:95b30ddfb717250edb492926c92b5221f7ef3fbcc2b07579bcd4a27da21d0173\\nopenpyxl==3.1.5 --hash=sha256:5282c12b107bffeef825f4617dc029afaf41d0ea60823bbb665ef3079dc79de2\\net-xmlfile==2.0.0 --hash=sha256:7a91720bc756843502c3b7504c77b8fe44217c85c537d85037f0f536151b2caa\\n\"}"
+          ],
+          "cwd": "payload/sdk",
+          "environment": {},
+          "timeoutSeconds": 30
+        },
+        {
+          "type": "run",
+          "program": "${toolchain:python}/python/bin/python3",
+          "args": [
+            "-I",
+            "-m",
+            "venv",
+            "--copies",
+            "${prefix}/python-env"
+          ],
+          "cwd": "python-inputs",
+          "environment": {},
+          "timeoutSeconds": 300
+        },
+        {
+          "type": "run",
+          "program": "${prefix}/python-env/bin/python3",
+          "args": [
+            "-I",
+            "-m",
+            "pip",
+            "install",
+            "--no-index",
+            "--no-deps",
+            "--no-compile",
+            "--no-cache-dir",
+            "--find-links",
+            "${prefix}/wheelhouse",
+            "--require-hashes",
+            "-r",
+            "${prefix}/python-inputs/requirements.lock"
+          ],
+          "cwd": "python-inputs",
+          "environment": {
+            "PIP_NO_INDEX": "1",
+            "PIP_DISABLE_PIP_VERSION_CHECK": "1"
+          },
+          "timeoutSeconds": 300
+        }
+      ],
+      "environment": {
+        "prependPath": [
+          "python-env/bin"
+        ],
+        "variables": {
+          "BK7259_PATH": "${prefix}/payload/sdk",
+          "BK7259_PYTHON_ENV_PATH": "${prefix}/python-env",
+          "COMPILER_TOOLCHAIN_PATH": "${toolchain:arm-gnu}/toolchain/bin",
+          "TOOLCHAIN_DIR": "${toolchain:arm-gnu}/toolchain/bin",
+          "PYTHONPATH": "${prefix}/payload/sdk/tools/env_tools/bk_py_libs",
+          "PYTHONDONTWRITEBYTECODE": "1",
+          "ARMINO_COMPONENT_MANAGER": "0"
+        }
+      },
+      "checks": [
+        {
+          "type": "file",
+          "path": "payload/sdk/.git/HEAD",
+          "executable": false
+        },
+        {
+          "type": "file",
+          "path": "payload/sdk/ap/Makefile",
+          "executable": false
+        },
+        {
+          "type": "file",
+          "path": "payload/sdk/cp/Makefile",
+          "executable": false
+        },
+        {
+          "type": "file",
+          "path": "payload/sdk/ap/middleware/soc/bk7259_ap/toolchain-bk7259_ap.cmake",
+          "executable": false
+        },
+        {
+          "type": "command",
+          "program": "git",
+          "args": [
+            "-C",
+            "${prefix}/payload/sdk",
+            "rev-parse",
+            "HEAD"
+          ],
+          "stdoutContains": "06cb0f2d9cdeab571ec5be2d54398c67e097a4cc",
+          "timeoutSeconds": 30
+        },
+        {
+          "type": "command",
+          "program": "${toolchain:python}/python/bin/python3",
+          "args": [
+            "-I",
+            "-c",
+            "import subprocess,sys\nroot=sys.argv[1]\nstatus=subprocess.check_output(['git','-C',root,'status','--porcelain=v1','--untracked-files=all','--ignore-submodules=none'],text=True)\nassert not status, 'SDK checkout is dirty: '+status\nmodules=subprocess.check_output(['git','-C',root,'submodule','status','--recursive'],text=True)\nassert all(line.startswith(' ') for line in modules.splitlines()), 'SDK submodules are missing or mismatched: '+modules\nprint('gizmoth-sdk-clean')",
+            "${prefix}/payload/sdk"
+          ],
+          "stdoutContains": "gizmoth-sdk-clean",
+          "timeoutSeconds": 60
+        },
+        {
+          "type": "command",
+          "program": "${prefix}/python-env/bin/python3",
+          "args": [
+            "-I",
+            "-m",
+            "pip",
+            "check"
+          ],
+          "stdoutContains": "No broken requirements found",
+          "timeoutSeconds": 60
+        },
+        {
+          "type": "command",
+          "program": "${prefix}/python-env/bin/python3",
+          "args": [
+            "-I",
+            "-c",
+            "import sys; assert sys.version_info[:2] == (3,11); import distutils,distutils.util,Crypto,click,future,click_option_group,cryptography,jinja2,yaml,cbor2,intelhex,openpyxl,et_xmlfile; print('gizmoth-beken-python-ok')"
+          ],
+          "stdoutContains": "gizmoth-beken-python-ok",
+          "timeoutSeconds": 60
+        },
+        {
+          "type": "file",
+          "path": "payload/sdk/cp/middleware/soc/bk7259/toolchain-bk7259.cmake",
+          "executable": false
+        },
+        {
+          "type": "file",
+          "path": "payload/sdk/tools/env_tools/bk_py_libs/bk_packager/__init__.py",
+          "executable": false
+        },
+        {
+          "type": "file",
+          "path": "payload/sdk/tools/env_tools/rtt_ota/ota-rbl/ota_packager_python.py",
+          "executable": false
+        },
+        {
+          "type": "file",
+          "path": "payload/sdk/tools/env_tools/beken_utils/scripts/libcommon.so",
+          "executable": false
+        },
+        {
+          "type": "command",
+          "program": "${prefix}/python-env/bin/python3",
+          "args": [
+            "-I",
+            "-c",
+            "import ctypes,os,sys; os.chdir(sys.argv[1]); lib=ctypes.CDLL('./scripts/libcommon.so'); assert hasattr(lib,\"encrypt\") and hasattr(lib,\"xts_aes\"); print(\"gizmoth-bk7259-native-crypto-ok\")",
+            "${prefix}/payload/sdk/tools/env_tools/beken_utils"
+          ],
+          "stdoutContains": "gizmoth-bk7259-native-crypto-ok",
+          "timeoutSeconds": 30
+        }
+      ]
+    },
+    "linux-arm64": {
+      "requires": [
+        "git",
+        "git-lfs"
+      ],
+      "dependencies": [
+        {
+          "toolchain": "python",
+          "version": "3.11.18"
+        },
+        {
+          "toolchain": "linux-git",
+          "version": "12.0.0"
+        },
+        {
+          "toolchain": "linux-build-tools",
+          "version": "12.0.0"
+        },
+        {
+          "toolchain": "linux-locale",
+          "version": "12.0.0"
+        },
+        {
+          "toolchain": "arm-gnu",
+          "version": "14.3.1"
+        },
+        {
+          "toolchain": "git-lfs",
+          "version": "3.8.1"
+        },
+        {
+          "toolchain": "linux-qemu-user",
+          "version": "12.0.0"
+        },
+        {
+          "toolchain": "linux-x86-runtime",
+          "version": "12.0.0"
+        }
+      ],
+      "targets": {
+        "bk7259": {
+          "dependencies": []
+        }
+      },
+      "sources": [
+        {
+          "id": "sdk",
+          "type": "git",
+          "url": "https://github.com/GizClaw/bk_avdk_smp.git",
+          "commit": "06cb0f2d9cdeab571ec5be2d54398c67e097a4cc",
+          "submodules": true
+        },
+        {
+          "id": "wheel-0",
+          "type": "file",
+          "url": "https://files.pythonhosted.org/packages/3e/aa/fde8c2765fc91ef632b2c44a255de8f4cd7c4af6267060068f6207ff6bed/cbor2-6.3.0-cp311-cp311-manylinux_2_28_x86_64.whl",
+          "sha256": "ebe634e9fe6ae36b3fe1c42d280c4ecb368397efbcd497f8d5826d48e9093f1b",
+          "size": 480102
+        },
+        {
+          "id": "wheel-1",
+          "type": "file",
+          "url": "https://files.pythonhosted.org/packages/f7/a4/4399daaf8f7dfee9d7c3327fdb0426ee041cc63edc358b93911ceb2bfc7a/cffi-2.1.1-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl",
+          "sha256": "34e261f78cb6ceaaa36f42f2613f4380d94d9c759a9c73c769ee6e0247364632",
+          "size": 217807
+        },
+        {
+          "id": "wheel-2",
+          "type": "file",
+          "url": "https://files.pythonhosted.org/packages/fb/e2/79c688af8b210d232694e31e59da9f6ec747bae31c3f5946e4e9b98860d5/click-8.4.2-py3-none-any.whl",
+          "sha256": "e6f9f66136c816745b9d65817da91d61d957fb16e02e4dcd0552553c5a197b76",
+          "size": 119243
+        },
+        {
+          "id": "wheel-3",
+          "type": "file",
+          "url": "https://files.pythonhosted.org/packages/75/45/54bb2d8d4138964a94bef6e9afe48b0be4705ba66ac442ae7d8a8dc4ffef/click_option_group-0.5.9-py3-none-any.whl",
+          "sha256": "ad2599248bd373e2e19bec5407967c3eec1d0d4fc4a5e77b08a0481e75991080",
+          "size": 11553
+        },
+        {
+          "id": "wheel-4",
+          "type": "file",
+          "url": "https://files.pythonhosted.org/packages/6b/72/a1116d683a6d7ece94590013882515de087edf9ef0e6292aae615a44df73/cryptography-50.0.0-cp311-abi3-manylinux_2_28_x86_64.whl",
+          "sha256": "b42a28c1844fd9de8f3f7d540e36b66f3a9c83fceac7170ebc7a6a19edd9dcae",
+          "size": 4734609
+        },
+        {
+          "id": "wheel-5",
+          "type": "file",
+          "url": "https://files.pythonhosted.org/packages/da/71/ae30dadffc90b9006d77af76b393cb9dfbfc9629f339fc1574a1c52e6806/future-1.0.0-py3-none-any.whl",
+          "sha256": "929292d34f5872e70396626ef385ec22355a1fae8ad29e1a734c3e43f9fbc216",
+          "size": 491326
+        },
+        {
+          "id": "wheel-6",
+          "type": "file",
+          "url": "https://files.pythonhosted.org/packages/97/78/79461288da2b13ed0a13deb65c4ad1428acb674b95278fa9abf1cefe62a2/intelhex-2.3.0-py2.py3-none-any.whl",
+          "sha256": "87cc5225657524ec6361354be928adfd56bcf2a3dcc646c40f8f094c39c07db4",
+          "size": 50914
+        },
+        {
+          "id": "wheel-7",
+          "type": "file",
+          "url": "https://files.pythonhosted.org/packages/62/a1/3d680cbfd5f4b8f15abc1d571870c5fc3e594bb582bc3b64ea099db13e56/jinja2-3.1.6-py3-none-any.whl",
+          "sha256": "85ece4451f492d0c13c5dd7c13a64681a86afae63a5f347908daf103ce6d2f67",
+          "size": 134899
+        },
+        {
+          "id": "wheel-8",
+          "type": "file",
+          "url": "https://files.pythonhosted.org/packages/81/a5/a513b76c139a3915b43404324e55c0b7979ae4f0d39eb6f075b0282e90a8/markupsafe-3.0.4-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl",
+          "sha256": "6da83a088f8ef93b2d483a8232a4dbf4d69d3d8496b568a03c56becac43e1808",
+          "size": 22961
+        },
+        {
+          "id": "wheel-9",
+          "type": "file",
+          "url": "https://files.pythonhosted.org/packages/0c/c3/44f3fbbfa403ea2a7c779186dc20772604442dde72947e7d01069cbe98e3/pycparser-3.0-py3-none-any.whl",
+          "sha256": "b727414169a36b7d524c1c3e31839a521725078d7b2ff038656844266160a992",
+          "size": 48172
+        },
+        {
+          "id": "wheel-10",
+          "type": "file",
+          "url": "https://files.pythonhosted.org/packages/5f/e9/a09476d436d0ff1402ac3867d933c61805ec2326c6ea557aeeac3825604e/pycryptodome-3.23.0-cp37-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+          "sha256": "c8987bd3307a39bc03df5c8e0e3d8be0c4c3518b7f044b0f4c15d1aa78f52575",
+          "size": 2268954
+        },
+        {
+          "id": "wheel-11",
+          "type": "file",
+          "url": "https://files.pythonhosted.org/packages/71/60/917329f640924b18ff085ab889a11c763e0b573da888e8404ff486657602/pyyaml-6.0.3-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl",
+          "sha256": "b8bb0864c5a28024fac8a632c443c87c5aa6f215c0b126c449ae1a150412f31d",
+          "size": 806638
+        },
+        {
+          "id": "wheel-12",
+          "type": "file",
+          "url": "https://files.pythonhosted.org/packages/94/b8/f1f62a5e3c0ad2ff1d189590bfa4c46b4f3b6e49cef6f26c6ee4e575394d/setuptools-80.10.2-py3-none-any.whl",
+          "sha256": "95b30ddfb717250edb492926c92b5221f7ef3fbcc2b07579bcd4a27da21d0173",
+          "size": 1064234
+        },
+        {
+          "id": "wheel-13",
+          "type": "file",
+          "url": "https://files.pythonhosted.org/packages/c0/da/977ded879c29cbd04de313843e76868e6e13408a94ed6b987245dc7c8506/openpyxl-3.1.5-py2.py3-none-any.whl",
+          "sha256": "5282c12b107bffeef825f4617dc029afaf41d0ea60823bbb665ef3079dc79de2",
+          "size": 250910
+        },
+        {
+          "id": "wheel-14",
+          "type": "file",
+          "url": "https://files.pythonhosted.org/packages/c1/8b/5fe2cc11fee489817272089c4203e679c63b570a5aaeb18d852ae3cbba6a/et_xmlfile-2.0.0-py3-none-any.whl",
+          "sha256": "7a91720bc756843502c3b7504c77b8fe44217c85c537d85037f0f536151b2caa",
+          "size": 18059
+        },
+        {
+          "id": "python-x86",
+          "type": "file",
+          "url": "https://github.com/astral-sh/python-build-standalone/releases/download/20261110/cpython-3.11.18%2B20261110-x86_64-unknown-linux-gnu-install_only_stripped.tar.gz",
+          "sha256": "3288c54cea3db350052019b3f8b558dd8a3da8afa6fda573f5fd2bcb37635b4a",
+          "size": 30783322
+        }
+      ],
+      "install": [
+        {
+          "type": "checkout",
+          "source": "sdk",
+          "to": "payload/sdk"
+        },
+        {
+          "type": "extract",
+          "source": "python-x86",
+          "to": "python-x86",
+          "format": "tar.gz",
+          "stripComponents": 1
+        },
+        {
+          "type": "copy",
+          "source": "wheel-0",
+          "to": "wheelhouse/cbor2-6.3.0-cp311-cp311-manylinux_2_28_x86_64.whl",
+          "executable": false
+        },
+        {
+          "type": "copy",
+          "source": "wheel-1",
+          "to": "wheelhouse/cffi-2.1.1-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl",
+          "executable": false
+        },
+        {
+          "type": "copy",
+          "source": "wheel-2",
+          "to": "wheelhouse/click-8.4.2-py3-none-any.whl",
+          "executable": false
+        },
+        {
+          "type": "copy",
+          "source": "wheel-3",
+          "to": "wheelhouse/click_option_group-0.5.9-py3-none-any.whl",
+          "executable": false
+        },
+        {
+          "type": "copy",
+          "source": "wheel-4",
+          "to": "wheelhouse/cryptography-50.0.0-cp311-abi3-manylinux_2_28_x86_64.whl",
+          "executable": false
+        },
+        {
+          "type": "copy",
+          "source": "wheel-5",
+          "to": "wheelhouse/future-1.0.0-py3-none-any.whl",
+          "executable": false
+        },
+        {
+          "type": "copy",
+          "source": "wheel-6",
+          "to": "wheelhouse/intelhex-2.3.0-py2.py3-none-any.whl",
+          "executable": false
+        },
+        {
+          "type": "copy",
+          "source": "wheel-7",
+          "to": "wheelhouse/jinja2-3.1.6-py3-none-any.whl",
+          "executable": false
+        },
+        {
+          "type": "copy",
+          "source": "wheel-8",
+          "to": "wheelhouse/markupsafe-3.0.4-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl",
+          "executable": false
+        },
+        {
+          "type": "copy",
+          "source": "wheel-9",
+          "to": "wheelhouse/pycparser-3.0-py3-none-any.whl",
+          "executable": false
+        },
+        {
+          "type": "copy",
+          "source": "wheel-10",
+          "to": "wheelhouse/pycryptodome-3.23.0-cp37-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+          "executable": false
+        },
+        {
+          "type": "copy",
+          "source": "wheel-11",
+          "to": "wheelhouse/pyyaml-6.0.3-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl",
+          "executable": false
+        },
+        {
+          "type": "copy",
+          "source": "wheel-12",
+          "to": "wheelhouse/setuptools-80.10.2-py3-none-any.whl",
+          "executable": false
+        },
+        {
+          "type": "copy",
+          "source": "wheel-13",
+          "to": "wheelhouse/openpyxl-3.1.5-py2.py3-none-any.whl",
+          "executable": false
+        },
+        {
+          "type": "copy",
+          "source": "wheel-14",
+          "to": "wheelhouse/et_xmlfile-2.0.0-py3-none-any.whl",
+          "executable": false
+        },
+        {
+          "type": "run",
+          "program": "${toolchain:python}/python/bin/python3",
+          "args": [
+            "-I",
+            "-c",
+            "from pathlib import Path; import json,sys\nroot=Path(sys.argv[1]); root.mkdir(parents=True,exist_ok=True)\nfor name,text in json.loads(sys.argv[2]).items(): (root/name).write_text(text,encoding=\"utf-8\")",
+            "${prefix}/python-inputs",
+            "{\"requirements.lock\":\"cbor2==6.3.0 --hash=sha256:ebe634e9fe6ae36b3fe1c42d280c4ecb368397efbcd497f8d5826d48e9093f1b\\ncffi==2.1.1 --hash=sha256:34e261f78cb6ceaaa36f42f2613f4380d94d9c759a9c73c769ee6e0247364632\\nclick==8.4.2 --hash=sha256:e6f9f66136c816745b9d65817da91d61d957fb16e02e4dcd0552553c5a197b76\\nclick-option-group==0.5.9 --hash=sha256:ad2599248bd373e2e19bec5407967c3eec1d0d4fc4a5e77b08a0481e75991080\\ncryptography==50.0.0 --hash=sha256:b42a28c1844fd9de8f3f7d540e36b66f3a9c83fceac7170ebc7a6a19edd9dcae\\nfuture==1.0.0 --hash=sha256:929292d34f5872e70396626ef385ec22355a1fae8ad29e1a734c3e43f9fbc216\\nintelhex==2.3.0 --hash=sha256:87cc5225657524ec6361354be928adfd56bcf2a3dcc646c40f8f094c39c07db4\\njinja2==3.1.6 --hash=sha256:85ece4451f492d0c13c5dd7c13a64681a86afae63a5f347908daf103ce6d2f67\\nmarkupsafe==3.0.4 --hash=sha256:6da83a088f8ef93b2d483a8232a4dbf4d69d3d8496b568a03c56becac43e1808\\npycparser==3.0 --hash=sha256:b727414169a36b7d524c1c3e31839a521725078d7b2ff038656844266160a992\\npycryptodome==3.23.0 --hash=sha256:c8987bd3307a39bc03df5c8e0e3d8be0c4c3518b7f044b0f4c15d1aa78f52575\\npyyaml==6.0.3 --hash=sha256:b8bb0864c5a28024fac8a632c443c87c5aa6f215c0b126c449ae1a150412f31d\\nsetuptools==80.10.2 --hash=sha256:95b30ddfb717250edb492926c92b5221f7ef3fbcc2b07579bcd4a27da21d0173\\nopenpyxl==3.1.5 --hash=sha256:5282c12b107bffeef825f4617dc029afaf41d0ea60823bbb665ef3079dc79de2\\net-xmlfile==2.0.0 --hash=sha256:7a91720bc756843502c3b7504c77b8fe44217c85c537d85037f0f536151b2caa\\n\"}"
+          ],
+          "cwd": "payload/sdk",
+          "environment": {},
+          "timeoutSeconds": 30
+        },
+        {
+          "type": "run",
+          "program": "${prefix}/python-x86/bin/python3",
+          "args": [
+            "-I",
+            "-m",
+            "venv",
+            "--copies",
+            "${prefix}/python-env"
+          ],
+          "cwd": "python-inputs",
+          "environment": {},
+          "timeoutSeconds": 1200
+        },
+        {
+          "type": "run",
+          "program": "${prefix}/python-env/bin/python3",
+          "args": [
+            "-I",
+            "-m",
+            "pip",
+            "install",
+            "--no-index",
+            "--no-deps",
+            "--no-compile",
+            "--no-cache-dir",
+            "--find-links",
+            "${prefix}/wheelhouse",
+            "--require-hashes",
+            "-r",
+            "${prefix}/python-inputs/requirements.lock"
+          ],
+          "cwd": "python-inputs",
+          "environment": {
+            "PIP_NO_INDEX": "1",
+            "PIP_DISABLE_PIP_VERSION_CHECK": "1"
+          },
+          "timeoutSeconds": 1200
+        }
+      ],
+      "environment": {
+        "prependPath": [
+          "python-env/bin"
+        ],
+        "variables": {
+          "BK7259_PATH": "${prefix}/payload/sdk",
+          "BK7259_PYTHON_ENV_PATH": "${prefix}/python-env",
+          "COMPILER_TOOLCHAIN_PATH": "${toolchain:arm-gnu}/toolchain/bin",
+          "TOOLCHAIN_DIR": "${toolchain:arm-gnu}/toolchain/bin",
+          "PYTHONPATH": "${prefix}/payload/sdk/tools/env_tools/bk_py_libs",
+          "PYTHONDONTWRITEBYTECODE": "1",
+          "ARMINO_COMPONENT_MANAGER": "0"
+        }
+      },
+      "checks": [
+        {
+          "type": "file",
+          "path": "python-x86/bin/python3",
+          "executable": true
+        },
+        {
+          "type": "file",
+          "path": "payload/sdk/.git/HEAD",
+          "executable": false
+        },
+        {
+          "type": "file",
+          "path": "payload/sdk/ap/Makefile",
+          "executable": false
+        },
+        {
+          "type": "file",
+          "path": "payload/sdk/cp/Makefile",
+          "executable": false
+        },
+        {
+          "type": "file",
+          "path": "payload/sdk/ap/middleware/soc/bk7259_ap/toolchain-bk7259_ap.cmake",
+          "executable": false
+        },
+        {
+          "type": "command",
+          "program": "git",
+          "args": [
+            "-C",
+            "${prefix}/payload/sdk",
+            "rev-parse",
+            "HEAD"
+          ],
+          "stdoutContains": "06cb0f2d9cdeab571ec5be2d54398c67e097a4cc",
+          "timeoutSeconds": 30
+        },
+        {
+          "type": "command",
+          "program": "${toolchain:python}/python/bin/python3",
+          "args": [
+            "-I",
+            "-c",
+            "import subprocess,sys\nroot=sys.argv[1]\nstatus=subprocess.check_output(['git','-C',root,'status','--porcelain=v1','--untracked-files=all','--ignore-submodules=none'],text=True)\nassert not status, 'SDK checkout is dirty: '+status\nmodules=subprocess.check_output(['git','-C',root,'submodule','status','--recursive'],text=True)\nassert all(line.startswith(' ') for line in modules.splitlines()), 'SDK submodules are missing or mismatched: '+modules\nprint('gizmoth-sdk-clean')",
+            "${prefix}/payload/sdk"
+          ],
+          "stdoutContains": "gizmoth-sdk-clean",
+          "timeoutSeconds": 60
+        },
+        {
+          "type": "command",
+          "program": "${prefix}/python-env/bin/python3",
+          "args": [
+            "-I",
+            "-m",
+            "pip",
+            "check"
+          ],
+          "stdoutContains": "No broken requirements found",
+          "timeoutSeconds": 60
+        },
+        {
+          "type": "command",
+          "program": "${prefix}/python-env/bin/python3",
+          "args": [
+            "-I",
+            "-c",
+            "import sys,sysconfig; assert sysconfig.get_config_var(\"HOST_GNU_TYPE\").startswith(\"x86_64\"), sysconfig.get_config_var(\"HOST_GNU_TYPE\"); assert sys.version_info[:2] == (3,11); import distutils,distutils.util,Crypto,click,future,click_option_group,cryptography,jinja2,yaml,cbor2,intelhex,openpyxl,et_xmlfile; print('gizmoth-beken-python-ok')"
+          ],
+          "stdoutContains": "gizmoth-beken-python-ok",
+          "timeoutSeconds": 60
+        },
+        {
+          "type": "file",
+          "path": "payload/sdk/cp/middleware/soc/bk7259/toolchain-bk7259.cmake",
+          "executable": false
+        },
+        {
+          "type": "file",
+          "path": "payload/sdk/tools/env_tools/bk_py_libs/bk_packager/__init__.py",
+          "executable": false
+        },
+        {
+          "type": "file",
+          "path": "payload/sdk/tools/env_tools/rtt_ota/ota-rbl/ota_packager_python.py",
+          "executable": false
+        },
+        {
+          "type": "file",
+          "path": "payload/sdk/tools/env_tools/beken_utils/scripts/libcommon.so",
+          "executable": false
+        },
+        {
+          "type": "command",
+          "program": "${prefix}/python-env/bin/python3",
+          "args": [
+            "-I",
+            "-c",
+            "import ctypes,os,sys; os.chdir(sys.argv[1]); lib=ctypes.CDLL('./scripts/libcommon.so'); assert hasattr(lib,\"encrypt\") and hasattr(lib,\"xts_aes\"); print(\"gizmoth-bk7259-native-crypto-ok\")",
+            "${prefix}/payload/sdk/tools/env_tools/beken_utils"
+          ],
+          "stdoutContains": "gizmoth-bk7259-native-crypto-ok",
+          "timeoutSeconds": 60
+        }
+      ]
+    }
+  }
+}

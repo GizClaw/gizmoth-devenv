@@ -1,0 +1,17 @@
+{
+  "$schema": "../../schemas/devenv.schema.json",
+  "apiVersion": "devenv.gizmoth.dev/v1alpha1",
+  "kind": "Toolchain",
+  "id": "beken-loader",
+  "name": "BK Loader",
+  "description": "Standalone Beken UART download and provisioning CLI from GizClaw's source-maintained BKFIL 4.1.7 release.",
+  "category": "utility",
+  "homepage": "https://github.com/GizClaw/bk_loader",
+  "license": "BSD-3-Clause; imported code retains upstream notices",
+  "status": "published",
+  "notes": "Uses the existing original GizClaw v4.1.7 Linux release archives, source commit b2f968121bded732df52bd7c44dd0eb0cc7c0afb. No Python installation or vendor installer is needed. Checks only report the version and run tools selftest, which verifies bundled resources and cryptography without device access. UART flashing and provisioning require separate device authorization and host serial access; installing this Linux worker tool does not expose a macOS serial device to the VM.",
+  "defaultVersion": "4.1.7",
+  "releases": [
+    { "version": "4.1.7", "manifest": "versions/4.1.7.json" }
+  ]
+}
