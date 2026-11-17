@@ -4,10 +4,16 @@
   "kind": "Sdk",
   "id": "esp-idf",
   "name": "ESP-IDF",
-  "description": "Espressif's SDK for ESP32-series chips.",
-  "homepage": "https://github.com/espressif/esp-idf",
+  "description": "Pinned public upstream SDK with declarative Git checkout and exact compiler/Python dependencies.",
+  "homepage": "https://github.com/GizClaw/esp-idf",
   "license": "Apache-2.0",
-  "status": "planned",
-  "notes": "One SDK installation serves every ESP32 chip. Each release declares per-chip targets; compilers come from tools.json as separate toolchains, and the Python environment stays inside the SDK installation.",
-  "releases": []
+  "status": "published",
+  "notes": "Source commit ddb3852ab5c7f9e6dbc268203ef9d612de391bf8. GizMoth fetches the original repository and upstream package files; this registry distributes no SDK source snapshots, LFS objects or rebuilt packages.",
+  "releases": [
+    {
+      "version": "6.2.0-dev.gddb3852",
+      "manifest": "versions/6.2.0-dev.gddb3852.json"
+    }
+  ],
+  "defaultVersion": "6.2.0-dev.gddb3852"
 }

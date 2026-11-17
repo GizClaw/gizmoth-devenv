@@ -7,9 +7,11 @@
   "vendor": "JieLi",
   "description": "JieLi Bluetooth SoC supported by GizOS.",
   "homepage": "https://www.zh-jieli.com/",
-  "status": "planned",
-  "notes": "Publish after the SDK and JieLi toolchain have downloadable releases. The current toolchain runs only on Linux x86_64.",
+  "status": "published",
+  "notes": "Complete candidate download formula for Linux ARM64 and x86_64. Native installation and firmware-build verification are performed by GizMoth before merging this registry branch.",
   "sdk": "jieli-ac707n",
   "target": "ac707n",
-  "tools": ["bazelisk"]
+  "tools": [
+    "bazelisk"
+  ]
 }

@@ -1,0 +1,68 @@
+{
+  "$schema": "../../../schemas/devenv.schema.json",
+  "apiVersion": "devenv.gizmoth.dev/v1alpha1",
+  "kind": "ToolchainRelease",
+  "id": "openocd-esp32",
+  "version": "0.12.0-esp32-20260831",
+  "platforms": {
+    "linux-arm64": {
+      "requires": [],
+      "dependencies": [
+        {
+          "toolchain": "linux-esp-debug-libs",
+          "version": "12.0.0"
+        },
+        {
+          "toolchain": "linux-network-libs",
+          "version": "12.0.0"
+        }
+      ],
+      "sources": [
+        {
+          "id": "archive",
+          "type": "file",
+          "sha256": "59236b2160dfcef1db3dbb0b7718e0ed9e127630dd65c5ccb6f13ef56c1e84ba",
+          "size": 2608313,
+          "url": "https://github.com/espressif/openocd-esp32/releases/download/v0.12.0-esp32-20260831/openocd-esp32-linux-arm64-0.12.0-esp32-20260831.tar.gz"
+        }
+      ],
+      "install": [
+        {
+          "type": "extract",
+          "source": "archive",
+          "to": "toolchain",
+          "format": "tar.gz",
+          "stripComponents": 1
+        }
+      ],
+      "environment": {
+        "prependPath": [
+          "toolchain/bin"
+        ],
+        "variables": {
+          "OPENOCD_SCRIPTS": "${prefix}/toolchain/share/openocd/scripts"
+        }
+      },
+      "checks": [
+        {
+          "type": "file",
+          "path": "toolchain/bin/openocd",
+          "executable": true
+        },
+        {
+          "type": "file",
+          "path": "toolchain/share/openocd/scripts/target/esp32s3.cfg",
+          "executable": false
+        },
+        {
+          "type": "command",
+          "program": "${prefix}/toolchain/bin/openocd",
+          "args": [
+            "--version"
+          ],
+          "timeoutSeconds": 30
+        }
+      ]
+    }
+  }
+}

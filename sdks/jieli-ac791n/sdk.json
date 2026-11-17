@@ -1,0 +1,19 @@
+{
+  "$schema": "../../schemas/devenv.schema.json",
+  "apiVersion": "devenv.gizmoth.dev/v1alpha1",
+  "kind": "Sdk",
+  "id": "jieli-ac791n",
+  "name": "JieLi AC791N SDK",
+  "description": "Pinned public upstream SDK with declarative Git checkout and exact compiler/Python dependencies.",
+  "homepage": "https://github.com/GizClaw/fw-AC791N_SDK",
+  "license": "Apache-2.0",
+  "status": "published",
+  "notes": "Source commit eb04f1966cf2b7cbb72cbb54db906bcb293b5a4a. GizMoth fetches the original repository and upstream package files; this registry distributes no SDK source snapshots, LFS objects or rebuilt packages.",
+  "defaultVersion": "0.1.0+geb04f196",
+  "releases": [
+    {
+      "version": "0.1.0+geb04f196",
+      "manifest": "versions/0.1.0+geb04f196.json"
+    }
+  ]
+}

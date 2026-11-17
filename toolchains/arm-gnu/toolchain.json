@@ -4,16 +4,20 @@
   "kind": "Toolchain",
   "id": "arm-gnu",
   "name": "GNU Arm Embedded Toolchain",
-  "description": "Native GNU Arm Embedded 10.3-2021.10 compilers, assembler and linker for Beken SDKs.",
+  "description": "Native GNU Arm Embedded 10.3-2021.10 and GNU Arm 14.3.rel1 compilers, assembler and linker for Beken SDKs.",
   "category": "compiler",
   "homepage": "https://developer.arm.com/Tools%20and%20Software/GNU%20Toolchain",
   "license": "LicenseRef-Vendor-Bundle",
   "status": "published",
-  "notes": "Native aarch64 execution and Cortex-M33 compile/link verified. The bundled legacy GDB requires additional Python 2.7/ncurses runtime and is not part of compiler qualification.",
+  "notes": "10.3.1 native aarch64 execution and Cortex-M33 compile/link were verified previously. The new 14.3.1 candidate pins byte-verified original Arm14.3.rel1 Linux aarch64/x86_64 archives and declares Cortex-M55/M52 compile/link checks; those binaries were not executed during registry validation. Its host runtime includes libzstd.so.1 for the upstream binutils/compiler binaries. Bundled GDB and optional debugger runtimes are outside compiler qualification; legacy 10.3.1 GDB needs additional Python2.7/ncurses libraries.",
   "releases": [
     {
       "version": "10.3.1",
       "manifest": "versions/10.3.1.json"
+    },
+    {
+      "version": "14.3.1",
+      "manifest": "versions/14.3.1.json"
     }
   ],
   "defaultVersion": "10.3.1"

@@ -1,0 +1,20 @@
+{
+  "$schema": "../../schemas/devenv.schema.json",
+  "apiVersion": "devenv.gizmoth.dev/v1alpha1",
+  "kind": "Toolchain",
+  "id": "linux-x86-libice6",
+  "name": "x86 library/data layer: libice6",
+  "description": "Pinned original Debian Bookworm amd64 runtime input for JieLi offline firmware packaging.",
+  "category": "runtime",
+  "homepage": "https://www.debian.org/releases/bookworm/",
+  "license": "Upstream licenses included in usr/share/doc/*/copyright",
+  "status": "published",
+  "defaultVersion": "12.0.0",
+  "releases": [
+    {
+      "version": "12.0.0",
+      "manifest": "versions/12.0.0.json"
+    }
+  ],
+  "notes": "Inert amd64 payload below /opt/gizmoth/x86_64 for an ARM64 guest. linux-jieli-libs selects its exact ELF/data closure. No PATH entries, package manager or maintainer scripts."
+}

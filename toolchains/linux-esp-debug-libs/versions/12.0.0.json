@@ -1,0 +1,86 @@
+{
+  "$schema": "../../../schemas/devenv.schema.json",
+  "apiVersion": "devenv.gizmoth.dev/v1alpha1",
+  "kind": "ToolchainRelease",
+  "id": "linux-esp-debug-libs",
+  "version": "12.0.0",
+  "platforms": {
+    "linux-arm64": {
+      "guestRoot": true,
+      "requires": [],
+      "dependencies": [
+        {
+          "toolchain": "linux-runtime",
+          "version": "12.0.0"
+        }
+      ],
+      "sources": [
+        {
+          "id": "libatomic1",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/g/gcc-12/libatomic1_12.2.0-14+deb12u1_arm64.deb",
+          "sha256": "1693aa13ce2b30d061a519fc28b77b9bab8c8e45804ced5969d99821e1bc2159",
+          "size": 9568
+        },
+        {
+          "id": "libusb-1-0-0",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/libu/libusb-1.0/libusb-1.0-0_1.0.26-1_arm64.deb",
+          "sha256": "e0648086b231c9204514d31480d517cb1b51e301ac39e69335a67d01ec785608",
+          "size": 59976
+        },
+        {
+          "id": "libudev1",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/s/systemd/libudev1_252.39-1~deb12u2_arm64.deb",
+          "sha256": "b76444b0259abfa416f8c1d9a652d208a24770667a1181aa52317b74d12a7a72",
+          "size": 103236
+        }
+      ],
+      "install": [
+        {
+          "type": "extract",
+          "source": "libatomic1",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libusb-1-0-0",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        },
+        {
+          "type": "extract",
+          "source": "libudev1",
+          "to": ".",
+          "format": "deb",
+          "stripComponents": 0
+        }
+      ],
+      "environment": {
+        "prependPath": [],
+        "variables": {}
+      },
+      "checks": [
+        {
+          "type": "file",
+          "path": "usr/lib/aarch64-linux-gnu/libatomic.so.1.2.0",
+          "executable": false
+        },
+        {
+          "type": "file",
+          "path": "usr/lib/aarch64-linux-gnu/libusb-1.0.so.0.3.0",
+          "executable": false
+        },
+        {
+          "type": "file",
+          "path": "usr/lib/aarch64-linux-gnu/libudev.so.1.7.5",
+          "executable": false
+        }
+      ]
+    }
+  }
+}

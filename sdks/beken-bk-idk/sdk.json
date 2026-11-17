@@ -1,0 +1,19 @@
+{
+  "$schema": "../../schemas/devenv.schema.json",
+  "apiVersion": "devenv.gizmoth.dev/v1alpha1",
+  "kind": "Sdk",
+  "id": "beken-bk-idk",
+  "name": "Beken IDK SDK",
+  "description": "Pinned public upstream SDK with declarative Git checkout and exact compiler/Python dependencies.",
+  "homepage": "https://github.com/GizClaw/bk_idk",
+  "license": "Apache-2.0",
+  "status": "published",
+  "notes": "Source commit 650e754e12fe1e43c37ce2316a973668b033fd48. GizMoth fetches the original repository and upstream package files; this registry distributes no SDK source snapshots, LFS objects or rebuilt packages.",
+  "defaultVersion": "2.0.1+g650e754e",
+  "releases": [
+    {
+      "version": "2.0.1+g650e754e",
+      "manifest": "versions/2.0.1+g650e754e.json"
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "$schema": "../../schemas/devenv.schema.json",
+  "apiVersion": "devenv.gizmoth.dev/v1alpha1",
+  "kind": "Toolchain",
+  "id": "esp-clangd",
+  "name": "ESP Clangd",
+  "description": "Clangd for all Espressif chips selected by pinned ESP-IDF ddb3852ab5c7f9e6dbc268203ef9d612de391bf8.",
+  "category": "build-tool",
+  "homepage": "https://github.com/espressif/llvm-project",
+  "license": "Apache-2.0",
+  "notes": "Original archive selected by ESP-IDF ddb3852ab5c7f9e6dbc268203ef9d612de391bf8 tools/tools.json (esp-21.1.3_20260408); SHA-256, size, root layout and ELF dependencies verified without executing the payload. Extract the single upstream root into toolchain; the SDK links it back under the exact upstream tools/<name>/<version>/<root> layout.",
+  "status": "published",
+  "defaultVersion": "21.1.3+20260408",
+  "releases": [
+    {
+      "version": "21.1.3+20260408",
+      "manifest": "versions/21.1.3+20260408.json"
+    }
+  ]
+}
