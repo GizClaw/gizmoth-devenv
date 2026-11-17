@@ -3,7 +3,7 @@
   "apiVersion": "devenv.gizmoth.dev/v1alpha1",
   "kind": "Toolchain",
   "id": "linux-runtime",
-  "name": "Linux guest runtime",
+  "name": "linux-runtime",
   "description": "Debian Bookworm shell, basic utilities, dynamic loader, certificates and filesystem construction tools.",
   "category": "runtime",
   "homepage": "https://www.debian.org/releases/bookworm/",

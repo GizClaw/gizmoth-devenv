@@ -4,7 +4,7 @@ GizMoth's own Git registry for its **Development Environments** page. Users inst
 
 GizMoth clones and synchronizes this Git registry, pins one revision, and reads its JSON download formulae. The application then downloads dependencies from the upstream Git repositories or file URLs named in those formulae, verifies their pinned identities, and manages installation and activation locally. Application releases contain GizMoth and its minimal Linux boot environment. This registry contains download configuration, not SDK payloads, LFS objects or repackaged releases; it requires no Homebrew, GizOS `gizos` CLI or Bun.
 
-**Status: draft format `devenv.gizmoth.dev/v1alpha1`.** Metadata includes Bazelisk, Python, Debian Bookworm guest layers, native Arm/ESP compilers, explicit x86 compatibility for JieLi tools, and seven pinned ESP/Beken/JieLi SDKs. SDK sources refer directly to exact public Git commits; Python inputs refer to original upstream wheels, source distributions and constraint files. The schema's `published` status describes a complete recipe, not successful installation. GizMoth has verified direct-upstream acquisition and offline installation of six SDKs in an isolated Linux ARM64 guest. Firmware/package qualification remains separate, and the additional native x86_64 BK7259 candidate is unqualified.
+**Status: draft format `devenv.gizmoth.dev/v1alpha1`.** Metadata includes Bazelisk, Python, Debian Bookworm guest layers, native Arm/ESP compilers, explicit x86 compatibility for JieLi tools, and seven pinned ESP/Beken/JieLi SDKs. SDK sources refer directly to exact public Git commits; Python inputs refer to original upstream wheels, source distributions and constraint files. The schema's `published` status describes a complete recipe, not successful installation. GizMoth has verified direct-upstream acquisition and offline installation of six SDKs in isolated and formal Linux ARM64 environments. A separate ARM64 Linux worker installation passed the BK7259 revision's Python, dependency and original libcommon.so symbol checks. BK7259 firmware packaging and AES/XTS operations, native x86_64 installation and physical device operations remain unqualified.
 
 ## Repository layout
 
@@ -35,7 +35,7 @@ Current entries:
 | Environments | `gizos`: Bazelisk 1.30.0 and Python 3.12.16 (published) |
 | Chip candidates | `esp32s3`, `esp32p4`, `esp32s31`, `esp32c5`, `bk7258`, `ac695n`, `ac707n`, `ac791n`, `bk7259` (Linux x86_64 and ARM64 guests) |
 | SDK candidates | `esp-idf` 6.2.0-dev.gddb3852; `beken-bk7258` 3.1.1+g6bbf6274; `beken-bk-idk` 2.0.1+g650e754e; `beken-bk7259` 4.0.1+g06cb0f2d.1; `jieli-ac707n` 2.0.0+gd0167685; `jieli-ac695n` 0.1.0+g76b95777; `jieli-ac791n` 0.1.0+geb04f196 |
-| Toolchains | `bazelisk` 1.30.0 (default), 1.29.0; `python` 3.12.16 (default), 3.11.18; Linux guest formulae 12.0.0; `arm-gnu` 10.3.1 (default), 14.3.1; `xtensa-esp-elf` and `riscv32-esp-elf` 16.1.0+20260609; `esp32ulp-elf` 2.38.0+20240113; `jieli` 4.0.1+20250805.1; `jieli-postbuild` 2026.7.28+2 (default), 2026.7.28+1; `git-lfs` 3.8.1; `ninja` 1.13.2; `esp-rom-elfs` 2026.5.28 (upstream 20260528) |
+| Toolchains | `bazelisk` 1.30.0 (default), 1.29.0; `python` 3.12.16 (default), 3.11.18; Linux guest formulae 12.0.0; `arm-gnu` 10.3.1 (default), 14.3.1; `xtensa-esp-elf` and `riscv32-esp-elf` 16.1.0+20260609; `esp32ulp-elf` 2.38.0+20240113; `jieli` 4.0.1+20250805.1; `jieli-postbuild` 2026.7.28+2 (default), 2026.7.28+1; `git-lfs` 3.8.1; `beken-loader` 4.1.7; `ninja` 1.13.2; `esp-rom-elfs` 2026.5.28 (upstream 20260528) |
 
 Bazelisk and Python cover macOS, Linux and Windows on x86_64/arm64. Bazelisk installs the launcher as both `bazelisk` and `bazel`; each project's `.bazelversion` selects Bazel, which Bazelisk downloads on first use. Python uses CPython `install_only_stripped` archives from `astral-sh/python-build-standalone` release `20261110`, with GitHub asset SHA-256 digests and byte sizes. Python recipes only unpack the archive and check its executable file; no installation commands run.
 
@@ -67,13 +67,15 @@ The table gives each bundle's own source bytes, excluding dependency downloads, 
 
 Payload file checks use `/bin/bash`, `/bin/dash`, `/sbin/mke2fs` and `/usr/bin/mkfs.erofs`. GizMoth creates `/bin/sh` and other required aliases, account files and the concatenated certificate bundle. No apt/dpkg runtime is installed. The QEMU package retains all upstream static interpreters because the registry does not repackage inputs or define extraction filters.
 
-To test unmerged metadata, export this working tree to a temporary directory or the data directory of an isolated test instance:
+Package paths describe the guest filesystem. Guest-root layers show `/` because they merge into the managed read-only root; their individual executables/libraries live under `/usr/bin`, `/usr/lib` and related directories. Foreign x86 library layers merge under `/opt/gizmoth/x86_64`. Normal versioned tools keep `/opt/gizmoth/packages/toolchains/<id>/<version>` prefixes. These are guest installation paths, not separate writable host directories.
+
+To test unmerged metadata, export only to a temporary directory or an isolated test instance:
 
 ```bash
 node scripts/export-snapshot.mjs '/absolute/isolated-test-data/compile/registry'
 ```
 
-The script validates first and writes `<content-derived-development-id>.json` plus `current.json` using GizMoth's saved-snapshot format. The development identity is not an upstream Git commit. It leaves the production repository and `main` branch unchanged; a normal refresh replaces the seed. Keep candidate catalogs out of the user's normal application data.
+The script validates first and writes `<content-derived-development-id>.json` plus `current.json` using GizMoth's saved-snapshot format. The development identity is not an upstream Git commit. Keep it out of the formal application's data; production sync must fetch actual registry main.
 
 ## Validate
 

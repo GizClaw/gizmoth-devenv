@@ -3,7 +3,7 @@
   "apiVersion": "devenv.gizmoth.dev/v1alpha1",
   "kind": "Toolchain",
   "id": "jieli",
-  "name": "JieLi compiler tools",
+  "name": "jieli-linux-toolchains",
   "description": "Pinned pi32v2 and q32s compilers; ARM64 hosts explicitly use the managed x86 QEMU/runtime formulas.",
   "category": "compiler",
   "homepage": "https://pkgman.jieliapp.com/doc/all",

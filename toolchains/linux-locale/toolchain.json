@@ -3,13 +3,18 @@
   "apiVersion": "devenv.gizmoth.dev/v1alpha1",
   "kind": "Toolchain",
   "id": "linux-locale",
-  "name": "Linux UTF-8 locale",
+  "name": "libc-bin",
   "description": "Compiled C.utf8 locale data and locale utilities matching the exact managed glibc runtime.",
   "category": "runtime",
   "homepage": "https://packages.debian.org/bookworm/libc-bin",
   "license": "LGPL-2.1-or-later",
   "status": "published",
   "defaultVersion": "12.0.0",
-  "releases": [{ "version": "12.0.0", "manifest": "versions/12.0.0.json" }],
+  "releases": [
+    {
+      "version": "12.0.0",
+      "manifest": "versions/12.0.0.json"
+    }
+  ],
   "notes": "libc-bin 2.36-9+deb12u14 contains precompiled C.utf8 payloads. GizMoth extracts raw data only; no locale generation, dpkg, or maintainer script runs. Command qualification must return UTF-8."
 }
