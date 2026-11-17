@@ -1,0 +1,43 @@
+{
+  "$schema": "../../../schemas/devenv.schema.json",
+  "apiVersion": "devenv.gizmoth.dev/v1alpha1",
+  "kind": "ToolchainRelease",
+  "id": "linux-x86-libmd0",
+  "version": "12.0.0",
+  "platforms": {
+    "linux-arm64": {
+      "guestRoot": true,
+      "requires": [],
+      "dependencies": [],
+      "sources": [
+        {
+          "id": "libmd0",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/libm/libmd/libmd0_1.0.4-2_amd64.deb",
+          "sha256": "03539fd30c509e27101d13a56e52eda9062bdf1aefe337c07ab56def25a13eab",
+          "size": 29456
+        }
+      ],
+      "install": [
+        {
+          "type": "extract",
+          "source": "libmd0",
+          "to": "opt/gizmoth/x86_64",
+          "format": "deb",
+          "stripComponents": 0
+        }
+      ],
+      "environment": {
+        "prependPath": [],
+        "variables": {}
+      },
+      "checks": [
+        {
+          "type": "file",
+          "path": "opt/gizmoth/x86_64/usr/lib/x86_64-linux-gnu/libmd.so.0.0.5",
+          "executable": false
+        }
+      ]
+    }
+  }
+}

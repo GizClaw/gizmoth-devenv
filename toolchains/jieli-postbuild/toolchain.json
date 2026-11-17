@@ -8,13 +8,17 @@
   "category": "post-build",
   "homepage": "https://pkgman.jieliapp.com/doc/all",
   "license": "LicenseRef-Vendor",
-  "notes": "ELF dependency closure inspected without invoking USB/download tools. Safe full firmware packaging is qualified with each SDK build.",
+  "notes": "Original 20260728.1 vendor bytes remain unchanged. Recipe +2 adds the verified headless runtime closure and a loader-only readiness check; it does not invoke device programming. Full firmware packaging is qualified separately through SDK builds.",
   "status": "published",
-  "defaultVersion": "2026.7.28+1",
+  "defaultVersion": "2026.7.28+2",
   "releases": [
     {
       "version": "2026.7.28+1",
       "manifest": "versions/2026.7.28+1.json"
+    },
+    {
+      "version": "2026.7.28+2",
+      "manifest": "versions/2026.7.28+2.json"
     }
   ]
 }

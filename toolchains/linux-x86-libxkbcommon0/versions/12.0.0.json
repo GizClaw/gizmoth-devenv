@@ -1,0 +1,43 @@
+{
+  "$schema": "../../../schemas/devenv.schema.json",
+  "apiVersion": "devenv.gizmoth.dev/v1alpha1",
+  "kind": "ToolchainRelease",
+  "id": "linux-x86-libxkbcommon0",
+  "version": "12.0.0",
+  "platforms": {
+    "linux-arm64": {
+      "guestRoot": true,
+      "requires": [],
+      "dependencies": [],
+      "sources": [
+        {
+          "id": "libxkbcommon0",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/libx/libxkbcommon/libxkbcommon0_1.5.0-1_amd64.deb",
+          "sha256": "e3fe045b9a33a101de1c5a912a4a10928db055c3f68930f47eccbb44d7c7d54e",
+          "size": 106108
+        }
+      ],
+      "install": [
+        {
+          "type": "extract",
+          "source": "libxkbcommon0",
+          "to": "opt/gizmoth/x86_64",
+          "format": "deb",
+          "stripComponents": 0
+        }
+      ],
+      "environment": {
+        "prependPath": [],
+        "variables": {}
+      },
+      "checks": [
+        {
+          "type": "file",
+          "path": "opt/gizmoth/x86_64/usr/lib/x86_64-linux-gnu/libxkbcommon.so.0.0.0",
+          "executable": false
+        }
+      ]
+    }
+  }
+}

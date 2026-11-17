@@ -1,0 +1,43 @@
+{
+  "$schema": "../../../schemas/devenv.schema.json",
+  "apiVersion": "devenv.gizmoth.dev/v1alpha1",
+  "kind": "ToolchainRelease",
+  "id": "linux-x86-libglvnd0",
+  "version": "12.0.0",
+  "platforms": {
+    "linux-arm64": {
+      "guestRoot": true,
+      "requires": [],
+      "dependencies": [],
+      "sources": [
+        {
+          "id": "libglvnd0",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/libg/libglvnd/libglvnd0_1.6.0-1_amd64.deb",
+          "sha256": "b6da5b153dd62d8b5e5fbe25242db1fc05c068707c365db49abda8c2427c75f8",
+          "size": 51820
+        }
+      ],
+      "install": [
+        {
+          "type": "extract",
+          "source": "libglvnd0",
+          "to": "opt/gizmoth/x86_64",
+          "format": "deb",
+          "stripComponents": 0
+        }
+      ],
+      "environment": {
+        "prependPath": [],
+        "variables": {}
+      },
+      "checks": [
+        {
+          "type": "file",
+          "path": "opt/gizmoth/x86_64/usr/lib/x86_64-linux-gnu/libGLdispatch.so.0.0.0",
+          "executable": false
+        }
+      ]
+    }
+  }
+}

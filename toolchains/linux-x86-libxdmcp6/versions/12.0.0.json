@@ -1,0 +1,43 @@
+{
+  "$schema": "../../../schemas/devenv.schema.json",
+  "apiVersion": "devenv.gizmoth.dev/v1alpha1",
+  "kind": "ToolchainRelease",
+  "id": "linux-x86-libxdmcp6",
+  "version": "12.0.0",
+  "platforms": {
+    "linux-arm64": {
+      "guestRoot": true,
+      "requires": [],
+      "dependencies": [],
+      "sources": [
+        {
+          "id": "libxdmcp6",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/libx/libxdmcp/libxdmcp6_1.1.2-3_amd64.deb",
+          "sha256": "ecb8536f5fb34543b55bb9dc5f5b14c9dbb4150a7bddb3f2287b7cab6e9d25ef",
+          "size": 26344
+        }
+      ],
+      "install": [
+        {
+          "type": "extract",
+          "source": "libxdmcp6",
+          "to": "opt/gizmoth/x86_64",
+          "format": "deb",
+          "stripComponents": 0
+        }
+      ],
+      "environment": {
+        "prependPath": [],
+        "variables": {}
+      },
+      "checks": [
+        {
+          "type": "file",
+          "path": "opt/gizmoth/x86_64/usr/lib/x86_64-linux-gnu/libXdmcp.so.6.0.0",
+          "executable": false
+        }
+      ]
+    }
+  }
+}

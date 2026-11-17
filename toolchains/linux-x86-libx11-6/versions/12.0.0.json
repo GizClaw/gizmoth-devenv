@@ -1,0 +1,43 @@
+{
+  "$schema": "../../../schemas/devenv.schema.json",
+  "apiVersion": "devenv.gizmoth.dev/v1alpha1",
+  "kind": "ToolchainRelease",
+  "id": "linux-x86-libx11-6",
+  "version": "12.0.0",
+  "platforms": {
+    "linux-arm64": {
+      "guestRoot": true,
+      "requires": [],
+      "dependencies": [],
+      "sources": [
+        {
+          "id": "libx11-6",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/libx/libx11/libx11-6_1.8.4-2+deb12u2_amd64.deb",
+          "sha256": "d88c973e79fd9b65838d77624142952757e47a6eb1a58602acf0911cf35989f4",
+          "size": 759544
+        }
+      ],
+      "install": [
+        {
+          "type": "extract",
+          "source": "libx11-6",
+          "to": "opt/gizmoth/x86_64",
+          "format": "deb",
+          "stripComponents": 0
+        }
+      ],
+      "environment": {
+        "prependPath": [],
+        "variables": {}
+      },
+      "checks": [
+        {
+          "type": "file",
+          "path": "opt/gizmoth/x86_64/usr/lib/x86_64-linux-gnu/libX11.so.6.4.0",
+          "executable": false
+        }
+      ]
+    }
+  }
+}

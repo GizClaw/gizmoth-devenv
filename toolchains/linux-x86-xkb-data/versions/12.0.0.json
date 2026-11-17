@@ -1,0 +1,43 @@
+{
+  "$schema": "../../../schemas/devenv.schema.json",
+  "apiVersion": "devenv.gizmoth.dev/v1alpha1",
+  "kind": "ToolchainRelease",
+  "id": "linux-x86-xkb-data",
+  "version": "12.0.0",
+  "platforms": {
+    "linux-arm64": {
+      "guestRoot": true,
+      "requires": [],
+      "dependencies": [],
+      "sources": [
+        {
+          "id": "xkb-data",
+          "type": "file",
+          "url": "https://deb.debian.org/debian/pool/main/x/xkeyboard-config/xkb-data_2.35.1-1_all.deb",
+          "sha256": "28a79c61b785f403da93af58c39aed13c022032935e3e54362c6707169cfe982",
+          "size": 763516
+        }
+      ],
+      "install": [
+        {
+          "type": "extract",
+          "source": "xkb-data",
+          "to": "opt/gizmoth/x86_64",
+          "format": "deb",
+          "stripComponents": 0
+        }
+      ],
+      "environment": {
+        "prependPath": [],
+        "variables": {}
+      },
+      "checks": [
+        {
+          "type": "file",
+          "path": "opt/gizmoth/x86_64/usr/share/X11/xkb/compat/README",
+          "executable": false
+        }
+      ]
+    }
+  }
+}

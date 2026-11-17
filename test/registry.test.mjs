@@ -68,7 +68,7 @@ function publish(f, type, id, version, platforms) {
 }
 
 test("official registry validates offline with generic tools and minimal guest formulae", () => {
-  assert.deepEqual(validateRegistry(root), { chips: 9, environments: 1, sdks: 7, toolchains: 38, planned: 0, releases: 48, platforms: 88 });
+  assert.deepEqual(validateRegistry(root), { chips: 9, environments: 1, sdks: 7, toolchains: 66, planned: 0, releases: 77, platforms: 119 });
 });
 
 test("SDK formulae reference upstream Git and package files without repacked releases", () => {
@@ -598,7 +598,7 @@ test("Python recipes use pinned six-host archives, isolated paths and file check
 test("Linux formulae pin raw Debian payloads and isolate foreign tool paths", () => {
   const registry = JSON.parse(readFileSync(join(root, "registry.json"), "utf8"));
   const ids = registry.toolchains.filter((id) => id.startsWith("linux-"));
-  assert.equal(ids.length, 22);
+  assert.equal(ids.length, 50);
   for (const id of ids) {
     const release = JSON.parse(readFileSync(join(root, `toolchains/${id}/versions/12.0.0.json`), "utf8"));
     for (const [platform, recipe] of Object.entries(release.platforms)) {
@@ -615,7 +615,7 @@ test("Linux formulae pin raw Debian payloads and isolate foreign tool paths", ()
         assert.equal(step.type, "extract");
         assert.equal(step.format, "deb");
         assert.equal(step.stripComponents, 0);
-        assert.equal(step.to, id.startsWith("linux-x86-") ? "opt/gizmoth/x86_64" : ".");
+        assert.equal(step.to, id.startsWith("linux-x86-") || (id === "linux-jieli-libs" && platform === "linux-arm64") ? "opt/gizmoth/x86_64" : ".");
       }
       if (id === "linux-locale") {
         assert.ok(recipe.checks.some((check) => check.type === "command" && check.program === "${prefix}/usr/bin/locale" && check.stdoutContains === "UTF-8"));
@@ -627,6 +627,38 @@ test("Linux formulae pin raw Debian payloads and isolate foreign tool paths", ()
       if (id.startsWith("linux-x86-") || id === "linux-qemu-user") assert.equal(platform, "linux-arm64");
       assert.equal(recipe.bootstrap ?? false, id === "linux-runtime");
     }
+  }
+});
+
+test("JieLi postbuild adds the observed headless runtime without mutating the published release", () => {
+  const load = (path) => JSON.parse(readFileSync(join(root, path), "utf8"));
+  const oldPath = "toolchains/jieli-postbuild/versions/2026.7.28+1.json";
+  assert.equal(createHash("sha256").update(readFileSync(join(root, oldPath))).digest("hex"), "b1b7f7f5545753f507e90cf0a0b674a94a910a4cfa94db68ad823beab348a6ba");
+  const old = load(oldPath);
+  const current = load("toolchains/jieli-postbuild/versions/2026.7.28+2.json");
+  for (const platform of ["linux-arm64", "linux-x86_64"]) {
+    const recipe = current.platforms[platform];
+    assert.deepEqual(recipe.sources, old.platforms[platform].sources);
+    assert.deepEqual(recipe.install, old.platforms[platform].install);
+    assert.deepEqual(recipe.environment, old.platforms[platform].environment);
+    assert.ok(recipe.dependencies.some((d) => d.toolchain === "linux-jieli-libs" && d.version === "12.0.0"));
+    const check = recipe.checks.find((c) => c.type === "command");
+    assert.equal(check.stdoutContains, "JIELI_POSTBUILD_LIBRARIES_OK");
+    assert.match(check.args[1], /LD_TRACE_LOADED_OBJECTS=1/);
+    assert.match(check.args[1], /not found/);
+    assert.doesNotMatch(check.args[1], /--download|--reset|--flash/);
+    const sources = new Set();
+    const visited = new Set();
+    function collect(id, version) {
+      const key = `${id}@${version}`;
+      if (visited.has(key)) return;
+      visited.add(key);
+      const layer = load(`toolchains/${id}/versions/${version}.json`).platforms[platform];
+      for (const source of layer.sources) sources.add(source.id);
+      for (const d of layer.dependencies) collect(d.toolchain, d.version);
+    }
+    collect("linux-jieli-libs", "12.0.0");
+    for (const source of ["libsm6", "libice6", "libuuid1", "libxcb1", "libxkbcommon0", "libfontconfig1", "libfreetype6", "libgbm1", "libdrm2", "libegl1", "libgl1", "libglvnd0", "libglx0", "fonts-dejavu-core", "xkb-data"]) assert.ok(sources.has(source), `${platform}: missing ${source}`);
   }
 });
 
